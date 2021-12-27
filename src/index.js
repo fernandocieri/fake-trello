@@ -1,4 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import * as React from 'react';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 import axios from 'axios';
 import ReactDOM from 'react-dom';
 
@@ -22,10 +25,11 @@ function List(props) {
   }
 
   return (
-    <div className='list'>
+    <Stack className='list' spacing={2}>
+      <div className='listName'></div>
       <Card /*fill props for card from mapping listCards. Check later*//>
-      <button>add card</button>
-    </div>
+      <Button variant="outlined">add card</Button>
+    </Stack>
   )
 }
 
