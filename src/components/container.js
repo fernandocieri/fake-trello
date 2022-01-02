@@ -2,14 +2,15 @@ import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Navbar from "./navbar";
-import WorkSpace from "./workspace";
-import Myboards from "./myboards";
+import Navbar from './navbar';
+import WorkSpace from './workspace';
+import Myboards from './myboards';
+import Activityspecs from './Activityspecs';
+import List from './list'
+import Board from './board'
 
 export default function SimpleContainer() {
-  return (
-    <React.Fragment >
-      <CssBaseline />
+  return (      
       <Container className="main-Container" maxWidth="xl" >
         <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }}>
             <Navbar/> {/* This component has a "title" prop to change the title of the component */}
@@ -18,9 +19,11 @@ export default function SimpleContainer() {
             In the future will be developed the way it gets the value for "name". */}
             <WorkSpace name="Nombre Provisional"/>
             <Myboards/> {/* It has a prop "title" to change the title of this component */}
-            
+            <Activityspecs/>
+            <List/> 
+            <Board/>           
         </Box>
       </Container>
-    </React.Fragment>
+    
   );
 }
