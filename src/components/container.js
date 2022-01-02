@@ -6,11 +6,10 @@ import Navbar from './navbar';
 import WorkSpace from './workspace';
 import Myboards from './myboards';
 import Activityspecs from './Activityspecs';
+import List from './list'
 
 export default function SimpleContainer() {
-  return (
-    <React.Fragment >
-      <CssBaseline />
+  return (      
       <Container className="main-Container" maxWidth="xl" >
         <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }}>
             <Navbar/> {/* This component has a "title" prop to change the title of the component */}
@@ -20,9 +19,9 @@ export default function SimpleContainer() {
             <WorkSpace name="Nombre Provisional"/>
             <Myboards/> {/* It has a prop "title" to change the title of this component */}
             <Activityspecs/>
-            
+            <List/>            
         </Box>
       </Container>
-    </React.Fragment>
+    
   );
 }
