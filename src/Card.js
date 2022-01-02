@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
 export function Card() {
   return (
-    <>
+    <Stack spacing={2}>
       <div>
-        <button>Save</button>
+        <Button variant="outlined">Save</Button>
       </div>
       <div className="main">
         <div className="left-flex-container">
@@ -17,8 +20,12 @@ export function Card() {
         </div>
       </div>
       <div>
-        <button>Delete</button>
+        <Button>Delete</Button>
       </div>
-    </>
+    </Stack>
   );
 }
+
+ReactDOM.render( <Card />,
+  document.getElementById('root')
+);
