@@ -4,8 +4,9 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import ReactDOM from "react-dom";
 
-export function Card() {
+export default function Activityspecs() {
   return (
     <Box
       component="form"
@@ -13,33 +14,34 @@ export function Card() {
         "& .MuiTextField-root": { m: 1, width: "25ch" },
       }}
       noValidate
-      autoComplete="off"
+      autoComplete="on"
     >
       <div>
         <Button variant="outlined">Save</Button>
       </div>
 
-      <Stack className="main">
-        <div className="left-flex-container">
+      <div className="main">
+        <Stack className="left-flex-container">
           <TextField id="title" label="Title" variant="outlined" />
-          <TextField id="description" label="Description" variant="outlined" />
+          <TextField id="description" label="Description" variant="outlined" multiline maxRows={3}/>
           <TextField id="comments" label="Comments" variant="outlined" />
-        </div>
-        
+        </Stack>
+
         <div>
           <TextField
+            multiline
+            maxRows={5}
             id="activitySpecs"
-            label="Acivity Specs"
+            label="Activity Specs"
             variant="outlined"
           />
         </div>
-      </Stack>
+      </div>
 
       <div>
-        <Button>Delete</Button>
+        <Button variant="outlined">Delete</Button>
       </div>
     </Box>
   );
 }
 
-ReactDOM.render(<Card />, document.getElementById("root"));

@@ -2,9 +2,10 @@ import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Navbar from "./navbar";
-import WorkSpace from "./workspace";
-import Myboards from "./myboards";
+import Navbar from './navbar';
+import WorkSpace from './workspace';
+import Myboards from './myboards';
+import Activityspecs from './Activityspecs';
 
 export default function SimpleContainer() {
   return (
@@ -18,6 +19,7 @@ export default function SimpleContainer() {
             In the future will be developed the way it gets the value for "name". */}
             <WorkSpace name="Nombre Provisional"/>
             <Myboards/> {/* It has a prop "title" to change the title of this component */}
+            <Activityspecs/>
             
         </Box>
       </Container>
