@@ -5,7 +5,6 @@ import Button from '@mui/material/Button';
 import axios from 'axios';
 import ReactDOM from 'react-dom';
 import Activityspecs from './Activityspecs';
-import Box from '@mui/material/Box';
 /*function ListCreator() {
   return (
     <div id='addNewCard'>
@@ -24,10 +23,10 @@ export default function List({listName="New List"},{id}) {
       setListCards([...resp.text]);
     }  
     return (
-      <Box className='list' sx={{ p: 10, border: '1px dashed grey' }}>
-        <div className='listName'>{listName}</div>        
+      <Stack className='list' spacing={2}>
+        <div className='listName'>{listName}</div>
         {/* {component card} */}
         <Button variant="outlined">add card</Button>
-      </Box>
+      </Stack>
     )
   }
