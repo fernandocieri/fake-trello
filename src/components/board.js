@@ -9,11 +9,14 @@ export default function Board() {
   return (
     <Box>
       <Stack>
-        <div className="boardTitle">Preba board name</div>
-        <Button variant="outlined"><EditIcon></EditIcon></Button>
-        <div className="boardLists">
+        <section className="boardHeader">
+          Pureba board name
+          <Button variant="outlined"><EditIcon></EditIcon></Button>
+        </section>
+
+        <section className="boardLists">
           {/* mapear listas */}
-        </div>
+        </section>
       </Stack>
     </Box>
   );
