@@ -1,19 +1,23 @@
 import * as React from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
-import ReactDOM from "react-dom";
+import { Stack, Box, IconButton } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import ActivityList from "./list";
 
 export default function Board() {
   return (
     <Box>
       <Stack>
-        <div className="boardTitle">Preba board name</div>
-        <Button variant="outlined"><EditIcon></EditIcon></Button>
-        <div className="boardLists">
+        <section className="boardHeader">
+          <div className="boardTitle">Prueba board name</div>
+          <IconButton variant="outlined">
+            <MoreVertIcon></MoreVertIcon>
+          </IconButton>
+        </section>
+
+        <section className="boardLists">
           {/* mapear listas */}
-        </div>
+          <ActivityList/>
+        </section>
       </Stack>
     </Box>
   );
