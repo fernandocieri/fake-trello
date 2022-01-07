@@ -5,6 +5,7 @@ import WorkSpace from './workspace';
 import Myboards from './myboards';
 import Activityspecs from './Activityspecs';
 import Board from './board'
+import SimpleDialogDemo from './actions'
 
 export default function SimpleContainer() {
   return (      
@@ -17,7 +18,8 @@ export default function SimpleContainer() {
             <WorkSpace name="Nombre Provisional"/>
             <Myboards/> {/* It has a prop "title" to change the title of this component */}
             <Activityspecs/>
-            <Board/>           
+            <Board/>
+            <SimpleDialogDemo/>        
         </Box>
       </Container>
     
