@@ -1,12 +1,9 @@
 import * as React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
+import {Box, Container} from '@mui/material';
 import Navbar from './navbar';
 import WorkSpace from './workspace';
 import Myboards from './myboards';
 import Activityspecs from './Activityspecs';
-import List from './list'
 import Board from './board'
 
 export default function SimpleContainer() {
@@ -20,7 +17,6 @@ export default function SimpleContainer() {
             <WorkSpace name="Nombre Provisional"/>
             <Myboards/> {/* It has a prop "title" to change the title of this component */}
             <Activityspecs/>
-            <List/> 
             <Board/>           
         </Box>
       </Container>
