@@ -3,28 +3,26 @@ import { Box, Tab, Tabs, TabContext, TabList, TabPanel, Button } from "@mui/mate
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Board from './board';
-import BasicTabs from "./basicTabs";
+import { credentialsContext } from "./container";
 
 export default function Myboards(props) {
+    const credentials = useContext(credentialsContext);
     const [allBoards, setAllBoards] = useState([]);
 
     useEffect(async () => {
-        const apiBoards = await axios.get(`https://api.trello.com/1/organizations/${props.name}/boards?key=278ed1bfd74ea3d23445703059a2fd01&token=4fc08ef1719c90b1a2576c8e260cc3190641b849c048a773ce35f55a6b394a51`);
+        const apiBoards = await axios.get(`https://api.trello.com/1/organizations/${props.name}/boards?key=${credentials.key}&token=${credentials.token}`);
         setAllBoards([...apiBoards.data]);
     }, []);
 
-    async function createBoard() {
-        //let urlBoard = 'https://api.trello.com/1/boards?key=ce5abaa238f274a5ea5ae0b3986e140d'
-        //let urlList = 'https://api.trello.com/1/boards/61c2184ec5370301a1cf0420/lists?key=ce5abaa238f274a5ea5ae0b3986e140d&token=fb4d92026015c96f9e12f8278240a94ad2a82c8f0de1f0649028458134ab12c5'
-        let data = { name: 'hola miguel', key: '278ed1bfd74ea3d23445703059a2fd01', token: '4fc08ef1719c90b1a2576c8e260cc3190641b849c048a773ce35f55a6b394a51' }
+    async function createBoard(newBoardName) {
         /*let data = JSON.stringify({
         name: 'prueba api',
         idBoard: '61c2184ec5370301a1cf0420'
         });*/
-        const newBoard = await axios.post(`https://api.trello.com/1/boards/?name=${data.name}&key=${data.key}&token=${data.token}`);
+        const newBoard = await axios.post(`https://api.trello.com/1/boards/?name=${newBoardName}&key=${credentials.key}&token=${credentials.token}`);
         console.log(newBoard.status);
         console.log(newBoard);
-        //console.log(data);
+        //REVISAR es posible que sea necesario hacer push de newBoard al estado con setAllBoards;
     }
     return (
         <div>
@@ -41,7 +39,7 @@ export default function Myboards(props) {
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
  */}
-            {allBoards.map(board => <Board id={board.id} name={board.name} />)}
+            {allBoards.map(board => <Board data={board} />)}
 
         </div>
     );

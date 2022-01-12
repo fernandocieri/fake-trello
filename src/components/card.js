@@ -7,10 +7,15 @@ import {
   CardHeader,
   CardContent,
 } from "@mui/material";
+import { useState, useEffect, useContext } from "react";
+import { credentialsContext } from "./container";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ActionMenu from './actions';
 
-export default function ActivityCard({ description = "Add a description" }) {
+export default function ActivityCard(props) {
+  const credentials = useContext(credentialsContext);
+  const [cardData, setCardData] = useState({...props.data});
+
   const [open, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(undefined);
 
@@ -39,15 +44,15 @@ export default function ActivityCard({ description = "Add a description" }) {
             </>
           }
 
-          title={"Actividad 1: JoseMI project manager"}
-          subheader={new Date().toLocaleString() + ""}
+          title={cardData.name}
+          subheader={cardData.dateLastActivity}
         >
 
         </CardHeader>
 
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            {description}
+            {cardData.desc}
           </Typography>
         </CardContent>
       </CardActionArea>
