@@ -4,14 +4,18 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Board from './board';
 import { credentialsContext } from "./container";
+import { organizationsContext } from "./container";
 
-export default function Myboards(props) {
+export default function Myboards() {
     const credentials = useContext(credentialsContext);
+    const organizations = useContext(organizationsContext);
     const [allBoards, setAllBoards] = useState([]);
+    const [currentBoard, setCurrentBoard] = useState(0)
 
     useEffect(async () => {
-        const apiBoards = await axios.get(`https://api.trello.com/1/organizations/${props.name}/boards?key=${credentials.key}&token=${credentials.token}`);
+        const apiBoards = await axios.get(`https://api.trello.com/1/organizations/${organizations[0].id}/boards?key=${credentials.key}&token=${credentials.token}`);
         setAllBoards([...apiBoards.data]);
+        console.log(organizations);
     }, []);
 
     async function createBoard(newBoardName) {
@@ -39,7 +43,7 @@ export default function Myboards(props) {
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
  */}
-            {allBoards.map(board => <Board data={board} />)}
+            {allBoards.map(board => <Board data={board} key={board.id} />)}
 
         </div>
     );

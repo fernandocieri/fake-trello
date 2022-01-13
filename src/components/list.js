@@ -23,17 +23,16 @@ import {
 
 export default function ActivityList(props) {
   const credentials = useContext(credentialsContext);
-  const [listData, setListData] = useState({...props.data});
+  const [listData, setListData] = useState({ ...props.data });
   const [listCards, setListCards] = useState([]);
 
   useEffect(async () => {
     const apiCards = await axios.get(`https://api.trello.com/1/lists/${listData.id}/cards?key=${credentials.key}&token=${credentials.token}`);
     setListCards([...apiCards.data]);
-    console.log(apiCards.data);
   }, [])
 
   return (
-    
+
     <List
       sx={{
         width: "100%",
@@ -56,7 +55,7 @@ export default function ActivityList(props) {
     >
       {/* { map component ActivityCard} */}
       <ListItem>
-      {listCards.map(card => <ActivityCard data={card} />)}
+        {listCards.map(card => <ActivityCard data={card} key={card.id} />)}
       </ListItem>
 
       <ListItem>

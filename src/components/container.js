@@ -1,4 +1,5 @@
 import * as React from 'react';
+import axios from "axios";
 import { Box, Container } from '@mui/material';
 import { useState, useEffect, createContext, useContext } from "react";
 import Navbar from './navbar';
@@ -8,8 +9,20 @@ import Myboards from './myboards';
 const credentialsContext = createContext({ key: '278ed1bfd74ea3d23445703059a2fd01', token: '4fc08ef1719c90b1a2576c8e260cc3190641b849c048a773ce35f55a6b394a51' })
 export { credentialsContext };
 
+let organizationsContext = createContext([])
+export { organizationsContext }
+
 export default function SimpleContainer() {
-  const [organizations, setOrganizations] = useState('espaciodetrabajodeuser35293646');
+  const credentials = useContext(credentialsContext);
+  const [organizations, setOrganizations] = useState([]);
+  const [currentOrganization, setCurrentOrganization] = useState(0)
+
+  useEffect(async () => {
+    const apiOrganizations = await axios.get(`https://api.trello.com/1/members/me/organizations?key=${credentials.key}&token=${credentials.token}`);
+    await setOrganizations([...apiOrganizations.data]);
+     console.log([...apiOrganizations.data]);
+  }, []);
+
   return (
     <Container className="main-Container" maxWidth="xl" >
       <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }}>
@@ -17,8 +30,10 @@ export default function SimpleContainer() {
         {/* The component WorkSpace use "name props" to get the name of the WorkSpace depending on the login or name it has.
             At the momment, it has the value of "Nombre Provisional". 
             In the future will be developed the way it gets the value for "name". */}
-        <WorkSpace name='My Workspace' />
-        <Myboards name={organizations} /> {/* It has a prop "title" to change the title of this component */}
+        <organizationsContext.Provider value={organizations}>
+          <WorkSpace />
+          <Myboards /> {/* It has a prop "title" to change the title of this component */}
+        </organizationsContext.Provider>
         {/* <Activityspecs/>  */}
       </Box>
     </Container>

@@ -15,7 +15,12 @@ export default function Board(props) {
   useEffect(async () => {
     const apiLists = await axios.get(`https://api.trello.com/1/boards/${boardData.id}/lists?key=${credentials.key}&token=${credentials.token}`);
     setBoardLists([...apiLists.data]);
+    console.log(boardData);
   }, [])
+
+  function editBoard() {
+    
+  }
 
   const [open, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(undefined);
@@ -44,7 +49,7 @@ export default function Board(props) {
         </section>
 
         <section className="boardLists">
-          {boardLists.map(list => <ActivityList data={list} />)}
+          {boardLists.map(list => <ActivityList data={list} key={list.id}/>)}
         </section>
       </Stack>
     </Box>
