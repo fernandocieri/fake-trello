@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import * as React from "react";
 import axios from "axios";
-import ActivityCard from "./activityCard";
+import ActivityCard from "./ActivityCard";
 // import { colors = red[500] } from '@mui/material/colors';
 import {
   ListItem,

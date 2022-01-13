@@ -1,7 +1,7 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 
-export default function WorkSpace({name = "Provisional Workspace Name"}){
+export default function WorkSpaceHeader({name = "Provisional Workspace Name"}){
     return(
         <div className="workSpace">
         <div>{name}</div>

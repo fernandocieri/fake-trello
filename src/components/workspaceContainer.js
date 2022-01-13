@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Box, Container} from '@mui/material';
-import WorkSpaceHeader from './workspaceHeader';
-import WorkspaceMyboards from './workspaceMyboards';
+import WorkSpaceHeader from './WorkspaceHeader';
+import WorkspaceMyboards from './WorkspaceMyboards';
 
 
 export default function SimpleContainer() {

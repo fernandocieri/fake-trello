@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Stack, Box, IconButton } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import ActivityList from "./activityList";
+import ActivityList from "./ActivityList";
 
 export default function Board({ title="Board sin titulo"}) {
   return (

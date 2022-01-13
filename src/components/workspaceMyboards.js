@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Box, Tab, Tabs, TabContext, TabList, TabPanel, Button} from "@mui/material";
-import BasicTabs from "./basicTabs"
+import BasicTabs from "./BasicTabs"
 
 
 const boards= [{name: "board 1" }]
@@ -9,7 +9,7 @@ function prueba(argumento){
    console.log(argumento);
    
 }
-export default function Myboards({title = "My Boards"}){
+export default function WorkspaceMyboards({title = "My Boards"}){
     return(
         <div >
             <div>{title}</div>
