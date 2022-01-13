@@ -20,7 +20,7 @@ export default function ButtonAppBar({ title = "Texto Provisional" }) {
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2, p:0 }}
+            sx={{ mr: 2 }}
           >
             <MenuIcon />
           </IconButton>
