@@ -12,7 +12,7 @@ function prueba(argumento){
 export default function Myboards({title = "My Boards"}){
     return(
         <div >
-            <h5>{title}</h5>
+            <div>{title}</div>
             {/* This button element will have a openCreateBoard function*/}
             {/* <Button variant="contained"> + </Button> */}
            {/*  {Here  We are going to create a     tag for every board found on the database with the two respectives buttons 
