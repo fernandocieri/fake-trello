@@ -25,7 +25,6 @@ export default function Board(props) {
   function editBoard() {
   }
 
-
   return (
     <Box>
       <Stack>
