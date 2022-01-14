@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import * as React from "react";
 import axios from "axios";
 import ActivityCard from "./ActivityCard";
+import { credentialsContext } from "./WorkspaceContainer";
 // import { colors = red[500] } from '@mui/material/colors';
 import {
   ListItem,
@@ -20,20 +21,21 @@ import {
   )
 }*/
 
-export default function ActivityList({ listName = "New List" }, { id }) {
-  const [listID, setListID] = useState(id);
-  const [listCards, setListCards] = useState(undefined);
+export default function ActivityList(props) {
+  const credentials = useContext(credentialsContext);
+  const [listData, setListData] = useState({ ...props.data });
+  const [listCards, setListCards] = useState([]);
 
-  async function getCards() {
-    /*get info of all cards for the list matching the id in the request. Stil not sure about the format of the info*/
-    const resp = await axios.get(
-      `https://api.trello.com/1/lists/${listID}/cards`
-    );
-    setListCards([...resp.text]);
-  }
+  useEffect(() => {
+    async function getInfo() {
+      let response = await axios.get(`https://api.trello.com/1/lists/${listData.id}/cards?key=${credentials.key}&token=${credentials.token}`)
+      setListCards([...response.data]);
+    }
+    getInfo()
+  }, [])
+
   return (
-    //<ThemeProvider theme={customTheme}>
-    
+
     <List
       sx={{
         width: "100%",
@@ -49,20 +51,18 @@ export default function ActivityList({ listName = "New List" }, { id }) {
           sx={{ borderColor: "grey.500", borderRadius: 2 }}
         >
           <Typography variant="h5" color="text.secondary">
-            List
+            {listData.name}
           </Typography>
         </ListSubheader>
       }
     >
-      {/* { map component ActivityCard} */}
       <ListItem>
-        <ActivityCard />
+        {listCards.map(card => <ActivityCard data={card} key={card.id} />)}
       </ListItem>
 
       <ListItem>
         <Button variant="outlined">add card</Button>
       </ListItem>
     </List>
-   //</ThemeProvider>
   );
 }
