@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Box, Tab, Tabs, TabContext, TabList, TabPanel, Button } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Board from './Board';
 import { credentialsContext, organizationsContext } from "./WorkspaceContainer";
+import BasicTabs from './BasicTabs';
 
 export default function Myboards() {
     const credentials = useContext(credentialsContext);
@@ -43,7 +43,7 @@ export default function Myboards() {
             <button onClick={(e) =>  {e.stopPropagation(); console.log("este es un boton")}}>Prueba</button>
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
- */}
+ */}        <BasicTabs/>
             <Board data={allBoards[currentBoard]} key={Date.now()} />
 
         </div>

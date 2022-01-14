@@ -1,13 +1,13 @@
-import { useState } from "react";
 import * as React from "react";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import ReactDOM from "react-dom";
 
 export default function Activityspecs() {
   return (
+    /* IMPORTANTE
+      Como sacar el valor de un TextField */
     <Box
       component="form"
       sx={{
