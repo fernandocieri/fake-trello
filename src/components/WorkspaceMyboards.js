@@ -2,21 +2,22 @@ import * as React from 'react';
 import { Box, Tab, Tabs, TabContext, TabList, TabPanel, Button } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import Board from './board';
-import { credentialsContext } from "./container";
-import { organizationsContext } from "./container";
+import Board from './Board';
+import { credentialsContext, organizationsContext } from "./WorkspaceContainer";
 
 export default function Myboards() {
     const credentials = useContext(credentialsContext);
-    const organizations = useContext(organizationsContext);
+    const organization = useContext(organizationsContext);
     const [allBoards, setAllBoards] = useState([]);
     const [currentBoard, setCurrentBoard] = useState(0)
 
-    useEffect(async () => {
-        const apiBoards = await axios.get(`https://api.trello.com/1/organizations/${organizations[0].id}/boards?key=${credentials.key}&token=${credentials.token}`);
-        setAllBoards([...apiBoards.data]);
-        console.log(organizations);
-    }, []);
+    useEffect(() => {
+        async function getInfo() {
+            let response = await axios.get(`https://api.trello.com/1/organizations/${organization.id}/boards?key=${credentials.key}&token=${credentials.token}`)
+            setAllBoards([...response.data]);
+        }
+        getInfo()
+    }, [organization]);
 
     async function createBoard(newBoardName) {
         /*let data = JSON.stringify({
@@ -43,7 +44,7 @@ export default function Myboards() {
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
  */}
-            {allBoards.map(board => <Board data={board} key={board.id} />)}
+            <Board data={allBoards[currentBoard]} key={Date.now()} />
 
         </div>
     );

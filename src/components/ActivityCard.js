@@ -8,9 +8,9 @@ import {
   CardContent,
 } from "@mui/material";
 import { useState, useEffect, useContext } from "react";
-import { credentialsContext } from "./container";
+import { credentialsContext } from "./WorkspaceContainer";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import ActionMenu from './actions';
+import ActionMenu from './Actions';
 
 export default function ActivityCard(props) {
   const credentials = useContext(credentialsContext);

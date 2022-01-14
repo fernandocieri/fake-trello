@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 import ReactDOM from 'react-dom';
-import Container from "./components/container";
+import Container from "./components/WorkspaceContainer";
 import "./assets/index.css";
 
 const html = <Container container="jose"/>;

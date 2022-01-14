@@ -3,23 +3,25 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Stack, Box, IconButton, List } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import ActivityList from "./list";
-import ActionMenu from './actions';
-import { credentialsContext } from "./container";
+import ActivityList from "./ActivityList";
+import ActionMenu from './Actions';
+import { credentialsContext } from "./WorkspaceContainer";
 
 export default function Board(props) {
   const credentials = useContext(credentialsContext);
-  const [boardData, setBoardData] = useState({...props.data});
+  const [boardData, setBoardData] = useState({ ...props.data });
   const [boardLists, setBoardLists] = useState([]);
 
-  useEffect(async () => {
-    const apiLists = await axios.get(`https://api.trello.com/1/boards/${boardData.id}/lists?key=${credentials.key}&token=${credentials.token}`);
-    setBoardLists([...apiLists.data]);
-    console.log(boardData);
+  useEffect(() => {
+    async function getInfo() {
+      let response = await axios.get(`https://api.trello.com/1/boards/${boardData.id}/lists?key=${credentials.key}&token=${credentials.token}`)
+      setBoardLists([...response.data]);
+    }
+    getInfo()
   }, [])
 
   function editBoard() {
-    
+
   }
 
   const [open, setOpen] = React.useState(false);
@@ -49,7 +51,7 @@ export default function Board(props) {
         </section>
 
         <section className="boardLists">
-          {boardLists.map(list => <ActivityList data={list} key={list.id}/>)}
+          {boardLists.map(list => <ActivityList data={list} key={list.id} />)}
         </section>
       </Stack>
     </Box>
