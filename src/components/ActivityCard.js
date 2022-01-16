@@ -11,22 +11,13 @@ import { useState, useEffect, useContext } from "react";
 import { credentialsContext } from "./WorkspaceContainer";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ActionMenu from './Actions';
+import useActions from './hooks/useActions'
 
 export default function ActivityCard(props) {
   const credentials = useContext(credentialsContext);
   const [cardData, setCardData] = useState({...props.data});
+  const {open, selectedValue ,handleClose, handleClickOpen } = useActions();
 
-  const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState(undefined);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (value) => {
-    setOpen(false);
-    setSelectedValue(value);
-  };
   return (
     <Card sx={{ maxWidth: 300, maxHeight: 200 }}>
       <CardActionArea>

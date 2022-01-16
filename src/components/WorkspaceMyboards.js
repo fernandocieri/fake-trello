@@ -44,7 +44,6 @@ export default function Myboards() {
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
  */}        <BasicTabs/>
-            <Board data={allBoards[currentBoard]} key={Date.now()} />
 
         </div>
     );
