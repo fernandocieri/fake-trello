@@ -5,12 +5,15 @@ import { Stack, Box, IconButton, List } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ActivityList from "./ActivityList";
 import ActionMenu from './Actions';
+import useActions from './hooks/useActions'
 import { credentialsContext } from "./WorkspaceContainer";
 
 export default function Board(props) {
   const credentials = useContext(credentialsContext);
   const [boardData, setBoardData] = useState({ ...props.data });
   const [boardLists, setBoardLists] = useState([]);
+  const { open, selectedValue, handleClose, handleClickOpen } = useActions();
+
 
   useEffect(() => {
     async function getInfo() {
@@ -24,17 +27,6 @@ export default function Board(props) {
 
   }
 
-  const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState(undefined);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (value) => {
-    setOpen(false);
-    setSelectedValue(value);
-  };
   return (
     <Box>
       <Stack>
