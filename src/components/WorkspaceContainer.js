@@ -28,8 +28,7 @@ export default function SimpleContainer() {
 
   return (
     <Container className="main-Container" maxWidth="xl" >
-      <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }}>
-        <Navbar /> {/* This component has a "title" prop to change the title of the component */}
+      <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }}>       
         {/* The component WorkSpace use "name props" to get the name of the WorkSpace depending on the login or name it has.
             At the momment, it has the value of "Nombre Provisional". 
             In the future will be developed the way it gets the value for "name". */}
