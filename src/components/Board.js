@@ -12,7 +12,12 @@ export default function Board(props) {
   const credentials = useContext(credentialsContext);
   const [boardData, setBoardData] = useState({ ...props.data });
   const [boardLists, setBoardLists] = useState([]);
+<<<<<<< HEAD
   const {open, selectedValue, handleClose, handleClickOpen} = useActions();
+=======
+  const { open, selectedValue, handleClose, handleClickOpen } = useActions();
+
+>>>>>>> d39a249234130920bbef2a657895be3088f158c3
 
   useEffect(() => {
     async function getInfo() {
