@@ -11,6 +11,7 @@ import {
   ListSubheader,
   Typography,
 } from "@mui/material";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 /*function ListCreator() {
   return (
@@ -34,6 +35,11 @@ export default function ActivityList(props) {
     getInfo()
   }, [])
 
+  function handleOnDragEnd(result) {
+    if (!result.destination) return;
+  }
+
+
   return (
 
     <List
@@ -56,12 +62,24 @@ export default function ActivityList(props) {
         </ListSubheader>
       }
     >
-      <ListItem>
-        {listCards.map(card => <ActivityCard data={card} key={card.id} />)}
-      </ListItem>
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <Droppable droppableId="activitylist" >
+          {(card)=> ( 
+            <ListItem className="activitylist" {...card.droppableProps} ref={card.innerRef}>
+              {listCards.map(card =>{
+                return(
+                  <Draggable key={card.id} draggableId={card.id} index={card.index}>
+                    <ActivityCard data={card} key={card.id}  ref={card.innerRef} {...card.draggableProps} {...card.dragHandleProps} />
+                  </Draggable>
+                )} )}
+                {card.placeholder}
+            </ListItem>
+          )}
+        </Droppable>
+      </DragDropContext>
 
       <ListItem>
-        <Button variant="outlined">add card</Button>
+        <Button variant="outlined" >add card</Button>
       </ListItem>
     </List>
   );

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import {
   AppBar,
   Box,
@@ -10,7 +11,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 
 export default function ButtonAppBar({ title = "Texto Provisional" }) {
-  return (
+  return (    
     <Box sx={{ flexGrow: 1 }} className="Navbar">
       <AppBar position="static">
         <Toolbar>
@@ -20,17 +21,21 @@ export default function ButtonAppBar({ title = "Texto Provisional" }) {
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2, p:0 }}
-          >
+            sx={{ mr: 2 }}            
+            >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography          
+          variant="h6"
+          component="div" 
+          sx={{ flexGrow: 1 }} 
+          component={Link} to="/">
             {title}
           </Typography>
           {/* This button can be used as a login/logout button if We make that option */}
           <Button variant="contained" className="editButton">Boton provisional</Button>
         </Toolbar>
       </AppBar>
-    </Box>
+    </Box>    
   );
 }

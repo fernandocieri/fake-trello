@@ -44,7 +44,11 @@ export default function Myboards() {
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
  */}        <BasicTabs/>
+<<<<<<< HEAD
 
         </div>
+=======
+       </div>
+>>>>>>> a46e9e4619415e2a5f30d0c45e5c41a1b6ec55c3
     );
 } 

@@ -20,7 +20,7 @@ export default function ActivityCard(props) {
 
   return (
     <Card sx={{ maxWidth: 300, maxHeight: 200 }}>
-      <CardActionArea>
+      <div className="card-action-area">
         <CardHeader
           action={
             <>
@@ -46,7 +46,7 @@ export default function ActivityCard(props) {
             {cardData.desc}
           </Typography>
         </CardContent>
-      </CardActionArea>
+      </div>
     </Card>
   );
 }

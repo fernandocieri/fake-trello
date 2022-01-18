@@ -5,9 +5,12 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 
 export default function Activityspecs() {
+
+
+  
   return (
     /* IMPORTANTE
-      Como sacar el valor de un TextField */
+      Como sacar el valor de un TextField respuesta- usando un ref */
     <Box
       component="form"
       sx={{

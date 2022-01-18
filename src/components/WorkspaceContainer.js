@@ -1,6 +1,6 @@
 import * as React from 'react';
 import axios from "axios";
-import { Box, Container } from '@mui/material';
+import { Box } from '@mui/material';
 import { useState, useEffect, createContext, useContext } from "react";
 import Navbar from './Navbar';
 import WorkSpaceHeader from './WorkspaceHeader';
@@ -32,10 +32,9 @@ export default function SimpleContainer() {
    //getDataAPI(setOrganizations, `https://api.trello.com/1/members/me/organizations?key=${credentials.key}&token=${credentials.token}`)
   }, [])
 
-  return (
-    <Container className="main-Container" maxWidth="xl" >
+  return (    
       <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }}>
-        <Navbar /> {/* This component has a "title" prop to change the title of the component */}
+       {/* This component has a "title" prop to change the title of the component */}
         {/* The component WorkSpace use "name props" to get the name of the WorkSpace depending on the login or name it has.
             At the momment, it has the value of "Nombre Provisional". 
             In the future will be developed the way it gets the value for "name". */}
@@ -44,7 +43,6 @@ export default function SimpleContainer() {
           <WorkspaceMyboards /> {/* It has a prop "title" to change the title of this component */}
         </organizationsContext.Provider>
         {/* <Activityspecs/>  */}
-      </Box>
-    </Container>
+      </Box>  
   );
 }
