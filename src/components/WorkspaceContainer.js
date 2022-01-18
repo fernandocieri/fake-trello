@@ -2,7 +2,7 @@ import * as React from 'react';
 import axios from "axios";
 import { Box } from '@mui/material';
 import { useState, useEffect, createContext, useContext } from "react";
-import Navbar from './Navbar';
+import NavbarDrawer from './NavbarDrawer';
 import WorkSpaceHeader from './WorkspaceHeader';
 import WorkspaceMyboards from './WorkspaceMyboards';
 
@@ -41,8 +41,8 @@ export default function SimpleContainer() {
         <organizationsContext.Provider value={organizations[currentOrganization]}>
           <WorkSpaceHeader />
           <WorkspaceMyboards /> {/* It has a prop "title" to change the title of this component */}
-        </organizationsContext.Provider>
-        {/* <Activityspecs/>  */}
+        </organizationsContext.Provider>        
       </Box>  
   );
+
 }
