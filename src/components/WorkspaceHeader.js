@@ -10,17 +10,23 @@ export default function WorkSpaceHeader() {
     const organization = useContext(organizationsContext);
     const [editableState, setEditableState] = useState({ currentValue: '', newValue: '', isBeingEdited: false })
 
+    useEffect(() => {
+        if (organization != undefined) {
+            setEditableState({ ...editableState, currentValue: organization.displayName })
+        }
+    }, [organization]);
+
     async function handleSaveEdition() {
+        //setOrganization({ ...organization, displayName: editableState.currentValue })
+        let updateResponse = await axios.put(`https://api.trello.com/1/organizations/${organization.id}/?displayName=${editableState.newValue}&key=${credentials.key}&token=${credentials.token}`);
         setEditableState({ ...editableState, currentValue: editableState.newValue, isBeingEdited: false });
-        let updateResponse = await axios.put(`https://api.trello.com/1/organizations/${organization.id}/?displayName=${editableState.newValue}&key=${credentialsContext.key}&token=${credentialsContext.token}`);
     }
 
-    let currentRender = undefined;
     function handleRender() {
-        if ((editableState.isBeingEdited === false)&& (organization !== undefined)) {
+        if ((editableState.isBeingEdited === false) && (organization !== undefined)) {
             return (
                 <>
-                    <h1>{organization.displayName}</h1>
+                    <h1>{editableState.currentValue}</h1>
                     <Button variant="contained" className="editButton" onClick={() => { setEditableState({ ...editableState, isBeingEdited: true }) }}>Edit</Button>
                 </>
             )
