@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Board from './Board';
-import { credentialsContext, organizationsContext } from "./WorkspaceContainer";
+import { credentialsContext, organizationsContext, getApiData } from "./WorkspaceContainer";
 import BasicTabs from './BasicTabs';
 
 export default function Myboards() {
@@ -12,11 +12,11 @@ export default function Myboards() {
     const [currentBoard, setCurrentBoard] = useState(0)
 
     useEffect(() => {
-        async function getInfo() {
+        async function getBoards() {
             let response = await axios.get(`https://api.trello.com/1/organizations/${organization.id}/boards?key=${credentials.key}&token=${credentials.token}`)
             setAllBoards([...response.data]);
         }
-        getInfo()
+        getBoards()
     }, [organization]);
 
     async function createBoard(newBoardName) {
@@ -43,7 +43,7 @@ export default function Myboards() {
             <button onClick={(e) =>  {e.stopPropagation(); console.log("este es un boton")}}>Prueba</button>
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
- */}        <BasicTabs/>
+ */}        <BasicTabs />
 
         </div>
     );

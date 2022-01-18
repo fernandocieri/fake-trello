@@ -6,20 +6,16 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ActivityList from "./ActivityList";
 import ActionMenu from './Actions';
 import useActions from './hooks/useActions'
-import { credentialsContext } from "./WorkspaceContainer";
+import { credentialsContext, getApiData } from "./WorkspaceContainer";
 
 export default function Board(props) {
   const credentials = useContext(credentialsContext);
   const [boardData, setBoardData] = useState({ ...props.data });
   const [boardLists, setBoardLists] = useState([]);
-  const {open, selectedValue, handleClose, handleClickOpen} = useActions();
+  const { open, selectedValue, handleClose, handleClickOpen } = useActions();
 
   useEffect(() => {
-    async function getInfo() {
-      let response = await axios.get(`https://api.trello.com/1/boards/${boardData.id}/lists?key=${credentials.key}&token=${credentials.token}`)
-      setBoardLists([...response.data]);
-    }
-    getInfo()
+    getApiData(setBoardLists, `https://api.trello.com/1/boards/${boardData.id}/lists?key=${credentials.key}&token=${credentials.token}`)
   }, [])
 
   function editBoard() {

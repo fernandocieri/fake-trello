@@ -9,27 +9,21 @@ import WorkspaceMyboards from './WorkspaceMyboards';
 const credentialsContext = createContext({ key: '278ed1bfd74ea3d23445703059a2fd01', token: '4fc08ef1719c90b1a2576c8e260cc3190641b849c048a773ce35f55a6b394a51' })
 
 const organizationsContext = createContext([])
-export { credentialsContext, organizationsContext}
 
+async function getApiData(set, url) {
+  let response = await axios.get(url)
+  set([...response.data]);
+}
+
+export { credentialsContext, organizationsContext, getApiData }
 
 export default function SimpleContainer() {
   const credentials = useContext(credentialsContext);
   const [organizations, setOrganizations] = useState([]);
   const [currentOrganization, setCurrentOrganization] = useState(0)
 
-  // useEffect(async () => {
-  //   const apiOrganizations = await axios.get(`https://api.trello.com/1/members/me/organizations?key=${credentials.key}&token=${credentials.token}`);
-  //   await setOrganizations([...apiOrganizations.data]);
-  //    console.log([...apiOrganizations.data]);
-  // }, []);
-
   useEffect(() => {
-    async function getInfo() {
-      let response = await axios.get(`https://api.trello.com/1/members/me/organizations?key=${credentials.key}&token=${credentials.token}`)
-      setOrganizations([...response.data]);
-    }
-    getInfo()
-   //getDataAPI(setOrganizations, `https://api.trello.com/1/members/me/organizations?key=${credentials.key}&token=${credentials.token}`)
+    getApiData(setOrganizations, `https://api.trello.com/1/members/me/organizations?key=${credentials.key}&token=${credentials.token}`)
   }, [])
 
   return (
