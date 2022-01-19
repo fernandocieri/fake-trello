@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import * as React from "react";
 import axios from "axios";
 import ActivityCard from "./ActivityCard";
-import { credentialsContext } from "./WorkspaceContainer";
+import { credentialsContext, getApiData } from "./WorkspaceContainer";
 // import { colors = red[500] } from '@mui/material/colors';
 import {
   ListItem,
@@ -27,11 +27,7 @@ export default function ActivityList(props) {
   const [listCards, setListCards] = useState([]);
 
   useEffect(() => {
-    async function getInfo() {
-      let response = await axios.get(`https://api.trello.com/1/lists/${listData.id}/cards?key=${credentials.key}&token=${credentials.token}`)
-      setListCards([...response.data]);
-    }
-    getInfo()
+    getApiData(setListCards, `https://api.trello.com/1/lists/${listData.id}/cards?key=${credentials.key}&token=${credentials.token}`)
   }, [])
 
   return (
