@@ -4,6 +4,7 @@ import axios from "axios";
 import Board from './Board';
 import { credentialsContext, organizationsContext } from "./WorkspaceContainer";
 import BasicTabs from './BasicTabs';
+import BoardPreview from './BoardPreview';
 
 export default function Myboards() {
     const credentials = useContext(credentialsContext);
@@ -14,7 +15,6 @@ export default function Myboards() {
     useEffect(() => {
         async function getInfo() {
             let response = await axios.get(`https://api.trello.com/1/organizations/${organization.id}/boards?key=${credentials.key}&token=${credentials.token}`)
-            console.log(response);
             setAllBoards([...response.data]);
         }
         getInfo()
@@ -31,11 +31,11 @@ export default function Myboards() {
         //REVISAR es posible que sea necesario hacer push de newBoard al estado con setAllBoards;
     }
 
-    function handleRender() {
-        if (allBoards.length != 0) {
-            return <Board data={allBoards[currentBoard]}/>
-        }
-    }
+    // function handleRender() {
+    //     if (allBoards.length != 0) {
+    //         return <Board data={allBoards[currentBoard]}/>
+    //     }
+    // }
     return (
         <div>
             <h5>My Boards</h5>
@@ -51,7 +51,8 @@ export default function Myboards() {
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
  */}        <BasicTabs/>
-            {handleRender()}
+            {/* {handleRender()} */}
+            {allBoards.map(board => <BoardPreview data={board} key={board.id}/>)}
         </div>
     );
 } 
