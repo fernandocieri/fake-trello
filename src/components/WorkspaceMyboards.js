@@ -31,11 +31,11 @@ export default function Myboards() {
         //REVISAR es posible que sea necesario hacer push de newBoard al estado con setAllBoards;
     }
 
-    // function handleRender() {
-    //     if (allBoards.length != 0) {
-    //         return <Board data={allBoards[currentBoard]}/>
-    //     }
-    // }
+    function handleRender() {
+        if (allBoards.length !== 0) {
+            return <Board data={allBoards[currentBoard]} />
+        }
+    }
     return (
         <div>
             <h5>My Boards</h5>
@@ -50,9 +50,9 @@ export default function Myboards() {
             <button onClick={(e) =>  {e.stopPropagation(); console.log("este es un boton")}}>Prueba</button>
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
- */}        <BasicTabs/>
-            {/* {handleRender()} */}
-            {allBoards.map(board => <BoardPreview data={board} key={board.id}/>)}
+ */}        <BasicTabs />
+            {handleRender()}
+            {allBoards.map(board => <BoardPreview data={board} key={board.id} />)}
         </div>
     );
 } 
