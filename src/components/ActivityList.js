@@ -52,9 +52,13 @@ export default function ActivityList(props) {
         </ListSubheader>
       }
     >
-      <ListItem>
-        {listCards.map(card => <ActivityCard data={card} key={card.id} />)}
-      </ListItem>
+      {listCards.map(card => {
+        return (
+          <ListItem>
+            <ActivityCard data={card} key={card.id} />
+          </ListItem>
+        )
+      })}
 
       <ListItem>
         <Button variant="outlined">add card</Button>

@@ -12,5 +12,5 @@ export default function UseActions() {
         setSelectedValue(value);
         { console.log(selectedValue) }
     };
-    return { open, selectedValue, handleClose, handleClickOpen };
+    return { open, selectedValue, setSelectedValue, handleClose, handleClickOpen };
 }
