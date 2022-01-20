@@ -60,5 +60,6 @@ export default function ActivityList(props) {
         <Button variant="outlined">add card</Button>
       </ListItem>
     </List>
+    
   );
 }

@@ -5,7 +5,13 @@ import { useState, useEffect, createContext, useContext } from "react";
 import NavbarDrawer from './NavbarDrawer';
 import WorkSpaceHeader from './WorkspaceHeader';
 import WorkspaceMyboards from './WorkspaceMyboards';
-
+import {
+  ListItem,
+  List,
+  Button,
+  ListSubheader,
+  Typography,
+} from "@mui/material";
 const credentialsContext = createContext({ key: '278ed1bfd74ea3d23445703059a2fd01', token: '4fc08ef1719c90b1a2576c8e260cc3190641b849c048a773ce35f55a6b394a51' })
 
 const organizationsContext = createContext([])
@@ -26,16 +32,30 @@ export default function SimpleContainer() {
     getApiData(setOrganizations, `https://api.trello.com/1/members/me/organizations?key=${credentials.key}&token=${credentials.token}`)
   }, [])
 
-  return (    
-      <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }}>      
-        {/* The component WorkSpace use "name props" to get the name of the WorkSpace depending on the login or name it has.
+  return (
+    <Box sx={{ bgcolor: "#cfe8fc", height: "100vh" }}>
+      {/* The component WorkSpace use "name props" to get the name of the WorkSpace depending on the login or name it has.
             At the momment, it has the value of "Nombre Provisional". 
             In the future will be developed the way it gets the value for "name". */}
-        <organizationsContext.Provider value={organizations[currentOrganization]}>
-          <WorkSpaceHeader />
-          <WorkspaceMyboards /> {/* It has a prop "title" to change the title of this component */}
-        </organizationsContext.Provider>        
-      </Box>  
+      <organizationsContext.Provider value={organizations[currentOrganization]}>
+        <WorkSpaceHeader />
+        <WorkspaceMyboards />{" "}
+        {/* It has a prop "title" to change the title of this component */}
+      </organizationsContext.Provider>
+      <List className="add-list"
+        sx={{
+          width: "100%",
+          maxWidth: 360,
+          border: 2,
+          borderColor: "grey.500",
+          borderRadius: 2,
+        }}
+      >
+        <ListItem>
+          <Button variant="outlined">+ Add List</Button>
+        </ListItem>
+      </List>
+    </Box>
   );
 
 }
