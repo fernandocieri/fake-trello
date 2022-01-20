@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Board from './Board';
-import { credentialsContext, organizationsContext, getApiData } from "./WorkspaceContainer";
+import { credentialsContext, organizationsContext } from "./WorkspaceContainer";
 import BasicTabs from './BasicTabs';
 
 export default function Myboards() {
@@ -12,11 +12,12 @@ export default function Myboards() {
     const [currentBoard, setCurrentBoard] = useState(0)
 
     useEffect(() => {
-        async function getBoards() {
+        async function getInfo() {
             let response = await axios.get(`https://api.trello.com/1/organizations/${organization.id}/boards?key=${credentials.key}&token=${credentials.token}`)
+            console.log(response);
             setAllBoards([...response.data]);
         }
-        getBoards()
+        getInfo()
     }, [organization]);
 
     async function createBoard(newBoardName) {
@@ -28,6 +29,12 @@ export default function Myboards() {
         console.log(newBoard.status);
         console.log(newBoard);
         //REVISAR es posible que sea necesario hacer push de newBoard al estado con setAllBoards;
+    }
+
+    function handleRender() {
+        if (allBoards.length != 0) {
+            return <Board data={allBoards[currentBoard]}/>
+        }
     }
     return (
         <div>
@@ -43,8 +50,8 @@ export default function Myboards() {
             <button onClick={(e) =>  {e.stopPropagation(); console.log("este es un boton")}}>Prueba</button>
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
- */}        <BasicTabs />
-
+ */}        <BasicTabs/>
+            {handleRender()}
         </div>
     );
 } 
