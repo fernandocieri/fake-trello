@@ -41,20 +41,7 @@ export default function SimpleContainer() {
         <WorkSpaceHeader />
         <WorkspaceMyboards />{" "}
         {/* It has a prop "title" to change the title of this component */}
-      </organizationsContext.Provider>
-      <List className="add-list"
-        sx={{
-          width: "100%",
-          maxWidth: 360,
-          border: 2,
-          borderColor: "grey.500",
-          borderRadius: 2,
-        }}
-      >
-        <ListItem>
-          <Button variant="outlined">+ Add List</Button>
-        </ListItem>
-      </List>
+      </organizationsContext.Provider>     
     </Box>
   );
 

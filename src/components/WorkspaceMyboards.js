@@ -14,7 +14,7 @@ export default function Myboards() {
     useEffect(() => {
         async function getInfo() {
             let response = await axios.get(`https://api.trello.com/1/organizations/${organization.id}/boards?key=${credentials.key}&token=${credentials.token}`)
-            console.log(response);
+
             setAllBoards([...response.data]);
         }
         getInfo()
@@ -36,8 +36,11 @@ export default function Myboards() {
             return <Board data={allBoards[currentBoard]}/>
         }
     }
+    function prueba(e){
+        console.log(e);
+    }
     return (
-        <div>
+        <div>            
             <h5>My Boards</h5>
             {/* This button element will have a openCreateBoard function*/}
             {/* <Button variant="contained"> + </Button> */}

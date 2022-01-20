@@ -11,24 +11,21 @@ import {
   ListSubheader,
   Typography,
 } from "@mui/material";
-
-/*function ListCreator() {
-  return (
-    <div id='addNewCard'>
-      <div className='cardTitle'>add a new list</div>
-      <button onClick={ }>+</button>
-    </div>
-  )
-}*/
+import useAddButton from './hooks/useAddButton';
 
 export default function ActivityList(props) {
   const credentials = useContext(credentialsContext);
   const [listData, setListData] = useState({ ...props.data });
   const [listCards, setListCards] = useState([]);
+  const {renderAdd, inputState} = useAddButton();
 
   useEffect(() => {
     getApiData(setListCards, `https://api.trello.com/1/lists/${listData.id}/cards?key=${credentials.key}&token=${credentials.token}`)
   }, [])
+
+  async function handleSaveEdition(){
+    await axios.post(`https://api.trello.com/1/lists?name=${inputState}&idBoard=${listData.idBoard}?key=${credentials.key}&token=${credentials.token}`)   
+    }
 
   return (
 
@@ -57,8 +54,9 @@ export default function ActivityList(props) {
       </ListItem>
 
       <ListItem>
-        <Button variant="outlined">add card</Button>
+        {renderAdd("Accept","Add Card", handleSaveEdition())}
       </ListItem>
+      {console.log(listData)}
     </List>
     
   );

@@ -41,7 +41,7 @@ export default function WorkSpaceHeader() {
     }
 
     return (
-        <div className="workSpace">
+        <div className="workspace-header">
             {handleRender()}
             {/* Now, button has a prop called "onClick", as the attribute, to pass a function that will work 
         in the same way as if you call the event straigth from a button tag. */}

@@ -19,7 +19,8 @@ export default function ActivityCard(props) {
   const {open, selectedValue ,handleClose, handleClickOpen } = useActions();
 
   return (
-    <Card sx={{ maxWidth: 300, maxHeight: 200 }}>
+   
+    <Card sx={{ maxWidth: 300, maxHeight: 200 }}>    
       <div className="card-action-area">
         <CardHeader
           action={
