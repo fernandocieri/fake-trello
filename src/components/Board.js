@@ -38,7 +38,7 @@ export default function Board(props) {
       setSelectedValue('');
     }
   }
-
+  // check if the code for title can be made into a custom hook;
   let titleRender = boardData.name;
 
   let editButton = (

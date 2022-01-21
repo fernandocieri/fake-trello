@@ -42,6 +42,7 @@ export default function ActivityCard(props) {
     }
   }
 
+  // check if the code for title can be made into a custom hook; 
   let titleRender = cardData.name;
 
   let editButton = (
