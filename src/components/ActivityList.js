@@ -23,10 +23,11 @@ export default function ActivityList(props) {
     getApiData(setListCards, `https://api.trello.com/1/lists/${listData.id}/cards?key=${credentials.key}&token=${credentials.token}`)
   }, [])
 
-  async function handleSaveEdition(){
-    await axios.post(`https://api.trello.com/1/lists?name=${inputState}&idBoard=${listData.idBoard}?key=${credentials.key}&token=${credentials.token}`)   
+  
+  async function handleNewElement(){
+    let postResponse = await axios.post(`https://api.trello.com/1/cards?name=${inputState}&idList=${listData.id}&key=${credentials.key}&token=${credentials.token}`)
+      setListCards([...listCards, postResponse.data]);
     }
-
   return (
 
     <List
@@ -52,11 +53,10 @@ export default function ActivityList(props) {
       <ListItem>
         {listCards.map(card => <ActivityCard data={card} key={card.id} />)}
       </ListItem>
-
+      
       <ListItem>
-        {renderAdd("Accept","Add Card", handleSaveEdition())}
-      </ListItem>
-      {console.log(listData)}
+        {renderAdd("Accept","Add Card", handleNewElement)}
+      </ListItem>      
     </List>
     
   );

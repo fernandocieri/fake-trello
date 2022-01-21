@@ -36,9 +36,7 @@ export default function Myboards() {
             return <Board data={allBoards[currentBoard]}/>
         }
     }
-    function prueba(e){
-        console.log(e);
-    }
+    
     return (
         <div>            
             <h5>My Boards</h5>
