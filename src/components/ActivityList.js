@@ -11,6 +11,9 @@ import {
   ListSubheader,
   Typography,
 } from "@mui/material";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
+
 
 /*function ListCreator() {
   return (
@@ -30,39 +33,54 @@ export default function ActivityList(props) {
     getApiData(setListCards, `https://api.trello.com/1/lists/${listData.id}/cards?key=${credentials.key}&token=${credentials.token}`)
   }, [])
 
+
+
   return (
+    <DragDropContext onDragEnd={(result)=> console.log(result)}>
 
-    <List
-      sx={{
-        width: "100%",
-        maxWidth: 360,
-        border: 2,
-        borderColor: "grey.500",
-        borderRadius: 2,
-      }}
-      subheader={
-        <ListSubheader
-          component="div"
-          id="nested-list-subheader"
-          sx={{ borderColor: "grey.500", borderRadius: 2 }}
-        >
-          <Typography variant="h5" color="text.secondary">
-            {listData.name}
-          </Typography>
-        </ListSubheader>
-      }
-    >
-      {listCards.map(card => {
-        return (
-          <ListItem>
-            <ActivityCard data={card} key={card.id} />
-          </ListItem>
-        )
-      })}
+      <List
+        sx={{
+          width: "100%",
+          maxWidth: 360,
+          border: 2,
+          borderColor: "grey.500",
+          borderRadius: 2,
+        }}
+        subheader={
+          <ListSubheader
+            component="div"
+            id="nested-list-subheader"
+            sx={{ borderColor: "grey.500", borderRadius: 2 }}
+          >
+            <Typography component={'span'} variant="h5" color="text.secondary">
+              {listData.name}
+            </Typography>
+          </ListSubheader>
+        }
+      >
+        <Droppable droppableId="activitylist">
+          {(provided) => (
+          
+            <ul {...provided.droppableProps} ref={provided.innerRef}>
+              {listCards.map((card, index) => (
+                <Draggable key={card.id} draggableId={card.id} index={index} >
+                  {(dprovided)=> (
+                    <li {...dprovided.draggableProps}
+                    ref={dprovided.innerRef} {...dprovided.dragHandleProps}><ActivityCard data={card}  /></li>)}              
+                </Draggable>
+                )
+              )}
+              {provided.placeholder}
+            </ul>
+        
+          )}
+        </Droppable>
+        <ListItem>
+          <Button variant="outlined">add card</Button>
+        </ListItem>
+      </List>
 
-      <ListItem>
-        <Button variant="outlined">add card</Button>
-      </ListItem>
-    </List>
+    </DragDropContext>
+
   );
 }

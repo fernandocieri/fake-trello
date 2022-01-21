@@ -74,7 +74,7 @@ export default function ActivityCard(props) {
         </CardHeader>
 
         <CardContent>
-          <Typography variant="body2" color="text.secondary">
+          <Typography component={'span'} variant="body2" color="text.secondary">
             {cardData.desc}
           </Typography>
         </CardContent>

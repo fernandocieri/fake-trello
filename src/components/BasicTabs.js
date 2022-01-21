@@ -4,6 +4,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import Board from './Board';
+import ActivityList from './ActivityList';
+
 
 
 function TabPanel(props) {
@@ -19,7 +22,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography component={'span'}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -39,12 +42,18 @@ function a11yProps(index) {
   };
 }
 
+
+/* const [list, setList] = useState([]); */
+
+
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  /*  Import from axios and then map the important information "useEffect*/
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -56,7 +65,11 @@ export default function BasicTabs() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        Item One
+        <div>
+            <ActivityList/>
+
+        
+        </div>
       </TabPanel>
       <TabPanel value={value} index={1}>
         Item Two
