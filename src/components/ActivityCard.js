@@ -15,6 +15,7 @@ import { credentialsContext } from "./WorkspaceContainer";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ActionMenu from './Actions';
 import useActions from './hooks/useActions'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export default function ActivityCard(props) {
   const credentials = useContext(credentialsContext);
@@ -41,18 +42,26 @@ export default function ActivityCard(props) {
     }
   }
 
-  function handleTitleRender() {
-    if ((selectedValue !== 'change name') && (selectedValue !== 'delete')) {
-      return cardData.name;
-    } else if (selectedValue === 'change name') {
-      return (
-        <>
-          <Input onChange={event => setNewName(event.target.value)} defaultValue={cardData.name} />
-          <Button variant="contained" className="editButton" onClick={handleSaveEdition}>Save</Button>
-        </>
-      );
-    }
+  let titleRender = cardData.name;
+
+  let editButton = (
+    <IconButton aria-label="settings">
+      <MoreVertIcon onClick={handleClickOpen} />
+    </IconButton>
+  )
+
+  if (selectedValue === 'change name') {
+    editButton = <></>
+    titleRender = (
+      <>
+        <Input onChange={event => setNewName(event.target.value)} defaultValue={cardData.name} />
+        <IconButton aria-label="save">
+          <CheckCircleIcon fontSize='small' sx={{ color: '#1A5F7A' }} onClick={handleSaveEdition} />
+        </IconButton>
+      </>
+    )
   }
+
 
   return (
     <Card sx={{ maxWidth: 300, maxHeight: 200 }}>
@@ -60,9 +69,7 @@ export default function ActivityCard(props) {
         <CardHeader
           action={
             <>
-              <IconButton aria-label="settings">
-                <MoreVertIcon onClick={handleClickOpen} />
-              </IconButton>
+              {editButton}
               <ActionMenu
                 selectedValue={selectedValue}
                 open={open}
@@ -71,7 +78,7 @@ export default function ActivityCard(props) {
             </>
           }
 
-          title={handleTitleRender()}
+          title={titleRender}
           subheader={cardData.dateLastActivity}
         >
 

@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Stack, Box, IconButton, Input, Button } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ActivityList from "./ActivityList";
 import ActionMenu from './Actions';
 import useActions from './hooks/useActions'
@@ -38,24 +39,31 @@ export default function Board(props) {
     }
   }
 
-  function handleTitleRender() {
-    if ((selectedValue !== 'change name') && (selectedValue !== 'delete')) {
-      return boardData.name;
-    } else if (selectedValue === 'change name') {
-      return (
-        <>
-          <Input onChange={event => setNewName(event.target.value)} defaultValue={boardData.name} />
-          <Button variant="contained" className="editButton" onClick={handleSaveEdition}>Save</Button>
-        </>
-      );
-    }
+  let titleRender = boardData.name;
+
+  let editButton = (
+    <IconButton aria-label="settings">
+      <MoreVertIcon onClick={handleClickOpen} />
+    </IconButton>
+  )
+
+  if (selectedValue === 'change name') {
+    editButton = <></>
+    titleRender = (
+      <>
+        <Input onChange={event => setNewName(event.target.value)} defaultValue={boardData.name} />
+        <IconButton aria-label="save">
+          <CheckCircleIcon fontSize='small' sx={{ color: '#1A5F7A' }} onClick={handleSaveEdition} />
+        </IconButton>
+      </>
+    )
   }
 
   return (
     <Box>
       <Stack>
         <section className="boardHeader">
-          <div className="boardTitle">{handleTitleRender()}</div>
+          <div className="boardTitle">{titleRender}</div>
           <IconButton variant="outlined">
             <MoreVertIcon onClick={handleClickOpen} />
           </IconButton>

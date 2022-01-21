@@ -6,7 +6,7 @@ import {
     CardHeader,
 } from "@mui/material";
 import { DeleteOutlineOutlined } from "@mui/icons-material";
-import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
 import { useState, useEffect, useContext } from "react";
 import { credentialsContext } from "./WorkspaceContainer";
@@ -27,7 +27,7 @@ export default function BoardPreview(props) {
                 />
 
                 <IconButton aria-label="settings" >
-                    <ModeEditOutlineOutlinedIcon fontSize="small" sx={{ color: blueGrey[800] }} />
+                    <AutoFixHighIcon fontSize="small" sx={{ color: blueGrey[800] }} />
                 </IconButton>
                 <IconButton aria-label="settings">
                     <DeleteOutlineOutlined fontSize="small" sx={{ color: blueGrey[800] }} />
