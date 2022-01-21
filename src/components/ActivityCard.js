@@ -44,7 +44,7 @@ export default function ActivityCard(props) {
       return (
         <>
           <Input onChange={event => setNewName(event.target.value)} defaultValue={cardData.name} />
-          <Button variant="contained" className="editButton" onClick={handleSaveEdition}>Save</Button>
+          <Button variant="contained" className="editButton" onClick={handleSaveEdition} placeholder="Save">Save</Button>
         </>
       );
     }
