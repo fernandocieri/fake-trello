@@ -10,6 +10,7 @@ const credentialsContext = createContext({ key: '278ed1bfd74ea3d23445703059a2fd0
 
 const organizationsContext = createContext([])
 
+//check if this funtion can be fit into a custom hook;
 async function getApiData(set, url) {
   let response = await axios.get(url)
   set([...response.data]);

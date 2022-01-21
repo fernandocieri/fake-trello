@@ -3,7 +3,6 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Board from './Board';
 import { credentialsContext, organizationsContext } from "./WorkspaceContainer";
-import BasicTabs from './BasicTabs';
 import BoardPreview from './BoardPreview';
 
 export default function Myboards() {
@@ -21,10 +20,6 @@ export default function Myboards() {
     }, [organization]);
 
     async function createBoard(newBoardName) {
-        /*let data = JSON.stringify({
-        name: 'prueba api',
-        idBoard: '61c2184ec5370301a1cf0420'
-        });*/
         const newBoard = await axios.post(`https://api.trello.com/1/boards/?name=${newBoardName}&key=${credentials.key}&token=${credentials.token}`);
         console.log(newBoard.status);
         console.log(newBoard);
@@ -50,7 +45,7 @@ export default function Myboards() {
             <button onClick={(e) =>  {e.stopPropagation(); console.log("este es un boton")}}>Prueba</button>
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
- */}        <BasicTabs />
+ */}
             {handleRender()}
             {allBoards.map(board => <BoardPreview data={board} key={board.id} />)}
         </div>

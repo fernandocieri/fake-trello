@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
-export default function ButtonAppBar({ title = "Texto Provisional" }) {
+export default function ButtonAppBar({ title = "Frello" }) {
   return (
     <Box sx={{ flexGrow: 1 }} className="Navbar">
       <AppBar position="static">
@@ -24,7 +24,7 @@ export default function ButtonAppBar({ title = "Texto Provisional" }) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
             {title}
           </Typography>
           {/* This button can be used as a login/logout button if We make that option */}
