@@ -18,7 +18,7 @@ export default function BoardPreview(props) {
 
     console.log(boardData.prefs.backgroundTopColor);
     return (
-        <Card sx={{ maxWidth: 300, maxHeight: 150, backgroundColor: boardData.prefs.backgroundBottomColor, color: '292929' }}
+        <Card sx={{ maxWidth: 300, maxHeight: 150, backgroundColor: boardData.prefs.backgroundBottomColor, color: '292929', borderRadius: 4 }}
         //onClick={ }
         >
             <CardActionArea>
