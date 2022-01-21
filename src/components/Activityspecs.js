@@ -3,11 +3,15 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import Grid from '@mui/material/Grid';
+import { useState, useEffect, useContext } from "react";
 
-export default function Activityspecs() {
+export default function Activityspecs(props) {
+  const [cardData, setCardData] = useState({ ...props.data });
   return (
-    /* IMPORTANTE
-      Como sacar el valor de un TextField */
     <Box
       component="form"
       sx={{
@@ -16,32 +20,24 @@ export default function Activityspecs() {
       noValidate
       autoComplete="on"
     >
-      <div>
-        <Button variant="outlined">Save</Button>
+      <Stack className="left-flex-container">
+        <TextField id="name" label="name" variant="outlined" defaultValue={cardData.name} />
+        <TextField id="description" label="description" variant="outlined" multiline rows={5} defaultValue={cardData.desc} />
+        <TextField id="comments" label="Comments" variant="outlined" />
+      </Stack>
+
+      <div className="extra-info">
+        <Grid item xs={3}>
+          <AccessTimeFilledIcon fontSize="small" sx={{ color: '#1A5F7A' }} />
+          {cardData.dateLastActivity}
+        </Grid>
       </div>
 
-      <div className="main">
-        <Stack className="left-flex-container">
-          <TextField id="title" label="Title" variant="outlined" />
-          <TextField id="description" label="Description" variant="outlined" multiline maxRows={3}/>
-          <TextField id="comments" label="Comments" variant="outlined" />
-        </Stack>
-
-        <div>
-          <TextField
-            multiline
-            maxRows={5}
-            id="activitySpecs"
-            label="Activity Specs"
-            variant="outlined"
-          />
-        </div>
+      <div className='button-section'>
+        <Button variant="outlined"><DeleteIcon fontSize="small" sx={{ color: '#1A5F7A' }} />Delete</Button>
+        <Button variant="outlined"><CheckCircleIcon fontSize='small' sx={{ color: '#1A5F7A' }} />Save</Button>
       </div>
-
-      <div>
-        <Button variant="outlined">Delete</Button>
-      </div>
-    </Box>
+    </Box >
   );
 }
 
