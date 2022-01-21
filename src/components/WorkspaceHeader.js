@@ -19,11 +19,11 @@ export default function WorkSpaceHeader() {
     async function handleSaveEdition() {
         //setOrganization({ ...organization, displayName: editableState.currentValue })
         if (editableState.newValue === '') {
-            setEditableState({...editableState, isBeingEdited:false});
-            return false;
+            setEditableState({ ...editableState, isBeingEdited: false });
+        } else {
+            const updateResponse = await axios.put(`https://api.trello.com/1/organizations/${organization.id}/?displayName=${editableState.newValue}&key=${credentials.key}&token=${credentials.token}`);
+            setEditableState({ ...editableState, currentValue: editableState.newValue, isBeingEdited: false });
         }
-        const updateResponse = await axios.put(`https://api.trello.com/1/organizations/${organization.id}/?displayName=${editableState.newValue}&key=${credentials.key}&token=${credentials.token}`);
-        setEditableState({ ...editableState, currentValue: editableState.newValue, isBeingEdited: false });
     }
 
     function handleRender() {

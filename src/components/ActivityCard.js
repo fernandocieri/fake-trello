@@ -18,9 +18,13 @@ import useActions from './hooks/useActions'
 
 export default function ActivityCard(props) {
   const credentials = useContext(credentialsContext);
-  const [newName, setNewName] = useState('');
   const [cardData, setCardData] = useState({ ...props.data });
+  const [newName, setNewName] = useState('');
   const { open, selectedValue, setSelectedValue, handleClose, handleClickOpen } = useActions();
+
+  async function handleDelete() {
+    const deleteResponse = await axios.delete(`https://api.trello.com/1/cards/${cardData.id}/?key=${credentials.key}&token=${credentials.token}`)
+  }
 
   if (selectedValue === 'delete') {
     handleDelete()
@@ -28,13 +32,13 @@ export default function ActivityCard(props) {
   }
 
   async function handleSaveEdition() {
-    const updateResponse = await axios.put(`https://api.trello.com/1/cards/${cardData.id}/?name=${newName}&key=${credentials.key}&token=${credentials.token}`);
-    setCardData({ ...cardData, name: newName });
-    setSelectedValue('');
-  }
-
-  async function handleDelete() {
-    const deleteResponse = await axios.delete(`https://api.trello.com/1/cards/${cardData.id}/?key=${credentials.key}&token=${credentials.token}`)
+    if (newName === '') {
+      setSelectedValue('');
+    } else {
+      const updateResponse = await axios.put(`https://api.trello.com/1/cards/${cardData.id}/?name=${newName}&key=${credentials.key}&token=${credentials.token}`);
+      setCardData({ ...cardData, name: newName });
+      setSelectedValue('');
+    }
   }
 
   function handleTitleRender() {
