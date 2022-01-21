@@ -10,9 +10,9 @@ import {
   Input
 } from "@mui/material";
 import axios from "axios";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { credentialsContext } from "./WorkspaceContainer";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import SettingsIcon from '@mui/icons-material/Settings';
 import ActionMenu from './Actions';
 import useActions from './hooks/useActions'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -47,7 +47,7 @@ export default function ActivityCard(props) {
 
   let editButton = (
     <IconButton aria-label="settings">
-      <MoreVertIcon onClick={handleClickOpen} />
+      <SettingsIcon fontSize="small" onClick={handleClickOpen} />
     </IconButton>
   )
 
@@ -65,7 +65,7 @@ export default function ActivityCard(props) {
 
 
   return (
-    <Card sx={{ maxWidth: 300, maxHeight: 200 }}>
+    <Card sx={{ maxWidth: 300, maxHeight: 200, borderRadius: 4 }}>
       <CardActionArea>
         <CardHeader
           action={

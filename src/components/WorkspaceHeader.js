@@ -13,7 +13,7 @@ export default function WorkSpaceHeader() {
     const [editableState, setEditableState] = useState({ currentValue: '', newValue: '', isBeingEdited: false })
 
     useEffect(() => {
-        if (organization != undefined) {
+        if (organization !== undefined) {
             setEditableState({ ...editableState, currentValue: organization.displayName })
         }
     }, [organization]);

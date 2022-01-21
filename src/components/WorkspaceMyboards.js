@@ -13,8 +13,10 @@ export default function Myboards() {
 
     useEffect(() => {
         async function getInfo() {
-            let response = await axios.get(`https://api.trello.com/1/organizations/${organization.id}/boards?key=${credentials.key}&token=${credentials.token}`)
-            setAllBoards([...response.data]);
+            if (organization !== undefined) {
+                let response = await axios.get(`https://api.trello.com/1/organizations/${organization.id}/boards?key=${credentials.key}&token=${credentials.token}`)
+                setAllBoards([...response.data]);
+            }
         }
         getInfo()
     }, [organization]);

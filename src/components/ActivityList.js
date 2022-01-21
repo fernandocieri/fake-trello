@@ -54,8 +54,8 @@ export default function ActivityList(props) {
     >
       {listCards.map(card => {
         return (
-          <ListItem>
-            <ActivityCard data={card} key={card.id} />
+          <ListItem key={card.id}>
+            <ActivityCard data={card} />
           </ListItem>
         )
       })}
