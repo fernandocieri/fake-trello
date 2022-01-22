@@ -1,4 +1,6 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
+import NavbarDrawer from "./NavbarDrawer";
 import {
   AppBar,
   Box,
@@ -15,20 +17,21 @@ export default function ButtonAppBar({ title = "Frello" }) {
       <AppBar position="static">
         <Toolbar>
           {/* This button shows a menu with a list of created boards */}
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2, p:0 }}
+  
+            <NavbarDrawer />
+          <Typography
+            variant="h4"
+            component="div"
+            sx={{ flexGrow: 1 }}
+            component={Link}
+            to="/"
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
             {title}
           </Typography>
           {/* This button can be used as a login/logout button if We make that option */}
-          <Button variant="contained" className="editButton">Boton provisional</Button>
+          <Button variant="contained" className="editButton">
+            Boton provisional
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Board from './Board';
@@ -9,7 +9,7 @@ export default function Myboards() {
     const credentials = useContext(credentialsContext);
     const organization = useContext(organizationsContext);
     const [allBoards, setAllBoards] = useState([]);
-    const [currentBoard, setCurrentBoard] = useState(0)
+    const [currentBoard, setCurrentBoard] = useState(0);
 
     useEffect(() => {
         async function getInfo() {
@@ -33,6 +33,7 @@ export default function Myboards() {
             return <Board data={allBoards[currentBoard]} />
         }
     }
+
     return (
         <div>
             <h5>My Boards</h5>

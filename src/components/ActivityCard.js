@@ -46,8 +46,8 @@ export default function ActivityCard(props) {
   let titleRender = cardData.name;
 
   let editButton = (
-    <IconButton aria-label="settings">
-      <SettingsIcon fontSize="small" onClick={handleClickOpen} />
+    <IconButton aria-label="settings" onClick={handleClickOpen}>
+      <SettingsIcon fontSize="small" />
     </IconButton>
   )
 
@@ -56,8 +56,8 @@ export default function ActivityCard(props) {
     titleRender = (
       <>
         <Input onChange={event => setNewName(event.target.value)} defaultValue={cardData.name} />
-        <IconButton aria-label="save">
-          <CheckCircleIcon fontSize='small' sx={{ color: '#1A5F7A' }} onClick={handleSaveEdition} />
+        <IconButton aria-label="save" onClick={handleSaveEdition}>
+          <CheckCircleIcon fontSize='small' sx={{ color: '#1A5F7A' }} />
         </IconButton>
       </>
     )
@@ -65,8 +65,9 @@ export default function ActivityCard(props) {
 
 
   return (
-    <Card sx={{ maxWidth: 300, maxHeight: 200, borderRadius: 4 }}>
-      <CardActionArea>
+
+    <Card sx={{ maxWidth: 300, maxHeight: 200 }}>
+      <div className="card-action-area">
         <CardHeader
           action={
             <>
@@ -90,7 +91,7 @@ export default function ActivityCard(props) {
             {cardData.desc}
           </Typography>
         </CardContent>
-      </CardActionArea>
+      </div>
     </Card>
   )
 }

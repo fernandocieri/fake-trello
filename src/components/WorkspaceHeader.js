@@ -34,8 +34,8 @@ export default function WorkSpaceHeader() {
         currentRender = (
             <>
                 <h1>{editableState.currentValue}</h1>
-                <IconButton aria-label="edit">
-                    <ModeEditOutlineOutlinedIcon fontSize='medium' sx={{ color: '#1A5F7A' }} onClick={() => { setEditableState({ ...editableState, isBeingEdited: true }) }} />
+                <IconButton aria-label="edit" onClick={() => { setEditableState({ ...editableState, isBeingEdited: true }) }}>
+                    <ModeEditOutlineOutlinedIcon fontSize='medium' sx={{ color: '#1A5F7A' }} />
                 </IconButton>
             </>
         );
@@ -43,8 +43,8 @@ export default function WorkSpaceHeader() {
         currentRender = (
             <>
                 <Input onChange={event => setEditableState({ ...editableState, newValue: event.target.value })} defaultValue={editableState.currentValue} />
-                <IconButton aria-label="save">
-                    <CheckCircleIcon fontSize='small' sx={{ color: '#1A5F7A' }} onClick={handleSaveEdition} />
+                <IconButton aria-label="save" onClick={handleSaveEdition}>
+                    <CheckCircleIcon fontSize='small' sx={{ color: '#1A5F7A' }}  />
                 </IconButton>
             </>
         );
