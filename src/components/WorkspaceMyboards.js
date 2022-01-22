@@ -50,7 +50,7 @@ export default function Myboards() {
             <button onClick={(e) =>  {e.stopPropagation(); console.log("este es un boton")}}>Prueba</button>
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
- */}        <BasicTabs />
+ */}        {/* <BasicTabs /> */}
             {handleRender()}
             {allBoards.map(board => <BoardPreview data={board} key={board.id} />)}
         </div>

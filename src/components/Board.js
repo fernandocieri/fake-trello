@@ -27,8 +27,8 @@ export default function Board(props) {
       <Stack>
         <section className="boardHeader">
           <div className="boardTitle">{boardData.name}</div>
-          <IconButton variant="outlined">
-            <MoreVertIcon onClick={handleClickOpen} />
+          <IconButton variant="outlined" onClick={handleClickOpen} >
+            <MoreVertIcon />
           </IconButton>
           <ActionMenu
             selectedValue={selectedValue}

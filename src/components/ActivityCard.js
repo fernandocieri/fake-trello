@@ -56,8 +56,8 @@ export default function ActivityCard(props) {
         <CardHeader
           action={
             <>
-              <IconButton aria-label="settings">
-                <MoreVertIcon onClick={handleClickOpen} />
+              <IconButton aria-label="settings" onClick={handleClickOpen}>
+                <MoreVertIcon  />
               </IconButton>
               <ActionMenu
                 selectedValue={selectedValue}

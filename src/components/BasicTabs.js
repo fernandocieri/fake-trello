@@ -66,7 +66,7 @@ export default function BasicTabs() {
       </Box>
       <TabPanel value={value} index={0}>
         <div>
-            <ActivityList/>
+           
 
         
         </div>
