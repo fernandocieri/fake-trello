@@ -9,8 +9,7 @@ export default function UseActions() {
 
     const handleClose = (value) => {
         setOpen(false);
-        setSelectedValue(value);
-        { console.log(selectedValue) }
+        setSelectedValue(value);            
     };
-    return { open, selectedValue, handleClose, handleClickOpen };
+    return { open, selectedValue, setSelectedValue, handleClose, handleClickOpen };
 }

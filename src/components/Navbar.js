@@ -11,10 +11,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
-export default function ButtonAppBar({ title = "Texto Provisional" }, props) {
-  function openMenu() {
-    props.openMenu();
-  }
+export default function ButtonAppBar({ title = "Frello" }) {
   return (
     <Box sx={{ flexGrow: 1 }} className="Navbar">
       <AppBar position="static">

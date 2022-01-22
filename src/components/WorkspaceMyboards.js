@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Board from './Board';
 import { credentialsContext, organizationsContext } from "./WorkspaceContainer";
-import BasicTabs from './BasicTabs';
+import BoardPreview from './BoardPreview';
 
 export default function Myboards() {
   const credentials = useContext(credentialsContext);
@@ -11,20 +11,17 @@ export default function Myboards() {
   const [allBoards, setAllBoards] = useState([]);
   const [currentBoard, setCurrentBoard] = useState(0);
 
-    useEffect(() => {
-        async function getInfo() {
+  useEffect(() => {
+    async function getInfo() {
+        if (organization !== undefined) {
             let response = await axios.get(`https://api.trello.com/1/organizations/${organization.id}/boards?key=${credentials.key}&token=${credentials.token}`)
-
             setAllBoards([...response.data]);
         }
-        getInfo()
-    }, [organization]);
+    }
+    getInfo()
+}, [organization]);
 
-  async function createBoard(newBoardName) {
-    /*let data = JSON.stringify({
-        name: 'prueba api',
-        idBoard: '61c2184ec5370301a1cf0420'
-        });*/
+    async function createBoard(newBoardName) {
         const newBoard = await axios.post(`https://api.trello.com/1/boards/?name=${newBoardName}&key=${credentials.key}&token=${credentials.token}`);
         console.log(newBoard.status);
         console.log(newBoard);
@@ -32,8 +29,8 @@ export default function Myboards() {
     }
 
     function handleRender() {
-        if (allBoards.length != 0) {
-            return <Board data={allBoards[currentBoard]}/>
+        if (allBoards.length !== 0) {
+            return <Board data={allBoards[currentBoard]} />
         }
     }
     
@@ -51,8 +48,9 @@ export default function Myboards() {
             <button onClick={(e) =>  {e.stopPropagation(); console.log("este es un boton")}}>Prueba</button>
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
- */}        <BasicTabs/>
+ */}
             {handleRender()}
+            {allBoards.map(board => <BoardPreview data={board} key={board.id} />)}
         </div>
     );
 } 

@@ -50,11 +50,15 @@ export default function ActivityList(props) {
         </ListSubheader>
       }
     >
-      <ListItem>
-        {listCards.map(card => <ActivityCard data={card} key={card.id} />)}
-      </ListItem>
-      
-      <ListItem>
+      {listCards.map(card => {
+        return (
+          <ListItem key={card.id}>
+            <ActivityCard data={card} />
+          </ListItem>
+        )
+      })}
+
+      <ListItem >
         {renderAdd("Accept","Add Card", handleNewElement)}
       </ListItem>      
     </List>

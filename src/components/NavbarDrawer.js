@@ -53,7 +53,7 @@ export default function TemporaryDrawer() {
       <List>
         {["All mail", "Trash", "Spam"].map((text, index) => (
           
-          <ListItem button key={text} onClick={() => {console.log("All mail funciona")}}>
+          <ListItem button key={text}>
             <ListItemIcon>
               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
             </ListItemIcon>
@@ -74,8 +74,9 @@ export default function TemporaryDrawer() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={toggleDrawer(anchor, true)}
           >
-            <MenuIcon onClick={toggleDrawer(anchor, true)} />
+            <MenuIcon  />
           </IconButton>
           <Drawer
             anchor={anchor}
