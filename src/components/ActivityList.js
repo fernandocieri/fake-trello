@@ -29,15 +29,28 @@ export default function ActivityList(props) {
   const [listData, setListData] = useState({ ...props.data });
   const [listCards, setListCards] = useState([]);
 
+
+
   useEffect(() => {
     getApiData(setListCards, `https://api.trello.com/1/lists/${listData.id}/cards?key=${credentials.key}&token=${credentials.token}`)
   }, [])
 
+  const reorder= (list, startIndex, endIndex) => {
+    const result =[...list];
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+  }
 
+function handleDrag(result) {
+  const items = Array.from(listCards);
+  const [reorderItem] = items.splice(result.source.index, 1);
+  items.splice(result.destination.index, 0, reorderItem);
+
+  setListCards(items)
+}
 
   return (
-    <DragDropContext onDragEnd={(result)=> console.log(result)}>
-
       <List
         sx={{
           width: "100%",
@@ -64,12 +77,12 @@ export default function ActivityList(props) {
             <ul {...provided.droppableProps} ref={provided.innerRef}>
               {listCards.map((card, index) => (
                 <Draggable key={card.id} draggableId={card.id} index={index} >
-                  {(dprovided)=> (
-                    <li {...dprovided.draggableProps}
-                    ref={dprovided.innerRef} {...dprovided.dragHandleProps}><ActivityCard data={card}  /></li>)}              
+                  {(provided)=> (
+                    <li {...provided.draggableProps}
+                    ref={provided.innerRef} {...provided.dragHandleProps}><ActivityCard data={card}  /></li>)}              
                 </Draggable>
                 )
-              )}
+              )} 
               {provided.placeholder}
             </ul>
         
@@ -79,8 +92,6 @@ export default function ActivityList(props) {
           <Button variant="outlined">add card</Button>
         </ListItem>
       </List>
-
-    </DragDropContext>
 
   );
 }
