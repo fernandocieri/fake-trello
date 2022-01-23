@@ -20,7 +20,7 @@ export default function ButtonAppBar({ title = "Frello" }) {
   
             <NavbarDrawer />
           <Typography
-            variant="h6"
+            variant="h4"
             component="div"
             sx={{ flexGrow: 1 }}
             component={Link}
