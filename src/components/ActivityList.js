@@ -51,6 +51,8 @@ function handleDrag(result) {
 }
 
   return (
+    <DragDropContext onDragEnd={handleDrag}>
+
       <List
         sx={{
           width: "100%",
@@ -77,12 +79,12 @@ function handleDrag(result) {
             <ul {...provided.droppableProps} ref={provided.innerRef}>
               {listCards.map((card, index) => (
                 <Draggable key={card.id} draggableId={card.id} index={index} >
-                  {(provided)=> (
-                    <li {...provided.draggableProps}
-                    ref={provided.innerRef} {...provided.dragHandleProps}><ActivityCard data={card}  /></li>)}              
+                  {(dprovided)=> (
+                    <li {...dprovided.draggableProps}
+                    ref={dprovided.innerRef} {...dprovided.dragHandleProps}><ActivityCard data={card}  /></li>)}              
                 </Draggable>
                 )
-              )} 
+              )}
               {provided.placeholder}
             </ul>
         
@@ -92,6 +94,8 @@ function handleDrag(result) {
           <Button variant="outlined">add card</Button>
         </ListItem>
       </List>
+
+    </DragDropContext>
 
   );
 }

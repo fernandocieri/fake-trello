@@ -7,7 +7,6 @@ import ActivityList from "./ActivityList";
 import ActionMenu from './Actions';
 import useActions from './hooks/useActions'
 import { credentialsContext, getApiData } from "./WorkspaceContainer";
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 export default function Board(props) {
   const credentials = useContext(credentialsContext);
@@ -19,18 +18,9 @@ export default function Board(props) {
     getApiData(setBoardLists, `https://api.trello.com/1/boards/${boardData.id}/lists?key=${credentials.key}&token=${credentials.token}`)
   }, [])
 
+  function editBoard() {
 
-
-  const reorder= (board, startIndex, endIndex) => {
-    const result =[...board];
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-    return result;
   }
-
-const onDragEnd = (result: any) => {
-  
-};
 
   return (
     <Box>
@@ -47,20 +37,10 @@ const onDragEnd = (result: any) => {
           />
         </section>
 
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable>
-            {(provided)=> (
-              <section className="boardLists" ref={provided.innerRef} {...provided.droppableProps}>
-              {boardLists.map(list => <ActivityList data={list} key={list.id} />)}
-              {provided.placeholder}
-              </section>  
-            )}
-            
-            
-          </Droppable>          
-                    
-         
-        </DragDropContext>
+        
+        <section className="boardLists">
+          {boardLists.map(list => <ActivityList data={list} key={list.id} />)}
+        </section>
 
 
       </Stack>
