@@ -51,7 +51,7 @@ export default function ActivityCard(props) {
 
   return (
 
-    <Card sx={{ maxWidth: 300, maxHeight: 200 }}>
+    <Card sx={{ maxWidth: 300, maxHeight: 200, borderRadius:3 }}>
       <div className="card-action-area">
         <CardHeader
           action={
