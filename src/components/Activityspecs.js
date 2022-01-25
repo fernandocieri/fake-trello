@@ -16,13 +16,10 @@ import { credentialsContext, getApiData } from "./WorkspaceContainer";
 export default function Activityspecs(props) {
   const credentials = useContext(credentialsContext)
   const [cardData, setCardData] = useState({ ...props.data });
-  const [cardList, setCardList] = useState()
-  const [newName, setNewName] = useState('');
-  const [newDescription, setNewDescription] = useState('')
-
-  useEffect(() => {
-    getApiData(setCardList, `https://api.trello.com/1/cards/${cardData.id}/list?key=${credentials.key}&token=${credentials.token}`)
-  }, [])
+  /*IMPORTANT still not sure on whether to receive cardList info through props, context or an api call.
+  This will depend on if Acitivitypecs will be rendered in another component or not.
+  I'll wait until routing is completed */
+  const [cardList, setCardList] = useState();
 
   function handleCardListRender() {
     if (cardList !== undefined) {
@@ -31,10 +28,12 @@ export default function Activityspecs(props) {
   }
 
   async function handleSaveEditing() {
-    //there has to be a better approach 
-    if ((newName !== '') || (newDescription !== '')) {
+    /*IMPORTANT still don't know if routing makes components re-render and in consequence re-call the api. 
+    If not, I'll need to figure out a way to change the state of ActivityCard so the changes made in this component
+    are reflected in that one */
+    if (/[a-zA-Z]/.test(cardData.name)) {
       const updateResponse = await axios.put(
-        `https://api.trello.com/1/cards/${cardData.id}/?name=${newName}&desc=${newDescription}&key=${credentials.key}&token=${credentials.token}`);
+        `https://api.trello.com/1/cards/${cardData.id}/?name=${cardData.name}&desc=${cardData.desc}&key=${credentials.key}&token=${credentials.token}`);
     }
   }
 
@@ -48,8 +47,11 @@ export default function Activityspecs(props) {
       autoComplete="on"
     >
       <Stack className="left-flex-container">
-        <TextField id="name" label="name" variant="outlined" multiline maxRows={3} defaultValue={cardData.name} onChange={(event) => { setNewName(event.target.value) }} />
-        <TextField id="description" label="description" variant="outlined" multiline rows={5} defaultValue={cardData.desc} onChange={(event) => { setNewDescription(event.target.value) }} />
+        <TextField id="name" label="name" variant="outlined" multiline maxRows={3}
+          defaultValue={cardData.name} onChange={(event) => { setCardData({ ...cardData, name: event.target.value }) }} />
+
+        <TextField id="description" label="description" variant="outlined" multiline rows={5}
+          defaultValue={cardData.desc} onChange={(event) => { setCardData({ ...cardData, desc: event.target.value }) }} />
       </Stack>
 
       <div className="extra-info">
@@ -66,7 +68,7 @@ export default function Activityspecs(props) {
       <div className='button-section'>
         <Button variant="outlined"><KeyboardReturnIcon fontSize="small" sx={{ color: '#1A5F7A' }} />Back</Button>
         <Button variant="outlined"><DeleteIcon fontSize="small" sx={{ color: '#1A5F7A' }} />Delete Card</Button>
-        <Button variant="outlined"><CheckCircleIcon fontSize='small' sx={{ color: '#1A5F7A' }} />Save</Button>
+        <Button variant="outlined" onClick={handleSaveEditing}><CheckCircleIcon fontSize='small' sx={{ color: '#1A5F7A' }} />Save Changes</Button>
       </div>
     </Box >
   );
