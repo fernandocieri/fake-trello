@@ -32,7 +32,8 @@ export default function SimpleContainer() {
   useEffect(() => {
     getApiData(setOrganizations, `https://api.trello.com/1/members/me/organizations?key=${credentials.key}&token=${credentials.token}`)
   }, [])
-
+  console.log("las organizaciones");
+console.log(organizations[0])
   return (
     <Box sx={{ bgcolor: "#cfe8fc", height: "100vh" }}>
       {/* The component WorkSpace use "name props" to get the name of the WorkSpace depending on the login or name it has.

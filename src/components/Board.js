@@ -16,23 +16,49 @@ import ActivityList from "./ActivityList";
 import ActionMenu from "./Actions";
 import useEditFeature from "./hooks/useEditFeature";
 import useActions from "./hooks/useActions";
-import { credentialsContext, getApiData } from "./WorkspaceContainer";
+import { credentialsContext, getApiData, organizationsContext } from "./WorkspaceContainer";
 import useAddButton from "./hooks/useAddButton";
+import { useParams } from 'react-router-dom';
 
 export default function Board(props) {
-  const credentials = useContext(credentialsContext);
-  const [boardData, setBoardData] = useState({ ...props.data });
+  const {index} = useParams();
+   const credentials = useContext(credentialsContext);
+  const [organization, setOrganizations] = useState([]);
+  const [boardData, setBoardData] = useState([]);
   const [boardLists, setBoardLists] = useState([]);
   const { open, selectedValue, handleClose, handleClickOpen, setSelectedValue, } = useActions();
   let { handleEditing, titleRender, newName, editButton } = useEditFeature(boardData.name, handleClickOpen, <MoreVertIcon />);
-  const { renderAdd, inputState } = useAddButton();
+  const { renderAdd, inputState } = useAddButton(); 
+  console.log("board Lists");
+ console.log(boardLists);
+
+  
+  useEffect(() => {
+    getApiData(setOrganizations, `https://api.trello.com/1/members/me/organizations?key=${credentials.key}&token=${credentials.token}`)
+  
+  }, [])
 
   useEffect(() => {
+    async function getInfo() {
+        if (organization[0] !== undefined) {
+            let response = await axios.get(`https://api.trello.com/1/organizations/${organization[0].id}/boards?key=${credentials.key}&token=${credentials.token}`)
+            setBoardData([response.data[index]]);
+           
+            
+            
+        }        
+    }
+    getInfo()
+}, [organization]);
+
+  useEffect(() => {
+    boardData.map((board) =>
     getApiData(
       setBoardLists,
-      `https://api.trello.com/1/boards/${boardData.id}/lists?key=${credentials.key}&token=${credentials.token}`
-    );
-  }, []);
+      `https://api.trello.com/1/boards/${board.id}/lists?key=${credentials.key}&token=${credentials.token}`
+    ))
+    
+  }, [boardData]);
 
   async function handleNewElement() {
     let postResponse = await axios.post(
@@ -65,7 +91,7 @@ export default function Board(props) {
   }
 
   [titleRender, editButton] = handleEditing(selectedValue, handleSaveEditing);
-
+  
   return (
     <Box>
       <Stack>

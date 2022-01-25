@@ -19,7 +19,7 @@ export default function App(){
             <Routes>
                 <Route path="/" element={<WorkspaceContainer/>}/>
                 <Route path="activityspecs" element={<Activityspecs/>}/>
-                <Route path="board" element={<Board/>}/>                 
+                <Route path="board/:index" element={<Board data/>}/>                 
             </Routes>
         </Router>        
     )
