@@ -1,13 +1,9 @@
 import * as React from "react";
 import {
-  CardActionArea,
-  IconButton,
   Typography,
   Card,
   CardHeader,
   CardContent,
-  Button,
-  Input
 } from "@mui/material";
 import axios from "axios";
 import { useState, useContext } from "react";
@@ -16,7 +12,6 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import ActionMenu from './Actions';
 import useActions from './hooks/useActions'
 import useEditFeature from "./hooks/useEditFeature";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export default function ActivityCard(props) {
   const credentials = useContext(credentialsContext);

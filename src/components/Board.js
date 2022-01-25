@@ -3,15 +3,11 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import {
   ListItem,
-  Button,
   Stack,
   Box,
-  IconButton,
   List,
-  Input,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ActivityList from "./ActivityList";
 import ActionMenu from "./Actions";
 import useEditFeature from "./hooks/useEditFeature";

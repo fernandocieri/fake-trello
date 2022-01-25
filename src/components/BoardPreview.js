@@ -9,7 +9,7 @@ import axios from "axios";
 import { DeleteOutlineOutlined } from "@mui/icons-material";
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { credentialsContext } from "./WorkspaceContainer";
 import { blueGrey } from '@mui/material/colors';
 
@@ -19,7 +19,10 @@ export default function BoardPreview(props) {
     const credentials = useContext(credentialsContext);
     const [boardData, setBoardData] = useState({ ...props.data });
     const [isColorBeingPicked, setIsColorBeingPicked] = useState(false);
-    const hexToColorName = { blue: '#0000ff', orange: '#ffa500', green: '#008000', red: '#ff0000', purple: '#800080', pink: '#ffc0cb', lime: '#bfff00', grey: '#808080' }
+    const hexToColorName = {
+        blue: '#0000ff', orange: '#ffa500', green: '#008000', red: '#ff0000',
+        purple: '#800080', pink: '#ffc0cb', lime: '#bfff00', grey: '#808080'
+    };
 
     async function handleColorChange(color) {
         const hexColor = color.hex;
@@ -32,12 +35,14 @@ export default function BoardPreview(props) {
     const allowedColors = ['blue', 'orange', 'green', 'red', 'purple', 'pink', 'lime', 'grey'];
     let colorPickerRender = <></>;
     if (isColorBeingPicked) {
-        colorPickerRender = <CirclePicker color={boardData.prefs.backgroundBottomColor} colors={allowedColors} onChangeComplete={handleColorChange} />
+        colorPickerRender = (
+            <CirclePicker color={boardData.prefs.backgroundBottomColor} colors={allowedColors} onChangeComplete={handleColorChange} />
+        )
     }
 
     return (
         <>
-            <Card sx={{ maxWidth: 300, backgroundColor: boardData.prefs.backgroundBottomColor, color: '#292929', borderRadius: 2.5 }}
+            <Card sx={{ maxWidth: 300, backgroundColor: boardData.prefs.backgroundBottomColor, color: '#292929', borderRadius: 1.8 }}
             //onClick={ }
             >
                 <CardActionArea>
