@@ -35,19 +35,24 @@ export default function ActivityList(props) {
     getApiData(setListCards, `https://api.trello.com/1/lists/${listData.id}/cards?key=${credentials.key}&token=${credentials.token}`)
   }, [])
 
+  const reorder= (list, startIndex, endIndex) => {
+    const result =[...list];
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+  }
 
-
-  function handleDrag(result) {
+function handleDrag(result) {
   const items = Array.from(listCards);
   const [reorderItem] = items.splice(result.source.index, 1);
   items.splice(result.destination.index, 0, reorderItem);
 
-  setListCards(items) }
+  setListCards(items)
+}
 
-
-console.log(listCards)
   return (
-    
+    <DragDropContext onDragEnd={handleDrag}>
+
       <List
         sx={{
           width: "100%",
@@ -68,20 +73,20 @@ console.log(listCards)
           </ListSubheader>
         }
       >
-        <Droppable droppableId={`activitylist${props.index}`}>
+        <Droppable droppableId="activitylist">
           {(provided) => (
           
-            <div {...provided.droppableProps} ref={provided.innerRef}>
+            <ul {...provided.droppableProps} ref={provided.innerRef}>
               {listCards.map((card, index) => (
                 <Draggable key={card.id} draggableId={card.id} index={index} >
                   {(dprovided)=> (
-                    <div {...dprovided.draggableProps}
-                    ref={dprovided.innerRef} {...dprovided.dragHandleProps}><ActivityCard data={card} item={card.name} /></div>)}              
+                    <li {...dprovided.draggableProps}
+                    ref={dprovided.innerRef} {...dprovided.dragHandleProps}><ActivityCard data={card}  /></li>)}              
                 </Draggable>
                 )
               )}
               {provided.placeholder}
-            </div>
+            </ul>
         
           )}
         </Droppable>
@@ -89,7 +94,8 @@ console.log(listCards)
           <Button variant="outlined">add card</Button>
         </ListItem>
       </List>
-     
-            
+
+    </DragDropContext>
+
   );
 }
