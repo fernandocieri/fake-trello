@@ -12,34 +12,30 @@ import {
   ListSubheader,
   Typography,
 } from "@mui/material";
-const credentialsContext = createContext({ key: '278ed1bfd74ea3d23445703059a2fd01', token: '4fc08ef1719c90b1a2576c8e260cc3190641b849c048a773ce35f55a6b394a51' })
+import {dataContext,getApiData, credentialsContext} from '../App'
+
 
 const organizationsContext = createContext([])
 
 //check if this funtion can be fit into a custom hook;
-async function getApiData(set, url) {
-  let response = await axios.get(url)
-  set([...response.data]);
-}
 
-export { credentialsContext, organizationsContext, getApiData }
+export { organizationsContext, getApiData }
 
 export default function SimpleContainer() {
-  const credentials = useContext(credentialsContext);
-  const [organizations, setOrganizations] = useState([]);
-  const [currentOrganization, setCurrentOrganization] = useState(0)
+  const {credentialsData} = useContext(credentialsContext);
+  const {organizationsData} = useContext(organizationsContext);  
+  const { renderData } = useContext(dataContext);
 
-  useEffect(() => {
-    getApiData(setOrganizations, `https://api.trello.com/1/members/me/organizations?key=${credentials.key}&token=${credentials.token}`)
-  }, [])
+  
   console.log("las organizaciones");
-console.log(organizations[0])
+console.log(organizationsData)
+
   return (
     <Box sx={{ bgcolor: "#cfe8fc", height: "100vh" }}>
       {/* The component WorkSpace use "name props" to get the name of the WorkSpace depending on the login or name it has.
             At the momment, it has the value of "Nombre Provisional". 
             In the future will be developed the way it gets the value for "name". */}
-      <organizationsContext.Provider value={organizations[currentOrganization]}>
+      <organizationsContext.Provider value={organizationsData}>
         <WorkSpaceHeader />
         <WorkspaceMyboards />{" "}
         {/* It has a prop "title" to change the title of this component */}

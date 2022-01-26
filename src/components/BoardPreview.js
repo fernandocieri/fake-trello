@@ -10,7 +10,7 @@ import { DeleteOutlineOutlined } from "@mui/icons-material";
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
 import { useState, useEffect, useContext } from "react";
-import { credentialsContext } from "./WorkspaceContainer";
+import { credentialsContext } from "../App";
 import { blueGrey } from '@mui/material/colors';
 
 import { CirclePicker } from 'react-color';

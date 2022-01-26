@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import { Button, IconButton } from "@mui/material";
-import { credentialsContext, organizationsContext } from "./WorkspaceContainer";
+import { credentialsContext, organizationsContext } from "../App";
 import { useState, useEffect, useContext } from "react";
 import Input from '@mui/material/Input';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';

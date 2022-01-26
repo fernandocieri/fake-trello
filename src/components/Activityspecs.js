@@ -10,8 +10,7 @@ import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import Grid from '@mui/material/Grid';
 import { useState, useEffect, useContext } from "react";
-import { credentialsContext, getApiData } from "./WorkspaceContainer";
-
+import { credentialsContext, getApiData } from "../App";
 export default function Activityspecs(props) {
   const credentials = useContext(credentialsContext)
   const [cardData, setCardData] = useState({ ...props.data });

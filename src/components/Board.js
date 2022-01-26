@@ -16,12 +16,13 @@ import ActivityList from "./ActivityList";
 import ActionMenu from "./Actions";
 import useEditFeature from "./hooks/useEditFeature";
 import useActions from "./hooks/useActions";
-import { credentialsContext, getApiData, organizationsContext } from "./WorkspaceContainer";
+import { credentialsContext, getApiData } from "../App";
 import useAddButton from "./hooks/useAddButton";
 import { useParams } from 'react-router-dom';
+import {dataContext} from '../App'
 
 export default function Board(props) {
-  const {index} = useParams();
+  const {id} = useParams();
    const credentials = useContext(credentialsContext);
   const [organization, setOrganizations] = useState([]);
   const [boardData, setBoardData] = useState([]);
@@ -29,9 +30,10 @@ export default function Board(props) {
   const { open, selectedValue, handleClose, handleClickOpen, setSelectedValue, } = useActions();
   let { handleEditing, titleRender, newName, editButton } = useEditFeature(boardData.name, handleClickOpen, <MoreVertIcon />);
   const { renderAdd, inputState } = useAddButton(); 
-  console.log("board Lists");
- console.log(boardLists);
+  const { renderData } = useContext(dataContext);
 
+  console.log(renderData)
+ 
   
   useEffect(() => {
     getApiData(setOrganizations, `https://api.trello.com/1/members/me/organizations?key=${credentials.key}&token=${credentials.token}`)
@@ -42,9 +44,7 @@ export default function Board(props) {
     async function getInfo() {
         if (organization[0] !== undefined) {
             let response = await axios.get(`https://api.trello.com/1/organizations/${organization[0].id}/boards?key=${credentials.key}&token=${credentials.token}`)
-            setBoardData([response.data[index]]);
-           
-            
+            response.data.map(resp => resp.id === id?setBoardData([resp]): false )         
             
         }        
     }
@@ -91,7 +91,7 @@ export default function Board(props) {
   }
 
   [titleRender, editButton] = handleEditing(selectedValue, handleSaveEditing);
-  
+  console.log(boardLists)
   return (
     <Box>
       <Stack>

@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Board from './Board';
 import {Link} from 'react-router-dom'
-import { credentialsContext, organizationsContext } from "./WorkspaceContainer";
+import { credentialsContext, organizationsContext } from "../App";
 import BoardPreview from './BoardPreview';
 
 export default function Myboards() {
@@ -11,12 +11,14 @@ export default function Myboards() {
     const organization = useContext(organizationsContext);
     const [allBoards, setAllBoards] = useState([]);
     const [currentBoard, setCurrentBoard] = useState(0);
+   
     
     useEffect(() => {
         async function getInfo() {
             if (organization !== undefined) {
                 let response = await axios.get(`https://api.trello.com/1/organizations/${organization.id}/boards?key=${credentials.key}&token=${credentials.token}`)
-                setAllBoards([...response.data]);                       
+                setAllBoards([...response.data]);      
+                           
             }
             
         }
@@ -52,7 +54,7 @@ export default function Myboards() {
             </div>)}}
  */}
             
-            {allBoards.map((board, index) => <Link to={`board/${index}`}><BoardPreview data={board} key={board.id} /> </Link>)}
+            {allBoards.map((board) => <Link to={`board/${board.id}`}><BoardPreview data={board} key={board.id} /> </Link>)}
         </div>
     );
 } 
