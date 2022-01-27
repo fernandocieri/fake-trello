@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import * as React from "react";
 import axios from "axios";
 import ActivityCard from "./ActivityCard";
-import { credentialsContext, getApiData } from "../App";
+import { credentialsContext, getApiData,listCardsContext } from "../App";
 // import { colors = red[500] } from '@mui/material/colors';
 import {
   ListItem,
@@ -14,18 +14,13 @@ import {
 import useAddButton from './hooks/useAddButton';
 
 export default function ActivityList(props) {
-  const credentials = useContext(credentialsContext);
+  const {credentialsData} = useContext(credentialsContext);
   const [listData, setListData] = useState({ ...props.data });
-  const [listCards, setListCards] = useState([]);
-  const {renderAdd, inputState} = useAddButton();
-
-  useEffect(() => {
-    getApiData(setListCards, `https://api.trello.com/1/lists/${listData.id}/cards?key=${credentials.key}&token=${credentials.token}`)
-  }, [])
-
-  
+  const {listCards, setListCards} = useContext(listCardsContext);
+  const {renderAdd, inputState} = useAddButton(); 
+  // listCards.map(list=> console.log(list))
   async function handleNewElement(){
-    let postResponse = await axios.post(`https://api.trello.com/1/cards?name=${inputState}&idList=${listData.id}&key=${credentials.key}&token=${credentials.token}`)
+    let postResponse = await axios.post(`https://api.trello.com/1/cards?name=${inputState}&idList=${listData.id}&key=${credentialsData.key}&token=${credentialsData.token}`)
       setListCards([...listCards, postResponse.data]);
     }
   return (

@@ -8,7 +8,7 @@ import {
   Box,
   IconButton,
   List,
-  Input,
+  Input
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -16,60 +16,32 @@ import ActivityList from "./ActivityList";
 import ActionMenu from "./Actions";
 import useEditFeature from "./hooks/useEditFeature";
 import useActions from "./hooks/useActions";
-import { credentialsContext, getApiData } from "../App";
+import { boarListContext,credentialsContext, getApiData, organizationsContext, boarDataContext} from "../App";
 import useAddButton from "./hooks/useAddButton";
-import { useParams } from 'react-router-dom';
-import {dataContext} from '../App'
-
-export default function Board(props) {
-  const {id} = useParams();
-   const credentials = useContext(credentialsContext);
-  const [organization, setOrganizations] = useState([]);
-  const [boardData, setBoardData] = useState([]);
-  const [boardLists, setBoardLists] = useState([]);
+import { useParams } from "react-router-dom";
+export default function Board() {  
+  const {credentialsData} = useContext(credentialsContext);
+  const {organizationsData} = useContext(organizationsContext);
+  const {boardData, setBoardData} = useContext(boarDataContext);
+  const {boardLists, setBoardLists}= useContext(boarListContext)
   const { open, selectedValue, handleClose, handleClickOpen, setSelectedValue, } = useActions();
   let { handleEditing, titleRender, newName, editButton } = useEditFeature(boardData.name, handleClickOpen, <MoreVertIcon />);
-  const { renderAdd, inputState } = useAddButton(); 
-  const { renderData } = useContext(dataContext);
+  const { renderAdd, inputState } = useAddButton();     
+const {id} = useParams();
 
-  console.log(renderData)
+
  
-  
-  useEffect(() => {
-    getApiData(setOrganizations, `https://api.trello.com/1/members/me/organizations?key=${credentials.key}&token=${credentials.token}`)
-  
-  }, [])
-
-  useEffect(() => {
-    async function getInfo() {
-        if (organization[0] !== undefined) {
-            let response = await axios.get(`https://api.trello.com/1/organizations/${organization[0].id}/boards?key=${credentials.key}&token=${credentials.token}`)
-            response.data.map(resp => resp.id === id?setBoardData([resp]): false )         
-            
-        }        
-    }
-    getInfo()
-}, [organization]);
-
-  useEffect(() => {
-    boardData.map((board) =>
-    getApiData(
-      setBoardLists,
-      `https://api.trello.com/1/boards/${board.id}/lists?key=${credentials.key}&token=${credentials.token}`
-    ))
-    
-  }, [boardData]);
 
   async function handleNewElement() {
     let postResponse = await axios.post(
-      `https://api.trello.com/1/lists?name=${inputState}&idBoard=${boardData.id}&key=${credentials.key}&token=${credentials.token}`
+      `https://api.trello.com/1/lists?name=${inputState}&idBoard=${boardData.id}&key=${credentialsData.key}&token=${credentialsData.token}`
     );
     setBoardLists([...boardLists, postResponse.data]);
   }
 
   async function handleDelete() {
     const deleteResponse = await axios.delete(
-      `https://api.trello.com/1/boards/${boardData.id}/?key=${credentials.key}&token=${credentials.token}`
+      `https://api.trello.com/1/boards/${boardData.id}/?key=${credentialsData.key}&token=${credentialsData.token}`
     );
   }
 
@@ -83,7 +55,7 @@ export default function Board(props) {
       setSelectedValue('');
     } else {
       const updateResponse = await axios.put(
-        `https://api.trello.com/1/boards/${boardData.id}/?name=${newName}&key=${credentials.key}&token=${credentials.token}`
+        `https://api.trello.com/1/boards/${boardData.id}/?name=${newName}&key=${credentialsData.key}&token=${credentialsData.token}`
       );
       setBoardData({ ...boardData, name: newName });
       setSelectedValue('');
@@ -91,7 +63,15 @@ export default function Board(props) {
   }
 
   [titleRender, editButton] = handleEditing(selectedValue, handleSaveEditing);
-  console.log(boardLists)
+  
+  function renderLists (){
+    boardLists.map((list) => ( 
+      
+     list.idBoard === id? <ActivityList data={list} key={list.id} /> : ""
+     
+    ))   
+  }
+  
   return (
     <Box>
       <Stack>
@@ -106,9 +86,7 @@ export default function Board(props) {
         </section>
 
         <section className="boardLists">
-          {boardLists.map((list) => (
-            <ActivityList data={list} key={list.id} />
-          ))}
+          {renderLists()}
         </section>
         <List
           className="add-list"
