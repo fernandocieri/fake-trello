@@ -1,24 +1,14 @@
 import * as React from "react";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import {
-  ListItem,
-  Button,
-  Stack,
-  Box,
-  IconButton,
-  List,
-  Input,
-} from "@mui/material";
+import { Stack, Box, IconButton, List } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ActivityList from "./ActivityList";
-import ActionMenu from "./Actions";
-import useEditFeature from "./hooks/useEditFeature";
-import useActions from "./hooks/useActions";
+import ActionMenu from './Actions';
+import useActions from './hooks/useActions'
 import { credentialsContext, getApiData } from "./WorkspaceContainer";
-<<<<<<< HEAD
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
 
 
 export default function Board(props) {
@@ -26,82 +16,96 @@ export default function Board(props) {
   const [boardData, setBoardData] = useState({ 
     ...props.data,
   });
-  const [boardLists, setBoardLists] = useState([  ]);
+  const [boardLists, setBoardLists] = useState([ ]);
   const { open, selectedValue, handleClose, handleClickOpen } = useActions();
-=======
-import useAddButton from "./hooks/useAddButton";
+  
 
-export default function Board(props) {
-  const credentials = useContext(credentialsContext);
-  const [boardData, setBoardData] = useState({ ...props.data });
-  const [boardLists, setBoardLists] = useState([]);
-  const { open, selectedValue, handleClose, handleClickOpen, setSelectedValue, } = useActions();
-  let { handleEditing, titleRender, newName, editButton } = useEditFeature(boardData.name, handleClickOpen, <MoreVertIcon />);
-  const { renderAdd, inputState } = useAddButton();
->>>>>>> a5846905fd783d16e109f8b599a7f15ebee60b72
+
+  useEffect(() => {
+    getApiData(setBoardLists, `https://api.trello.com/1/boards/${boardData.id}/lists?key=${credentials.key}&token=${credentials.token}`)
+  }, [])
+
 
 
 
   useEffect(() => {
-    getApiData(
-      setBoardLists,
-      `https://api.trello.com/1/boards/${boardData.id}/lists?key=${credentials.key}&token=${credentials.token}`
-    );
+    async function getInfo() {
+        let item = []
+        for (let i = 0; i < boardLists.length; i++) {
+            if (boardData !== undefined) {
+              let response = await axios.get(`https://api.trello.com/1/boards/${boardData[i].id}/lists?key=${credentials.key}&token=${credentials.token}`);
+              item = [i];
+              console.log(item,"item");  
+            }
+        }
+        //setBoardLists([...item]);
+    }
+    getInfo()
   }, []);
 
-<<<<<<< HEAD
- 
+  console.log(boardData.name,"el board data de 0")
 
-  //bucle in the useEffect to establish item list
+  /* const handleDrag = (result) =>{
+    const {destination, source, draggableid} = result;
 
-  console.log(boardLists)
-=======
-  async function handleNewElement() {
-    let postResponse = await axios.post(
-      `https://api.trello.com/1/lists?name=${inputState}&idBoard=${boardData.id}&key=${credentials.key}&token=${credentials.token}`
-    );
-    setBoardLists([...boardLists, postResponse.data]);
-  }
-
-  async function handleDelete() {
-    const deleteResponse = await axios.delete(
-      `https://api.trello.com/1/boards/${boardData.id}/?key=${credentials.key}&token=${credentials.token}`
-    );
-  }
-
-  if (selectedValue === "delete") {
-    handleDelete();
-    return <></>;
-  }
->>>>>>> a5846905fd783d16e109f8b599a7f15ebee60b72
-
-  async function handleSaveEditing() {
-    if (newName === '') {
-      setSelectedValue('');
-    } else {
-      const updateResponse = await axios.put(
-        `https://api.trello.com/1/boards/${boardData.id}/?name=${newName}&key=${credentials.key}&token=${credentials.token}`
-      );
-      setBoardData({ ...boardData, name: newName });
-      setSelectedValue('');
+    if(!result.destination){
+      return;
     }
-  }
 
-  [titleRender, editButton] = handleEditing(selectedValue, handleSaveEditing);
+    if(result.source.droppableId!== result.destination.droppableId){
+      const sourceColumn = [source.droppableId]
+      console.log(sourceColumn)
+      const destColumn = [destination.droppableId];
+      let item= {items: []};
+      const sourceItems = sourceColumn.push(item);
+      console.log(sourceItems)
+      const destItems = destColumn.push(item);
+      console.log(destItems)
+      const [removed] = sourceItems.splice(source.index, 1)
+      destItems.splice(destination.index, 0, removed)
+      setBoardLists({
+        ...boardLists,
+        [source.droppableId]:{
+          ...sourceColumn,
+          items: sourceItems
+
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems
+        }
+      })
+}} */
+      /* const [removed] = sourceItems.splice(source.index, 1)
+      destItems.splice(destination.index, 0, removed)
+      setBoardLists({
+        ...boardLists,
+        [source.droppableId]:{
+          ...sourceColumn,
+          items: sourceItems
+
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems
+        }
+      })
+      }
+    } */
+  
+
+
+
+
 
   return (
     <Box>
       <Stack>
         <section className="boardHeader">
-<<<<<<< HEAD
           <div className="boardTitle">{boardData.name}</div>
           <IconButton variant="outlined" onClick={handleClickOpen} >
             <MoreVertIcon />
           </IconButton>
-=======
-          <div className="boardTitle">{titleRender}</div>
-          {editButton}
->>>>>>> a5846905fd783d16e109f8b599a7f15ebee60b72
           <ActionMenu
             selectedValue={selectedValue}
             open={open}
@@ -109,33 +113,12 @@ export default function Board(props) {
           />
         </section>
 
-        <DragDropContext onDragEnd={result=> console.log(result, typeof boardLists)}> 
+        <DragDropContext onDragEnd={result => console.log(result)}> 
         <section className="boardLists">
-<<<<<<< HEAD
-          {boardLists.map((list,index) => <ActivityList data={list} key={list.id} index={index}/>)}
+          {boardLists.map((list,index) => <ActivityList data={list} key={list.id} index={index} name={list.name}/>)}
         </section>
         </DragDropContext>
 
-=======
-          {boardLists.map((list) => (
-            <ActivityList data={list} key={list.id} />
-          ))}
-        </section>
-        <List
-          className="add-list"
-          sx={{
-            width: "100%",
-            maxWidth: 360,
-            border: 2,
-            borderColor: "grey.500",
-            borderRadius: 2,
-          }}
-        >
-          <ListItem>
-            {renderAdd("Accept", "ADD List", handleNewElement)}
-          </ListItem>
-        </List>
->>>>>>> a5846905fd783d16e109f8b599a7f15ebee60b72
       </Stack>
     </Box>
   );

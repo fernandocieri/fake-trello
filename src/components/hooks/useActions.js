@@ -9,11 +9,7 @@ export default function UseActions() {
 
     const handleClose = (value) => {
         setOpen(false);
-<<<<<<< HEAD
-        setSelectedValue(value);
-=======
         setSelectedValue(value);            
->>>>>>> a5846905fd783d16e109f8b599a7f15ebee60b72
     };
     return { open, selectedValue, setSelectedValue, handleClose, handleClickOpen };
 }
