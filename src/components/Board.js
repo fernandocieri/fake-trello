@@ -16,22 +16,22 @@ import ActivityList from "./ActivityList";
 import ActionMenu from "./Actions";
 import useEditFeature from "./hooks/useEditFeature";
 import useActions from "./hooks/useActions";
-import { boarListContext,credentialsContext, getApiData, organizationsContext, boarDataContext} from "../App";
+import { boarListContext, credentialsContext, getApiData, organizationsContext, boarDataContext } from "../App";
 import useAddButton from "./hooks/useAddButton";
 import { useParams } from "react-router-dom";
-export default function Board() {  
-  const {credentialsData} = useContext(credentialsContext);
-  const {organizationsData} = useContext(organizationsContext);
-  const {boardData, setBoardData} = useContext(boarDataContext);
-  const {boardLists, setBoardLists}= useContext(boarListContext)
+export default function Board() {
+  const { credentialsData } = useContext(credentialsContext);
+  const { organizationsData } = useContext(organizationsContext);
+  const { boardData, setBoardData } = useContext(boarDataContext);
+  const { boardLists, setBoardLists } = useContext(boarListContext)
   const { open, selectedValue, handleClose, handleClickOpen, setSelectedValue, } = useActions();
   let { handleEditing, titleRender, newName, editButton } = useEditFeature(boardData.name, handleClickOpen, <MoreVertIcon />);
-  const { renderAdd, inputState } = useAddButton();     
-const {id} = useParams();
+  const { renderAdd, inputState } = useAddButton();
+  const { id } = useParams();
 
+  boardLists.map(lists => console.log(lists))
 
  
-
   async function handleNewElement() {
     let postResponse = await axios.post(
       `https://api.trello.com/1/lists?name=${inputState}&idBoard=${boardData.id}&key=${credentialsData.key}&token=${credentialsData.token}`
@@ -63,15 +63,13 @@ const {id} = useParams();
   }
 
   [titleRender, editButton] = handleEditing(selectedValue, handleSaveEditing);
-  
-  function renderLists (){
-    boardLists.map((list) => ( 
-      
-     list.idBoard === id? <ActivityList data={list} key={list.id} /> : ""
-     
-    ))   
+
+  function renderLists() {
+    boardLists.map((list, index) => (
+      list.idBoard === id ? <ActivityList data={list} key={list.id} index={index} /> : <></>
+    ))
   }
-  
+
   return (
     <Box>
       <Stack>
@@ -86,7 +84,11 @@ const {id} = useParams();
         </section>
 
         <section className="boardLists">
-          {renderLists()}
+
+          {boardLists.map((list, index) => (
+            list.idBoard === id ? <ActivityList data={list} key={list.id} index={index} /> : <></>
+          ))}
+
         </section>
         <List
           className="add-list"

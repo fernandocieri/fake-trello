@@ -23,7 +23,7 @@ export default function Myboards() {
     //     }
     // }
 
-   console.log(boardData);
+    
     return (
         <div>
             <h5>My Boards</h5>

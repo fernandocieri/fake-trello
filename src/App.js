@@ -11,10 +11,15 @@ import {
     Route,
     useParams
 } from "react-router-dom";
-async function getApiData(set, url) {
+async function getApiData(set, url, state) {
     let response = await axios.get(url)
     set([...response.data]);
-  }  
+}
+async function getApiDataPersonal(set, url, state) {
+    let response = await axios.get(url)
+
+    set([state, ...response.data]);
+}
 
 const credentialsContext = createContext({
     credentialsData: '',
@@ -40,62 +45,70 @@ const listCardsContext = createContext({
     setListCards: () => { },
 });
 
-export { listCardsContext, boarListContext,boarDataContext, credentialsContext, getApiData, organizationsContext };
+export { listCardsContext, boarListContext, boarDataContext, credentialsContext, getApiData, organizationsContext };
 export default function App() {
     //IMPORTANT
     //Routing is made here.    
-    const [organizationsData, setOrganizationsData] = useState([]);   
-    const [boardData, setBoardData] = useState([])    
-     const[credentialsData, setCredentialsData] = useState({ key: '278ed1bfd74ea3d23445703059a2fd01', token: '4fc08ef1719c90b1a2576c8e260cc3190641b849c048a773ce35f55a6b394a51' })
-    const[boardLists,setBoardLists]= useState([])
-    const[listCards,setListCards]= useState([])
-     useEffect(() => {         
-        getApiData(setOrganizationsData, `https://api.trello.com/1/members/me/organizations?key=${credentialsData.key}&token=${credentialsData.token}`) 
-             
-      }, [])
+    const [organizationsData, setOrganizationsData] = useState([]);
+    const [boardData, setBoardData] = useState([])
+    const [credentialsData, setCredentialsData] = useState({ key: '278ed1bfd74ea3d23445703059a2fd01', token: '4fc08ef1719c90b1a2576c8e260cc3190641b849c048a773ce35f55a6b394a51' })
+    const [boardLists, setBoardLists] = useState([])
+    const [listCards, setListCards] = useState([])
+    useEffect(() => {
+        getApiData(setOrganizationsData, `https://api.trello.com/1/members/me/organizations?key=${credentialsData.key}&token=${credentialsData.token}`)
 
-      useEffect(() => {
+    }, [])
+
+    useEffect(() => {
         async function getInfo() {
             if (organizationsData[0] !== undefined) {
                 let response = await axios.get(`https://api.trello.com/1/organizations/${organizationsData[0].id}/boards?key=${credentialsData.key}&token=${credentialsData.token}`)
-                setBoardData([...response.data])         
-            }        
+                setBoardData([...response.data])
+            }
         }
         getInfo()
     }, [organizationsData]);
 
     useEffect(() => {
-        boardData.map((board) =>
-        getApiData(
-          setBoardLists,
-          `https://api.trello.com/1/boards/${board.id}/lists?key=${credentialsData.key}&token=${credentialsData.token}`
-        ))
-        
-      }, [boardData]);
-   
-      useEffect(() => {
-        boardLists.map((card)=>
-        getApiData(setListCards, `https://api.trello.com/1/lists/${card.id}/cards?key=${credentialsData.key}&token=${credentialsData.token}`)
-        )        
-      }, [])
+        async function getInfo() {
+            let newLists = []
+            for (let i = 0; i < boardData.length; i++) {
+                if (boardData !== undefined) {
+                    let response = await axios.get(`https://api.trello.com/1/boards/${boardData[i].id}/lists?key=${credentialsData.key}&token=${credentialsData.token}`);
+                    newLists = [...newLists, ...response.data];
+                }
+            }
+            setBoardLists([...newLists]);
+        }
+        getInfo()
+    }, [boardData]);
+
+    { console.log(boardData, 'boardData') }
+    { console.log(boardLists, 'boardList') }
+    { console.log(organizationsData, 'org') }
+    useEffect(() => {
+        boardLists.map((card) =>
+            getApiData(setListCards, `https://api.trello.com/1/lists/${card.id}/cards?key=${credentialsData.key}&token=${credentialsData.token}`)
+        )
+    }, [boardLists])
     return (
 
-        <Router>            
+        <Router>
             <Navbar /> {/* This component has a "title" prop to change the title of the component */}
-            <listCardsContext.Provider value={{listCards,setListCards}}>
-            <boarListContext.Provider value={{ boardLists,setBoardLists }}>
-            <boarDataContext.Provider value={{ boardData, setBoardData }}>            
-            <credentialsContext.Provider value={{credentialsData, setCredentialsData}}>
-            <organizationsContext.Provider value={{organizationsData}}>
-                <Routes>
-                    <Route path="/" element={<WorkspaceContainer />} />
-                    <Route path="board/:id" element={<Board />} />
-                </Routes>
-                </organizationsContext.Provider>
-                </credentialsContext.Provider>            
-            </boarDataContext.Provider>
-            </boarListContext.Provider>
-            </listCardsContext.Provider>
+            <credentialsContext.Provider value={{ credentialsData, setCredentialsData }}>
+                <listCardsContext.Provider value={{ listCards, setListCards }}>
+                    <boarListContext.Provider value={{ boardLists, setBoardLists }}>
+                        <boarDataContext.Provider value={{ boardData, setBoardData }}>
+                            <organizationsContext.Provider value={{ organizationsData }}>
+                                <Routes>
+                                    <Route path="/" element={<WorkspaceContainer />} />
+                                    <Route path="board/:id" element={<Board />} />
+                                </Routes>
+                            </organizationsContext.Provider>
+                        </boarDataContext.Provider>
+                    </boarListContext.Provider>
+                </listCardsContext.Provider>
+            </credentialsContext.Provider>
         </Router>
     )
 }

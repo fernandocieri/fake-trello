@@ -30,7 +30,7 @@ export default function TemporaryDrawer() {
   const boardName = []
   const boardId = []
   boards.map(board => boardName.push(board.name) && boardId.push(board.id))
-  console.log(boardName);
+  // console.log(boardName);
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -64,10 +64,10 @@ export default function TemporaryDrawer() {
       
     </Box>
   );
-  useEffect(() => {
-    getApiData(setOrganizations, `https://api.trello.com/1/members/me/organizations?key=${credentials.key}&token=${credentials.token}`)
+  // useEffect(() => {
+  //   getApiData(setOrganizations, `https://api.trello.com/1/members/me/organizations?key=${credentials.key}&token=${credentials.token}`)
   
-  }, [])
+  // }, [])
 
   useEffect(() => {
     async function getInfo() {
