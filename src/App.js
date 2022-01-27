@@ -71,35 +71,44 @@ export default function App() {
 
     useEffect(() => {
         async function getInfo() {
-            let newLists = []
+            let lists = []
             for (let i = 0; i < boardData.length; i++) {
                 if (boardData !== undefined) {
                     let response = await axios.get(`https://api.trello.com/1/boards/${boardData[i].id}/lists?key=${credentialsData.key}&token=${credentialsData.token}`);
-                    newLists = [...newLists, ...response.data];
+                    lists = [...lists, ...response.data];
                 }
             }
-            setBoardLists([...newLists]);
+            setBoardLists([...lists]);
         }
         getInfo()
     }, [boardData]);
 
-    { console.log(boardData, 'boardData') }
     { console.log(boardLists, 'boardList') }
-    { console.log(organizationsData, 'org') }
+
     useEffect(() => {
-        boardLists.map((card) =>
-            getApiData(setListCards, `https://api.trello.com/1/lists/${card.id}/cards?key=${credentialsData.key}&token=${credentialsData.token}`)
-        )
-    }, [boardLists])
+        async function getInfo() {
+            let cards = []
+            for (let i = 0; i < boardLists.length; i++) {
+                if (boardLists !== undefined) {
+                    let response = await axios.get(`https://api.trello.com/1/lists/${boardLists[i].id}/cards?key=${credentialsData.key}&token=${credentialsData.token}`);
+                    cards = [...cards, ...response.data];
+                }
+            }
+            setListCards([...cards]);
+        }
+        getInfo()
+    }, [boardLists]);
+
+    console.log(listCards);
     return (
 
         <Router>
-            <Navbar /> {/* This component has a "title" prop to change the title of the component */}
             <credentialsContext.Provider value={{ credentialsData, setCredentialsData }}>
                 <listCardsContext.Provider value={{ listCards, setListCards }}>
                     <boarListContext.Provider value={{ boardLists, setBoardLists }}>
                         <boarDataContext.Provider value={{ boardData, setBoardData }}>
                             <organizationsContext.Provider value={{ organizationsData }}>
+                                <Navbar /> {/* This component has a "title" prop to change the title of the component */}
                                 <Routes>
                                     <Route path="/" element={<WorkspaceContainer />} />
                                     <Route path="board/:id" element={<Board />} />

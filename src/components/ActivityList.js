@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import * as React from "react";
 import axios from "axios";
 import ActivityCard from "./ActivityCard";
-import { credentialsContext, getApiData,listCardsContext } from "../App";
+import { credentialsContext, getApiData, listCardsContext } from "../App";
 // import { colors = red[500] } from '@mui/material/colors';
 import {
   ListItem,
@@ -14,15 +14,15 @@ import {
 import useAddButton from './hooks/useAddButton';
 
 export default function ActivityList(props) {
-  const {credentialsData} = useContext(credentialsContext);
+  const { credentialsData } = useContext(credentialsContext);
   const [listData, setListData] = useState({ ...props.data });
-  const {listCards, setListCards} = useContext(listCardsContext);
-  const {renderAdd, inputState} = useAddButton(); 
+  const { listCards, setListCards } = useContext(listCardsContext);
+  const { renderAdd, inputState } = useAddButton();
   // listCards.map(list=> console.log(list))
-  async function handleNewElement(){
+  async function handleNewElement() {
     let postResponse = await axios.post(`https://api.trello.com/1/cards?name=${inputState}&idList=${listData.id}&key=${credentialsData.key}&token=${credentialsData.token}`)
-      setListCards([...listCards, postResponse.data]);
-    }
+    setListCards([...listCards, postResponse.data]);
+  }
   return (
 
     <List
@@ -32,6 +32,7 @@ export default function ActivityList(props) {
         border: 2,
         borderColor: "grey.500",
         borderRadius: 2,
+        margin: 1
       }}
       subheader={
         <ListSubheader
@@ -43,20 +44,23 @@ export default function ActivityList(props) {
             {listData.name}
           </Typography>
         </ListSubheader>
-      }
+      } className="list"
     >
-      {listCards.map(card => {
+      {listCards.map((card) => (
+        card.idList === listData.id ? <><ListItem key={card.id} className="listItem"> <ActivityCard data={card} /> </ListItem> </> : <></>
+      ))}
+      {/* {listCards.map(card => {
         return (
           <ListItem key={card.id}>
             <ActivityCard data={card} />
           </ListItem>
         )
-      })}
+      })} */}
 
-      <ListItem >
-        {renderAdd("Accept","Add Card", handleNewElement)}
-      </ListItem>      
+      <ListItem className="listItem">
+        {renderAdd("Accept", "Add Card", handleNewElement)}
+      </ListItem>
     </List>
-    
+
   );
 }

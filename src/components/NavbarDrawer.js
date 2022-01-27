@@ -11,26 +11,26 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
-import { useParams,Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
-import { credentialsContext, getApiData } from "../App";
+import { credentialsContext, boarDataContext, getApiData } from "../App";
+import BoardPreview from "./BoardPreview";
 import axios from "axios";
 
 export default function TemporaryDrawer() {
-  const {id} = useParams();
+  const { id } = useParams();
   const credentials = useContext(credentialsContext);
- const [organization, setOrganizations] = useState([]);
+  const [organization, setOrganizations] = useState([]);
   const [state, setState] = React.useState({
     top: false,
     left: false,
     bottom: false,
     right: false,
   });
-  const [boards, setBoards] = useState([])
   const boardName = []
+  const { boardData, setBoardData } = useContext(boarDataContext)
   const boardId = []
-  boards.map(board => boardName.push(board.name) && boardId.push(board.id))
-  // console.log(boardName);
+  boardData.map(board => boardName.push(board.name) && boardId.push(board.id))
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -50,34 +50,25 @@ export default function TemporaryDrawer() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {boardName.map((text, index) => (
+        {boardData.map((board, index) => (
           <Link to={`board/${boardId[index]}`}>
-          <ListItem button key={text}>
+            <BoardPreview data={board} icons={false} key={board.id} />
+            {/* <ListItem button key={text}>
             <ListItemIcon>
               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
             </ListItemIcon>
             <ListItemText primary={text} />
-          </ListItem>
+          </ListItem> */}
           </Link>
         ))}
       </List>
-      
+
     </Box>
   );
   // useEffect(() => {
   //   getApiData(setOrganizations, `https://api.trello.com/1/members/me/organizations?key=${credentials.key}&token=${credentials.token}`)
-  
-  // }, [])
 
-  useEffect(() => {
-    async function getInfo() {
-        if (organization[0] !== undefined) {
-            let response = await axios.get(`https://api.trello.com/1/organizations/${organization[0].id}/boards?key=${credentials.key}&token=${credentials.token}`)
-            setBoards([...response.data]);               
-        }        
-    }
-    getInfo()
-}, [organization]);
+  // }, [])
 
   return (
     <div>
@@ -91,7 +82,7 @@ export default function TemporaryDrawer() {
             sx={{ mr: 2 }}
             onClick={toggleDrawer(anchor, true)}
           >
-            <MenuIcon  />
+            <MenuIcon />
           </IconButton>
           <Drawer
             anchor={anchor}

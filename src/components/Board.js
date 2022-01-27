@@ -29,9 +29,6 @@ export default function Board() {
   const { renderAdd, inputState } = useAddButton();
   const { id } = useParams();
 
-  boardLists.map(lists => console.log(lists))
-
- 
   async function handleNewElement() {
     let postResponse = await axios.post(
       `https://api.trello.com/1/lists?name=${inputState}&idBoard=${boardData.id}&key=${credentialsData.key}&token=${credentialsData.token}`
@@ -89,21 +86,22 @@ export default function Board() {
             list.idBoard === id ? <ActivityList data={list} key={list.id} index={index} /> : <></>
           ))}
 
+          <List
+            className="add-list"
+            sx={{
+              width: "50%",
+              height: "10%",
+              maxWidth: 360,
+              border: 2,
+              borderColor: "grey.500",
+              borderRadius: 2,
+            }}
+          >
+            <ListItem>
+              {renderAdd("Accept", "ADD List", handleNewElement)}
+            </ListItem>
+          </List>
         </section>
-        <List
-          className="add-list"
-          sx={{
-            width: "100%",
-            maxWidth: 360,
-            border: 2,
-            borderColor: "grey.500",
-            borderRadius: 2,
-          }}
-        >
-          <ListItem>
-            {renderAdd("Accept", "ADD List", handleNewElement)}
-          </ListItem>
-        </List>
       </Stack>
     </Box>
   );
