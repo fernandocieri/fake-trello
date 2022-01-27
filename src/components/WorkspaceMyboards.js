@@ -1,30 +1,27 @@
-import * as React from 'react';
+import * as React from "react";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Board from './Board';
 import { credentialsContext, organizationsContext } from "./WorkspaceContainer";
-import BasicTabs from './BasicTabs';
 import BoardPreview from './BoardPreview';
 
 export default function Myboards() {
     const credentials = useContext(credentialsContext);
     const organization = useContext(organizationsContext);
     const [allBoards, setAllBoards] = useState([]);
-    const [currentBoard, setCurrentBoard] = useState(0)
+    const [currentBoard, setCurrentBoard] = useState(0);
 
     useEffect(() => {
         async function getInfo() {
-            let response = await axios.get(`https://api.trello.com/1/organizations/${organization.id}/boards?key=${credentials.key}&token=${credentials.token}`)
-            setAllBoards([...response.data]);
+            if (organization !== undefined) {
+                let response = await axios.get(`https://api.trello.com/1/organizations/${organization.id}/boards?key=${credentials.key}&token=${credentials.token}`)
+                setAllBoards([...response.data]);
+            }
         }
         getInfo()
     }, [organization]);
 
     async function createBoard(newBoardName) {
-        /*let data = JSON.stringify({
-        name: 'prueba api',
-        idBoard: '61c2184ec5370301a1cf0420'
-        });*/
         const newBoard = await axios.post(`https://api.trello.com/1/boards/?name=${newBoardName}&key=${credentials.key}&token=${credentials.token}`);
         console.log(newBoard.status);
         console.log(newBoard);
@@ -36,6 +33,7 @@ export default function Myboards() {
             return <Board data={allBoards[currentBoard]} />
         }
     }
+
     return (
         <div>
             <h5>My Boards</h5>
@@ -50,7 +48,11 @@ export default function Myboards() {
             <button onClick={(e) =>  {e.stopPropagation(); console.log("este es un boton")}}>Prueba</button>
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
+<<<<<<< HEAD
  */}        {/* <BasicTabs /> */}
+=======
+ */}
+>>>>>>> a5846905fd783d16e109f8b599a7f15ebee60b72
             {handleRender()}
             {allBoards.map(board => <BoardPreview data={board} key={board.id} />)}
         </div>

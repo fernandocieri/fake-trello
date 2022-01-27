@@ -11,6 +11,7 @@ import {
   ListSubheader,
   Typography,
 } from "@mui/material";
+<<<<<<< HEAD
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 
@@ -23,11 +24,15 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
     </div>
   )
 }*/
+=======
+import useAddButton from './hooks/useAddButton';
+>>>>>>> a5846905fd783d16e109f8b599a7f15ebee60b72
 
 export default function ActivityList(props) {
   const credentials = useContext(credentialsContext);
   const [listData, setListData] = useState({ ...props.data });
   const [listCards, setListCards] = useState([]);
+  const {renderAdd, inputState} = useAddButton();
 
 
 
@@ -35,6 +40,7 @@ export default function ActivityList(props) {
     getApiData(setListCards, `https://api.trello.com/1/lists/${listData.id}/cards?key=${credentials.key}&token=${credentials.token}`)
   }, [])
 
+<<<<<<< HEAD
 
 
   function handleDrag(result) {
@@ -91,5 +97,47 @@ console.log(listCards)
       </List>
      
             
+=======
+  
+  async function handleNewElement(){
+    let postResponse = await axios.post(`https://api.trello.com/1/cards?name=${inputState}&idList=${listData.id}&key=${credentials.key}&token=${credentials.token}`)
+      setListCards([...listCards, postResponse.data]);
+    }
+  return (
+
+    <List
+      sx={{
+        width: "100%",
+        maxWidth: 360,
+        border: 2,
+        borderColor: "grey.500",
+        borderRadius: 2,
+      }}
+      subheader={
+        <ListSubheader
+          component="div"
+          id="nested-list-subheader"
+          sx={{ borderColor: "grey.500", borderRadius: 2 }}
+        >
+          <Typography variant="h5" color="text.secondary">
+            {listData.name}
+          </Typography>
+        </ListSubheader>
+      }
+    >
+      {listCards.map(card => {
+        return (
+          <ListItem key={card.id}>
+            <ActivityCard data={card} />
+          </ListItem>
+        )
+      })}
+
+      <ListItem >
+        {renderAdd("Accept","Add Card", handleNewElement)}
+      </ListItem>      
+    </List>
+    
+>>>>>>> a5846905fd783d16e109f8b599a7f15ebee60b72
   );
 }

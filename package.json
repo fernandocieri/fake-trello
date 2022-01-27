@@ -14,7 +14,11 @@
     "axios": "^0.24.0",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
+<<<<<<< HEAD
     "react-beautiful-dnd": "^13.1.0",
+=======
+    "react-color": "^2.19.3",
+>>>>>>> a5846905fd783d16e109f8b599a7f15ebee60b72
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
