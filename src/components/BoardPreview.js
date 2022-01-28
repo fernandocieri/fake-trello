@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-    CardActionArea,
     IconButton,
     Card,
     CardHeader,
@@ -45,7 +44,7 @@ export default function BoardPreview(props) {
             <Card sx={{ maxWidth: 300, backgroundColor: boardData.prefs.backgroundBottomColor, color: '#292929', borderRadius: 1.8 }}
             //onClick={ }
             >
-                <CardActionArea>
+                <div className="card-action-area">
                     <CardHeader
                         title={boardData.name}
                     />
@@ -57,7 +56,7 @@ export default function BoardPreview(props) {
                         <DeleteOutlineOutlined fontSize="small" sx={{ color: blueGrey[800] }} />
                     </IconButton>
 
-                </CardActionArea>
+                </div>
             </Card>
             {colorPickerRender}
         </>

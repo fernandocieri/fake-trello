@@ -2,12 +2,14 @@ import { useState, useEffect, useContext } from "react";
 import * as React from "react";
 import axios from "axios";
 import ActivityCard from "./ActivityCard";
+import ActionMenu from "./Actions";
+import useEditFeature from "./hooks/useEditFeature";
+import UseActions from "./hooks/useActions";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { credentialsContext, getApiData } from "./WorkspaceContainer";
-// import { colors = red[500] } from '@mui/material/colors';
 import {
   ListItem,
   List,
-  Button,
   ListSubheader,
   Typography,
 } from "@mui/material";
@@ -17,17 +19,45 @@ export default function ActivityList(props) {
   const credentials = useContext(credentialsContext);
   const [listData, setListData] = useState({ ...props.data });
   const [listCards, setListCards] = useState([]);
-  const {renderAdd, inputState} = useAddButton();
+  const { open, selectedValue, handleClose, handleClickOpen, setSelectedValue, } = UseActions();
+  let { handleEditing, titleRender, newName, editButton } = useEditFeature(listData.name, handleClickOpen, <MoreVertIcon />);
+  const { renderAdd, inputState } = useAddButton();
 
   useEffect(() => {
     getApiData(setListCards, `https://api.trello.com/1/lists/${listData.id}/cards?key=${credentials.key}&token=${credentials.token}`)
   }, [])
 
-  
-  async function handleNewElement(){
+  async function handleDelete() {
+    const deleteResponse = await axios.put(
+      `https://api.trello.com/1/lists/${listData.id}/closed?value=true&key=${credentials.key}&token=${credentials.token}`
+    );
+  }
+
+  if (selectedValue === 'delete') {
+    handleDelete()
+    return <></>
+  }
+
+
+  async function handleNewElement() {
     let postResponse = await axios.post(`https://api.trello.com/1/cards?name=${inputState}&idList=${listData.id}&key=${credentials.key}&token=${credentials.token}`)
-      setListCards([...listCards, postResponse.data]);
+    setListCards([...listCards, postResponse.data]);
+  }
+
+  async function handleSaveEditing() {
+    if (newName === '') {
+      setSelectedValue('');
+    } else {
+      const updateResponse = await axios.put(
+        `https://api.trello.com/1/lists/${listData.id}/?name=${newName}&key=${credentials.key}&token=${credentials.token}`
+      );
+      setListData({ ...listData, name: newName });
+      setSelectedValue('');
     }
+  }
+
+  [titleRender, editButton] = handleEditing(selectedValue, handleSaveEditing);
+
   return (
 
     <List
@@ -45,7 +75,13 @@ export default function ActivityList(props) {
           sx={{ borderColor: "grey.500", borderRadius: 2 }}
         >
           <Typography variant="h5" color="text.secondary">
-            {listData.name}
+            {titleRender}
+            {editButton}
+            <ActionMenu
+              selectedValue={selectedValue}
+              open={open}
+              onClose={handleClose}
+            />
           </Typography>
         </ListSubheader>
       }
@@ -59,9 +95,9 @@ export default function ActivityList(props) {
       })}
 
       <ListItem >
-        {renderAdd("Accept","Add Card", handleNewElement)}
-      </ListItem>      
+        {renderAdd("Accept", "Add Card", handleNewElement)}
+      </ListItem>
     </List>
-    
+
   );
 }
