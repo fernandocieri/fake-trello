@@ -74,8 +74,6 @@ export default function App() {
             let lists = []
             for (let i = 0; i < boardData.length; i++) {
                 if (boardData !== undefined) {
-                    console.log(boardData, 'boardData sin index');
-                    console.log(boardData[0], 'boardData por index');
                     let response = await axios.get(`https://api.trello.com/1/boards/${boardData[i].id}/lists?key=${credentialsData.key}&token=${credentialsData.token}`);
                     lists = [...lists, ...response.data];
                 }
@@ -100,8 +98,6 @@ export default function App() {
         }
         getInfo()
     }, [boardLists]);
-
-    console.log(boardData, "BoardData APP");
 
     return (
 
