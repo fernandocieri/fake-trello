@@ -1,9 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
-const html = "";
+import App from './App'
+import './assets/index.css'
 
-ReactDOM.render(
+const html = <App/>;
+
+ReactDOM.render(  
   html,
   document.getElementById('root')
 );
-
