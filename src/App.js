@@ -52,7 +52,7 @@ export default function App() {
     const [organizationsData, setOrganizationsData] = useState([]);
     const [boardData, setBoardData] = useState([])
     const [credentialsData, setCredentialsData] = useState({ key: '278ed1bfd74ea3d23445703059a2fd01', token: '4fc08ef1719c90b1a2576c8e260cc3190641b849c048a773ce35f55a6b394a51' })
-    const [boardLists, setBoardLists] = useState([])
+    const [boardLists, setBoardLists] = useState({})
     const [listCards, setListCards] = useState([])
     useEffect(() => {
         getApiData(setOrganizationsData, `https://api.trello.com/1/members/me/organizations?key=${credentialsData.key}&token=${credentialsData.token}`)
@@ -74,6 +74,8 @@ export default function App() {
             let lists = []
             for (let i = 0; i < boardData.length; i++) {
                 if (boardData !== undefined) {
+                    console.log(boardData, 'boardData sin index');
+                    console.log(boardData[0], 'boardData por index');
                     let response = await axios.get(`https://api.trello.com/1/boards/${boardData[i].id}/lists?key=${credentialsData.key}&token=${credentialsData.token}`);
                     lists = [...lists, ...response.data];
                 }
@@ -83,7 +85,7 @@ export default function App() {
         getInfo()
     }, [boardData]);
 
-    { console.log(boardLists, 'boardList') }
+
 
     useEffect(() => {
         async function getInfo() {
@@ -99,7 +101,8 @@ export default function App() {
         getInfo()
     }, [boardLists]);
 
-    console.log(listCards);
+    console.log(boardData, "BoardData APP");
+
     return (
 
         <Router>
@@ -112,6 +115,7 @@ export default function App() {
                                 <Routes>
                                     <Route path="/" element={<WorkspaceContainer />} />
                                     <Route path="board/:id" element={<Board />} />
+                                    <Route path="/list/:idList/card/:idCard/:name" element={<Activityspecs/>}/>
                                 </Routes>
                             </organizationsContext.Provider>
                         </boarDataContext.Provider>

@@ -9,7 +9,7 @@ import BoardPreview from './BoardPreview';
 export default function Myboards() {
     const {credentialsData} = useContext(credentialsContext);  
     const {boardData} = useContext(boarDataContext);  
-
+    
 
     async function createBoard(newBoardName) {
         const newBoard = await axios.post(`https://api.trello.com/1/boards/?name=${newBoardName}&key=${credentialsData.key}&token=${credentialsData.token}`);
@@ -40,7 +40,7 @@ export default function Myboards() {
             </div>)}}
  */}
             
-            {boardData.map((board) => <Link to={`board/${board.id}`}><BoardPreview data={board} key={board.id} /> </Link>)}
+            {boardData.map((board) => <Link to={`board/${board.id}`}><BoardPreview data={board} key={board.id} icons={true} /> </Link>)}
         </div>
     );
 } 

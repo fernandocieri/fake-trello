@@ -10,21 +10,20 @@ import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import Grid from '@mui/material/Grid';
 import { useState, useEffect, useContext } from "react";
-import { credentialsContext, getApiData } from "../App";
-export default function Activityspecs(props) {
-  const credentials = useContext(credentialsContext)
-  const [cardData, setCardData] = useState({ ...props.data });
-  const [cardList, setCardList] = useState()
-  useEffect(() => {
-    getApiData(setCardList, `https://api.trello.com/1/cards/${cardData.id}/list?key=${credentials.key}&token=${credentials.token}`)
-  }, [])
+import { credentialsContext, getApiData, listCardsContext, boarListContext } from "../App";
+import { useParams } from "react-router-dom";
 
-  function handleRender() {
-    if (cardList !== undefined) {
-      return cardList.name
-    }
-  }
-  
+
+export default function Activityspecs(props) {
+  const { credentials } = useContext(credentialsContext);
+  const { idCard } = useParams();
+
+  const { listCards, setListCards } = useContext(listCardsContext);
+  const [currentCard, setCurrentCard] = useState(listCards.filter((card) => card.id === idCard))
+  console.log(listCards, "card data");
+  const { boardLists, setBoardLists } = useContext(boarListContext)
+  const [currentList, setCurrentList] = useState(boardLists.filter((list) => list.id === currentCard[0].idList))
+
   return (
     <Box
       component="form"
@@ -35,19 +34,20 @@ export default function Activityspecs(props) {
       autoComplete="on"
     >
       <Stack className="left-flex-container">
-        <TextField id="name" label="name" variant="outlined" defaultValue={cardData.name} />
-        <TextField id="description" label="description" variant="outlined" multiline rows={5} defaultValue={cardData.desc} />
+        <TextField id="name" label="name" variant="outlined" defaultValue={currentCard[0].name} />
+        <TextField id="description" label="description" variant="outlined" multiline rows={5} defaultValue={currentCard[0].desc} />
         <TextField id="comments" label="Comments" variant="outlined" />
       </Stack>
 
       <div className="extra-info">
         <Grid item xs={3}>
           <AssignmentIcon fontSize="small" sx={{ color: '#1A5F7A' }} />
-          {handleRender()}
+          {currentList[0].name}
+          
         </Grid>
         <Grid item xs={3}>
           <AccessTimeFilledIcon fontSize="small" sx={{ color: '#1A5F7A' }} />
-          {cardData.dateLastActivity}
+          {currentCard[0].dateLastActivity}
         </Grid>
       </div>
 

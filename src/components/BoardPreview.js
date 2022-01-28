@@ -45,7 +45,7 @@ export default function BoardPreview(props) {
             </IconButton>
         </>
     )
-    let icons = (props.icons) ? iconsContainer : <></>;
+    let icons = (props.icons===true) ? iconsContainer : <></>;
     
 
     return (
@@ -58,7 +58,7 @@ export default function BoardPreview(props) {
                     <CardHeader
                         title={boardData.name}
                     />
-
+                    {icons}
 
 
                 </CardActionArea>

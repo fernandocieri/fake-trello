@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import useAddButton from './hooks/useAddButton';
+import {Link} from 'react-router-dom'
 
 export default function ActivityList(props) {
   const { credentialsData } = useContext(credentialsContext);
@@ -47,7 +48,7 @@ export default function ActivityList(props) {
       } className="list"
     >
       {listCards.map((card) => (
-        card.idList === listData.id ? <><ListItem key={card.id} className="listItem"> <ActivityCard data={card} /> </ListItem> </> : <></>
+        card.idList === listData.id ? <Link to={`/list/${listData.id}/card/${card.id}/${card.name}`}><ListItem key={card.id} className="listItem"> <ActivityCard data={card} /> </ListItem> </Link> : <></>
       ))}
       {/* {listCards.map(card => {
         return (

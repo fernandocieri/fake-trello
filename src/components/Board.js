@@ -25,20 +25,33 @@ export default function Board() {
   const { boardData, setBoardData } = useContext(boarDataContext);
   const { boardLists, setBoardLists } = useContext(boarListContext)
   const { open, selectedValue, handleClose, handleClickOpen, setSelectedValue, } = useActions();
-  let { handleEditing, titleRender, newName, editButton } = useEditFeature(boardData.name, handleClickOpen, <MoreVertIcon />);
   const { renderAdd, inputState } = useAddButton();
   const { id } = useParams();
+  const [currentBoard, setCurrentBoard] = useState(boardData.filter((board) => board.id === id))
+
+
+  console.log(currentBoard, "el current");
+  let indexBoard = undefined;
+  for (let i = 0; i < boardData.length; i++) {
+    if (boardData[i] === currentBoard[0]) {
+      indexBoard = i;
+      break;
+    }
+  }
+
+
+  let { handleEditing, titleRender, newName, editButton } = useEditFeature(currentBoard[0].name, handleClickOpen, <MoreVertIcon />);
 
   async function handleNewElement() {
     let postResponse = await axios.post(
-      `https://api.trello.com/1/lists?name=${inputState}&idBoard=${boardData.id}&key=${credentialsData.key}&token=${credentialsData.token}`
+      `https://api.trello.com/1/lists?name=${inputState}&idBoard=${currentBoard[0].id}&key=${credentialsData.key}&token=${credentialsData.token}`
     );
     setBoardLists([...boardLists, postResponse.data]);
   }
 
   async function handleDelete() {
     const deleteResponse = await axios.delete(
-      `https://api.trello.com/1/boards/${boardData.id}/?key=${credentialsData.key}&token=${credentialsData.token}`
+      `https://api.trello.com/1/boards/${currentBoard[0].id}/?key=${credentialsData.key}&token=${credentialsData.token}`
     );
   }
 
@@ -47,26 +60,27 @@ export default function Board() {
     return <></>;
   }
 
+
   async function handleSaveEditing() {
     if (newName === '') {
       setSelectedValue('');
     } else {
       const updateResponse = await axios.put(
-        `https://api.trello.com/1/boards/${boardData.id}/?name=${newName}&key=${credentialsData.key}&token=${credentialsData.token}`
+        `https://api.trello.com/1/boards/${currentBoard[0].id}/?name=${newName}&key=${credentialsData.key}&token=${credentialsData.token}`
       );
-      setBoardData({ ...boardData, name: newName });
+      let boardDataCopy = [...boardData];
+
+      let currentBoardCopy = (boardDataCopy.filter(board => board.id === id));
+      currentBoardCopy[0].name = newName;
+
+      let newBoardData = boardDataCopy.filter((board) => board.id !== id);
+      newBoardData.push(currentBoardCopy[0]);
+
+      setBoardData(newBoardData)
       setSelectedValue('');
     }
   }
-
   [titleRender, editButton] = handleEditing(selectedValue, handleSaveEditing);
-
-  function renderLists() {
-    boardLists.map((list, index) => (
-      list.idBoard === id ? <ActivityList data={list} key={list.id} index={index} /> : <></>
-    ))
-  }
-
   return (
     <Box>
       <Stack>

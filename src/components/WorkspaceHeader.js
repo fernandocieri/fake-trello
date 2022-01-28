@@ -9,23 +9,21 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export default function WorkSpaceHeader() {
     const {credentialsData, setCredentialsData} = useContext(credentialsContext);
-    const {organizationsData} = useContext(organizationsContext);
-    const [organization,setOrganization] =useState("")
-    const [editableState, setEditableState] = useState({ currentValue: '', newValue: '', isBeingEdited: false })
-    console.log(organizationsData.id, "data");
+    const {organizationsData} = useContext(organizationsContext);   
+    const [editableState, setEditableState] = useState({ currentValue: '', newValue: '', isBeingEdited: false })   
   
-    useEffect(() => {
-        if (organizationsData[0] !== undefined) {
-            console.log("se está ejecutando");
-            console.log(organizationsData[0],"la ejecucion");
-            setOrganization(organizationsData[0])
-            console.log(organization,"organizacion");
-        }
-    }, [organizationsData]);
+    // useEffect(() => {
+    //     if (organizationsData[0] !== undefined) {
+    //         console.log("se está ejecutando");
+    //         console.log(organizationsData[0],"la ejecucion");
+    //         setOrganization(organizationsData[0])
+    //         console.log(organization,"organizacion");
+    //     }
+    // }, [organizationsData]);
     
     useEffect(() => {
-        if (organizationsData !== undefined) {
-            setEditableState({ ...editableState, currentValue: organization.displayName })
+        if (organizationsData[0] !== undefined) {
+            setEditableState({ ...editableState, currentValue: organizationsData[0].displayName })
         }
     }, [organizationsData]);
 
@@ -34,14 +32,13 @@ export default function WorkSpaceHeader() {
         if (editableState.newValue === '') {
             setEditableState({ ...editableState, isBeingEdited: false });
         } else {
-            const updateResponse = await axios.put(`https://api.trello.com/1/organizations/${organization.id}/?displayName=${editableState.newValue}&key=${credentialsData.key}&token=${credentialsData.token}`);
+            const updateResponse = await axios.put(`https://api.trello.com/1/organizations/${organizationsData[0].id}/?displayName=${editableState.newValue}&key=${credentialsData.key}&token=${credentialsData.token}`);
             setEditableState({ ...editableState, currentValue: editableState.newValue, isBeingEdited: false });
         }
     }
-
     let currentRender = <></>;
     
-    if ((editableState.isBeingEdited === false) && (organizationsData !== undefined)) {
+    if ((editableState.isBeingEdited === false) && (organizationsData[0] !== undefined)) {
         currentRender = (
             <>
                 <h1>{editableState.currentValue}</h1>
