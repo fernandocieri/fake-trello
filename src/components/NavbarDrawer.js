@@ -1,21 +1,12 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import MenuIcon from "@mui/icons-material/Menu";
-import IconButton from "@mui/material/IconButton";
+import { useContext, useState } from "react";
+import { credentialsContext, boarDataContext } from "../App";
 import { useParams, Link } from "react-router-dom";
-import { useContext, useState, useEffect } from "react";
-import { credentialsContext, boarDataContext, getApiData } from "../App";
+
 import BoardPreview from "./BoardPreview";
-import axios from "axios";
+
+import { Box, Drawer, List, IconButton } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 
 export default function TemporaryDrawer() {
   const { id } = useParams();
@@ -51,24 +42,14 @@ export default function TemporaryDrawer() {
     >
       <List>
         {boardData.map((board, index) => (
-          <Link to={`board/${boardId[index]}`}>
-            <BoardPreview data={board} icons={false} key={board.id} />
-            {/* <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem> */}
+          <Link to={`board/${boardId[index]}`} key={board.id}>
+            <BoardPreview data={board} icons={false} />
           </Link>
         ))}
       </List>
 
     </Box>
   );
-  // useEffect(() => {
-  //   getApiData(setOrganizations, `https://api.trello.com/1/members/me/organizations?key=${credentials.key}&token=${credentials.token}`)
-
-  // }, [])
 
   return (
     <div>

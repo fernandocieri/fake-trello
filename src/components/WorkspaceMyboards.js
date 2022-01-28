@@ -17,11 +17,6 @@ export default function Myboards() {
         console.log(newBoard);
         //REVISAR es posible que sea necesario hacer push de newBoard al estado con setAllBoards;
     }
-     // function handleRender() {
-    //     if (allBoards.length !== 0) {
-    //         return <Board data={allBoards[currentBoard]} />
-    //     }
-    // }
 
     
     return (
@@ -40,7 +35,7 @@ export default function Myboards() {
             </div>)}}
  */}
             
-            {boardData.map((board) => <Link to={`board/${board.id}`}><BoardPreview data={board} key={board.id} icons={true} /> </Link>)}
+            {boardData.map((board) => <Link to={`board/${board.id}`} key={board.id+10}><BoardPreview data={board}  icons={true} /> </Link>)}
         </div>
     );
 } 

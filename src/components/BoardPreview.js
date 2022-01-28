@@ -1,15 +1,16 @@
 import * as React from "react";
+import axios from "axios";
+
 import {
-    CardActionArea,
     IconButton,
     Card,
     CardHeader,
+    CardContent,
 } from "@mui/material";
-import axios from "axios";
 import { DeleteOutlineOutlined } from "@mui/icons-material";
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { credentialsContext } from "../App";
 import { blueGrey } from '@mui/material/colors';
 
@@ -37,7 +38,7 @@ export default function BoardPreview(props) {
 
     let iconsContainer = (
         <>
-            <IconButton aria-label="settings" onClick={() => setIsColorBeingPicked(!isColorBeingPicked)}>
+            <IconButton aria-label="settings" onClick={(event) => { setIsColorBeingPicked(!isColorBeingPicked); event.stopPropagation() }}>
                 <AutoFixHighIcon fontSize="small" sx={{ color: blueGrey[800] }} />
             </IconButton>
             <IconButton aria-label="settings" >
@@ -45,23 +46,21 @@ export default function BoardPreview(props) {
             </IconButton>
         </>
     )
-    let icons = (props.icons===true) ? iconsContainer : <></>;
-    
+    let icons = (props.icons === true) ? iconsContainer : <></>;
+
 
     return (
-        
+
         <>
             <Card sx={{ maxWidth: 300, backgroundColor: boardData.prefs.backgroundBottomColor, color: '#292929', borderRadius: 2.5 }}
-            //onClick={ }
             >
-                <CardActionArea>
-                    <CardHeader
-                        title={boardData.name}
-                    />
+                <CardHeader
+                    title={boardData.name}
+                >
+                </CardHeader>
+                <CardContent>
                     {icons}
-
-
-                </CardActionArea>
+                </CardContent>
             </Card>
             {colorPickerRender}
         </>

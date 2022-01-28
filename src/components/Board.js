@@ -1,24 +1,23 @@
 import * as React from "react";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
-import {
-  ListItem,
-  Button,
-  Stack,
-  Box,
-  IconButton,
-  List,
-  Input
-} from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { useParams } from "react-router-dom";
+import { boarListContext, credentialsContext, organizationsContext, boarDataContext } from "../App";
+
 import ActivityList from "./ActivityList";
 import ActionMenu from "./Actions";
 import useEditFeature from "./hooks/useEditFeature";
 import useActions from "./hooks/useActions";
-import { boarListContext, credentialsContext, getApiData, organizationsContext, boarDataContext } from "../App";
 import useAddButton from "./hooks/useAddButton";
-import { useParams } from "react-router-dom";
+
+import {
+  ListItem,
+  Stack,
+  Box,
+  List
+} from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+
 export default function Board() {
   const { credentialsData } = useContext(credentialsContext);
   const { organizationsData } = useContext(organizationsContext);
@@ -28,17 +27,6 @@ export default function Board() {
   const { renderAdd, inputState } = useAddButton();
   const { id } = useParams();
   const [currentBoard, setCurrentBoard] = useState(boardData.filter((board) => board.id === id))
-
-
-  console.log(currentBoard, "el current");
-  let indexBoard = undefined;
-  for (let i = 0; i < boardData.length; i++) {
-    if (boardData[i] === currentBoard[0]) {
-      indexBoard = i;
-      break;
-    }
-  }
-
 
   let { handleEditing, titleRender, newName, editButton } = useEditFeature(currentBoard[0].name, handleClickOpen, <MoreVertIcon />);
 

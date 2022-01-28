@@ -1,34 +1,25 @@
 import * as React from "react";
 import axios from "axios";
-import { Button, IconButton } from "@mui/material";
-import { credentialsContext, organizationsContext } from "../App";
 import { useState, useEffect, useContext } from "react";
-import Input from '@mui/material/Input';
+import { credentialsContext, organizationsContext } from "../App";
+
+import { Input, IconButton } from '@mui/material';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export default function WorkSpaceHeader() {
-    const {credentialsData, setCredentialsData} = useContext(credentialsContext);
-    const {organizationsData} = useContext(organizationsContext);   
-    const [editableState, setEditableState] = useState({ currentValue: '', newValue: '', isBeingEdited: false })   
-  
-    // useEffect(() => {
-    //     if (organizationsData[0] !== undefined) {
-    //         console.log("se está ejecutando");
-    //         console.log(organizationsData[0],"la ejecucion");
-    //         setOrganization(organizationsData[0])
-    //         console.log(organization,"organizacion");
-    //     }
-    // }, [organizationsData]);
-    
+    const { credentialsData, setCredentialsData } = useContext(credentialsContext);
+    const { organizationsData } = useContext(organizationsContext);
+    const [editableState, setEditableState] = useState({ currentValue: '', newValue: '', isBeingEdited: false });
+
     useEffect(() => {
         if (organizationsData[0] !== undefined) {
-            setEditableState({ ...editableState, currentValue: organizationsData[0].displayName })
+            setEditableState({ ...editableState, currentValue: organizationsData[0].displayName });
         }
     }, [organizationsData]);
 
     async function handleSaveEdition() {
-        //setOrganization({ ...organization, displayName: editableState.currentValue })
+        //APPLY REGEX TO STOP THE USER FROM WRITING A NAME WITH A BLANK SPACE AT THE BEGINNING OR END;
         if (editableState.newValue === '') {
             setEditableState({ ...editableState, isBeingEdited: false });
         } else {
@@ -37,7 +28,7 @@ export default function WorkSpaceHeader() {
         }
     }
     let currentRender = <></>;
-    
+
     if ((editableState.isBeingEdited === false) && (organizationsData[0] !== undefined)) {
         currentRender = (
             <>
@@ -52,7 +43,7 @@ export default function WorkSpaceHeader() {
             <>
                 <Input onChange={event => setEditableState({ ...editableState, newValue: event.target.value })} defaultValue={editableState.currentValue} />
                 <IconButton aria-label="save" onClick={handleSaveEdition}>
-                    <CheckCircleIcon fontSize='small' sx={{ color: '#1A5F7A' }}  />
+                    <CheckCircleIcon fontSize='small' sx={{ color: '#1A5F7A' }} />
                 </IconButton>
             </>
         );
@@ -61,9 +52,6 @@ export default function WorkSpaceHeader() {
     return (
         <div className="workSpace">
             {currentRender}
-            {/* Now, button has a prop called "onClick", as the attribute, to pass a function that will work 
-        in the same way as if you call the event straigth from a button tag. */}
-
         </div>
     );
 }

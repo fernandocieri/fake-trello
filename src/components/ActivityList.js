@@ -1,4 +1,4 @@
-import { useState,  useContext } from "react";
+import { useState, useContext } from "react";
 import * as React from "react";
 import axios from "axios";
 import ActivityCard from "./ActivityCard";
@@ -39,16 +39,7 @@ export default function ActivityList(props) {
     if (newName === '') {
       setSelectedValue('');
     } else {
-
       let updateResponse = await axios.put(`https://api.trello.com/1/lists/${listData.id}/?name=${newName}&key=${credentialsData.key}&token=${credentialsData.token}`);
-      // let listDataCopy = [...listData];
-
-      // let currentListCopy = (listDataCopy.filter(list => list.id === idList));
-      // currentListCopy[0].name = newName;
-
-      // let newListData = listDataCopy.filter((list) => list.id !== idList);
-      // newListData.push(currentListCopy[0]);
-
       setListData({ ...listData, name: newName });
       setSelectedValue('');
     }
@@ -94,7 +85,7 @@ export default function ActivityList(props) {
       } className="list"
     >
       {listCards.map((card) => (
-        card.idList === listData.id ? <Link to={`/list/${listData.id}/card/${card.id}/${card.name}`}><ListItem key={card.id} className="listItem"> <ActivityCard data={card} /> </ListItem> </Link> : <></>
+        card.idList === listData.id ? <Link to={`/list/${listData.id}/card/${card.id}/${card.name}`}  ><ListItem key={card.id} className="listItem"> <ActivityCard data={card} /> </ListItem> </Link> : <></>
       ))}
 
       <ListItem className="listItem">
