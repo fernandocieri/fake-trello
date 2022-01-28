@@ -2,38 +2,28 @@ import * as React from "react";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Board from './Board';
-import { credentialsContext, organizationsContext } from "./WorkspaceContainer";
+import {Link} from 'react-router-dom'
+import { credentialsContext, organizationsContext, boarDataContext } from "../App";
 import BoardPreview from './BoardPreview';
 
 export default function Myboards() {
-    const credentials = useContext(credentialsContext);
-    const organization = useContext(organizationsContext);
-    const [allBoards, setAllBoards] = useState([]);
-    const [currentBoard, setCurrentBoard] = useState(0);
+    const {credentialsData} = useContext(credentialsContext);  
+    const {boardData} = useContext(boarDataContext);  
 
-    useEffect(() => {
-        async function getInfo() {
-            if (organization !== undefined) {
-                let response = await axios.get(`https://api.trello.com/1/organizations/${organization.id}/boards?key=${credentials.key}&token=${credentials.token}`)
-                setAllBoards([...response.data]);
-            }
-        }
-        getInfo()
-    }, [organization]);
 
     async function createBoard(newBoardName) {
-        const newBoard = await axios.post(`https://api.trello.com/1/boards/?name=${newBoardName}&key=${credentials.key}&token=${credentials.token}`);
+        const newBoard = await axios.post(`https://api.trello.com/1/boards/?name=${newBoardName}&key=${credentialsData.key}&token=${credentialsData.token}`);
         console.log(newBoard.status);
         console.log(newBoard);
         //REVISAR es posible que sea necesario hacer push de newBoard al estado con setAllBoards;
     }
+     // function handleRender() {
+    //     if (allBoards.length !== 0) {
+    //         return <Board data={allBoards[currentBoard]} />
+    //     }
+    // }
 
-    function handleRender() {
-        if (allBoards.length !== 0) {
-            return <Board data={allBoards[currentBoard]} />
-        }
-    }
-
+    
     return (
         <div>
             <h5>My Boards</h5>
@@ -49,8 +39,8 @@ export default function Myboards() {
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
  */}
-            {handleRender()}
-            {allBoards.map(board => <BoardPreview data={board} key={board.id} />)}
+            
+            {boardData.map((board) => <Link to={`board/${board.id}`}><BoardPreview data={board} key={board.id} /> </Link>)}
         </div>
     );
 } 

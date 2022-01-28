@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useState, useContext } from "react";
-import { credentialsContext } from "./WorkspaceContainer";
+import { credentialsContext } from "../App";
 import SettingsIcon from '@mui/icons-material/Settings';
 import ActionMenu from './Actions';
 import useActions from './hooks/useActions'

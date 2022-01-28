@@ -1,101 +1,131 @@
 import * as React from "react";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { Stack, Box, IconButton, List } from "@mui/material";
+import {
+  ListItem,
+  Button,
+  Stack,
+  Box,
+  IconButton,
+  List,
+  Input,
+} from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ActivityList from "./ActivityList";
-import ActionMenu from './Actions';
-import useActions from './hooks/useActions'
-import { credentialsContext, getApiData } from "./WorkspaceContainer";
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import ActionMenu from "./Actions";
+import useEditFeature from "./hooks/useEditFeature";
+import useActions from "./hooks/useActions";
+import {
+  boarListContext,
+  credentialsContext,
+  getApiData,
+  organizationsContext,
+  boarDataContext,
+  listCardsContext
+} from "../App";
+import useAddButton from "./hooks/useAddButton";
+import { useParams } from "react-router-dom";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { result } from "lodash";
+import { Source } from "@mui/icons-material";
+import {range} from "lodash";
+
+export default function Board() {
+  const { credentialsData } = useContext(credentialsContext);
+  const { organizationsData } = useContext(organizationsContext);
+  const { boardData, setBoardData } = useContext(boarDataContext);
+  const { boardLists, setBoardLists } = useContext(boarListContext);
+  const {
+    open,
+    selectedValue,
+    handleClose,
+    handleClickOpen,
+    setSelectedValue,
+  } = useActions();
+  let { handleEditing, titleRender, newName, editButton } = useEditFeature(
+    boardData.name,
+    handleClickOpen,
+    <MoreVertIcon />
+  );
+  const { renderAdd, inputState } = useAddButton();
+  const { id } = useParams();
+  const { listCards, setListCards } = useContext(listCardsContext);
+
+  async function handleNewElement() {
+    let postResponse = await axios.post(
+      `https://api.trello.com/1/lists?name=${inputState}&idBoard=${boardData.id}&key=${credentialsData.key}&token=${credentialsData.token}`
+    );
+    setBoardLists([...boardLists, postResponse.data]);
+  }
+
+  async function handleDelete() {
+    const deleteResponse = await axios.delete(
+      `https://api.trello.com/1/boards/${boardData.id}/?key=${credentialsData.key}&token=${credentialsData.token}`
+    );
+  }
 
 
+  if (selectedValue === "delete") {
+    handleDelete();
+    return <></>;
+  }
 
-export default function Board(props) {
-  const credentials = useContext(credentialsContext);
-  const [boardData, setBoardData] = useState({ 
-    ...props.data,
-  });
-  const [boardLists, setBoardLists] = useState([ ]);
-  const { open, selectedValue, handleClose, handleClickOpen } = useActions();
-  
-
-
-  useEffect(() => {
-    getApiData(setBoardLists, `https://api.trello.com/1/boards/${boardData.id}/lists?key=${credentials.key}&token=${credentials.token}`)
-  }, [])
-
-
-
-
-  useEffect(() => {
-    async function getInfo() {
-        let item = []
-        for (let i = 0; i < boardLists.length; i++) {
-            if (boardData !== undefined) {
-              let response = await axios.get(`https://api.trello.com/1/boards/${boardData[i].id}/lists?key=${credentials.key}&token=${credentials.token}`);
-              item = [i];
-              console.log(item,"item");  
-            }
-        }
-        //setBoardLists([...item]);
+  async function handleSaveEditing() {
+    if (newName === "") {
+      setSelectedValue("");
+    } else {
+      const updateResponse = await axios.put(
+        `https://api.trello.com/1/boards/${boardData.id}/?name=${newName}&key=${credentialsData.key}&token=${credentialsData.token}`
+      );
+      setBoardData({ ...boardData, name: newName });
+      setSelectedValue("");
     }
-    getInfo()
-  }, []);
+  }
 
-  console.log(boardData.name,"el board data de 0")
 
-  /* const handleDrag = (result) =>{
-    const {destination, source, draggableid} = result;
+  const handleDrag = (result, draggableId)=> {
+    const {destination, source} = result;
+    console.log(destination, source)
 
-    if(!result.destination){
+    if(!destination || !source){
       return;
     }
 
-    if(result.source.droppableId!== result.destination.droppableId){
-      const sourceColumn = [source.droppableId]
-      console.log(sourceColumn)
-      const destColumn = [destination.droppableId];
-      let item= {items: []};
-      const sourceItems = sourceColumn.push(item);
-      console.log(sourceItems)
-      const destItems = destColumn.push(item);
-      console.log(destItems)
-      const [removed] = sourceItems.splice(source.index, 1)
-      destItems.splice(destination.index, 0, removed)
-      setBoardLists({
-        ...boardLists,
-        [source.droppableId]:{
-          ...sourceColumn,
-          items: sourceItems
+    if (destination.droppableId === source.droppableId && destination.index === source.index){
+      return;
+    }
 
-        },
-        [destination.droppableId]: {
-          ...destColumn,
-          items: destItems
-        }
-      })
-}} */
-      /* const [removed] = sourceItems.splice(source.index, 1)
-      destItems.splice(destination.index, 0, removed)
-      setBoardLists({
-        ...boardLists,
-        [source.droppableId]:{
-          ...sourceColumn,
-          items: sourceItems
+    const movementOfDrag = destination.index >source.index? "greater" : "less";
 
-        },
-        [destination.droppableId]: {
-          ...destColumn,
-          items: destItems
-        }
-      })
-      }
-    } */
+    const directionDrag = destination.droppableId != source.droppableId ? "new" : "same"; 
+
+    console.log(movementOfDrag, directionDrag)
+
+    let affectedRange;
+
+    if(movementOfDrag === "greater"){
+      affectedRange = range(source.index, destination.index+1)
+    }else {
+      affectedRange = range(destination.index, source.index)
+    }
+
+
+    console.log( "affected Range", affectedRange)
+
+    
+
+    if (source.droppableId===destination.droppableId){
+    const items = Array.from(listCards);
+    const [reorderItem] = items.splice(result.source.index, 1);
+    items.splice(destination.index, 0, reorderItem);
+    setListCards(items)
+    return;
+    }
   
 
+  }
 
-
+  console.log(listCards)
 
 
   return (
@@ -103,7 +133,7 @@ export default function Board(props) {
       <Stack>
         <section className="boardHeader">
           <div className="boardTitle">{boardData.name}</div>
-          <IconButton variant="outlined" onClick={handleClickOpen} >
+          <IconButton variant="outlined" onClick={handleClickOpen}>
             <MoreVertIcon />
           </IconButton>
           <ActionMenu
@@ -113,12 +143,40 @@ export default function Board(props) {
           />
         </section>
 
-        <DragDropContext onDragEnd={result => console.log(result)}> 
-        <section className="boardLists">
-          {boardLists.map((list,index) => <ActivityList data={list} key={list.id} index={index} name={list.name}/>)}
-        </section>
+        <DragDropContext onDragEnd={handleDrag}>
+          <section className="boardLists">
+            {boardLists.map((list, index) =>
+              list.idBoard === id ? (
+                <>
+                  <ActivityList
+                    data={list}
+                    key={list.id}
+                    index={index}
+                    name={list.name}
+                  />
+                </>
+              ) : (
+                <></>
+              )
+            )}
+          </section>
         </DragDropContext>
 
+        <List
+          className="add-list"
+          sx={{
+            width: "50%",
+            height: "10%",
+            maxWidth: 360,
+            border: 2,
+            borderColor: "grey.500",
+            borderRadius: 2,
+          }}
+        >
+          <ListItem>
+            {renderAdd("Accept", "ADD List", handleNewElement)}
+          </ListItem>
+        </List>
       </Stack>
     </Box>
   );

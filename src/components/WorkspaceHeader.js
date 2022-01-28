@@ -1,36 +1,47 @@
 import * as React from "react";
 import axios from "axios";
 import { Button, IconButton } from "@mui/material";
-import { credentialsContext, organizationsContext } from "./WorkspaceContainer";
+import { credentialsContext, organizationsContext } from "../App";
 import { useState, useEffect, useContext } from "react";
 import Input from '@mui/material/Input';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export default function WorkSpaceHeader() {
-    const credentials = useContext(credentialsContext);
-    const organization = useContext(organizationsContext);
+    const {credentialsData, setCredentialsData} = useContext(credentialsContext);
+    const {organizationsData} = useContext(organizationsContext);
+    const [organization,setOrganization] =useState("")
     const [editableState, setEditableState] = useState({ currentValue: '', newValue: '', isBeingEdited: false })
-
+    console.log(organizationsData.id, "data");
+  
     useEffect(() => {
-        if (organization !== undefined) {
+        if (organizationsData[0] !== undefined) {
+            console.log("se está ejecutando");
+            console.log(organizationsData[0],"la ejecucion");
+            setOrganization(organizationsData[0])
+            console.log(organization,"organizacion");
+        }
+    }, [organizationsData]);
+    
+    useEffect(() => {
+        if (organizationsData !== undefined) {
             setEditableState({ ...editableState, currentValue: organization.displayName })
         }
-    }, [organization]);
+    }, [organizationsData]);
 
     async function handleSaveEdition() {
         //setOrganization({ ...organization, displayName: editableState.currentValue })
         if (editableState.newValue === '') {
             setEditableState({ ...editableState, isBeingEdited: false });
         } else {
-            const updateResponse = await axios.put(`https://api.trello.com/1/organizations/${organization.id}/?displayName=${editableState.newValue}&key=${credentials.key}&token=${credentials.token}`);
+            const updateResponse = await axios.put(`https://api.trello.com/1/organizations/${organization.id}/?displayName=${editableState.newValue}&key=${credentialsData.key}&token=${credentialsData.token}`);
             setEditableState({ ...editableState, currentValue: editableState.newValue, isBeingEdited: false });
         }
     }
 
     let currentRender = <></>;
     
-    if ((editableState.isBeingEdited === false) && (organization !== undefined)) {
+    if ((editableState.isBeingEdited === false) && (organizationsData !== undefined)) {
         currentRender = (
             <>
                 <h1>{editableState.currentValue}</h1>
@@ -39,7 +50,7 @@ export default function WorkSpaceHeader() {
                 </IconButton>
             </>
         );
-    } else if ((editableState.isBeingEdited === true) && (organization !== undefined)) {
+    } else if ((editableState.isBeingEdited === true) && (organizationsData !== undefined)) {
         currentRender = (
             <>
                 <Input onChange={event => setEditableState({ ...editableState, newValue: event.target.value })} defaultValue={editableState.currentValue} />

@@ -10,7 +10,7 @@ import { DeleteOutlineOutlined } from "@mui/icons-material";
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
 import { useState, useEffect, useContext } from "react";
-import { credentialsContext } from "./WorkspaceContainer";
+import { credentialsContext } from "../App";
 import { blueGrey } from '@mui/material/colors';
 
 import { CirclePicker } from 'react-color';
@@ -35,7 +35,21 @@ export default function BoardPreview(props) {
         colorPickerRender = <CirclePicker color={boardData.prefs.backgroundBottomColor} colors={allowedColors} onChangeComplete={handleColorChange} />
     }
 
+    let iconsContainer = (
+        <>
+            <IconButton aria-label="settings" onClick={() => setIsColorBeingPicked(!isColorBeingPicked)}>
+                <AutoFixHighIcon fontSize="small" sx={{ color: blueGrey[800] }} />
+            </IconButton>
+            <IconButton aria-label="settings" >
+                <DeleteOutlineOutlined fontSize="small" sx={{ color: blueGrey[800] }} />
+            </IconButton>
+        </>
+    )
+    let icons = (props.icons) ? iconsContainer : <></>;
+    
+
     return (
+        
         <>
             <Card sx={{ maxWidth: 300, backgroundColor: boardData.prefs.backgroundBottomColor, color: '#292929', borderRadius: 2.5 }}
             //onClick={ }
@@ -45,12 +59,7 @@ export default function BoardPreview(props) {
                         title={boardData.name}
                     />
 
-                    <IconButton aria-label="settings" onClick={() => setIsColorBeingPicked(!isColorBeingPicked)}>
-                        <AutoFixHighIcon fontSize="small" sx={{ color: blueGrey[800] }} />
-                    </IconButton>
-                    <IconButton aria-label="settings" >
-                        <DeleteOutlineOutlined fontSize="small" sx={{ color: blueGrey[800] }} />
-                    </IconButton>
+
 
                 </CardActionArea>
             </Card>
