@@ -1,64 +1,69 @@
-import { useState, useEffect, useContext } from "react";
+import { useState,  useContext } from "react";
 import * as React from "react";
 import axios from "axios";
 import ActivityCard from "./ActivityCard";
-import { credentialsContext, getApiData, listCardsContext } from "../App";
-// import { colors = red[500] } from '@mui/material/colors';
+import { credentialsContext, listCardsContext } from "../App";
+import { Link } from 'react-router-dom'
+//import { useParams } from "react-router-dom";
+
+import ActionMenu from "./Actions";
+import useAddButton from './hooks/useAddButton';
+import useEditFeature from "./hooks/useEditFeature";
+import useActions from "./hooks/useActions";
+
 import {
   ListItem,
   List,
-  Button,
   ListSubheader,
   Typography,
 } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import useAddButton from './hooks/useAddButton';
-import {Link} from 'react-router-dom'
-import useEditFeature from "./hooks/useEditFeature";
-import useActions from "./hooks/useActions";
-import { useParams } from "react-router-dom";
-import ActionMenu from "./Actions";
+
 export default function ActivityList(props) {
-  const {idList}=useParams();
+  //const { idList } = useParams();
   const { credentialsData } = useContext(credentialsContext);
   const [listData, setListData] = useState({ ...props.data });
   const { listCards, setListCards } = useContext(listCardsContext);
   const { renderAdd, inputState } = useAddButton();
   const { open, selectedValue, handleClose, handleClickOpen, setSelectedValue, } = useActions();
+
   let { handleEditing, titleRender, newName, editButton } = useEditFeature(listData.name, handleClickOpen, <MoreVertIcon />);
-  // listCards.map(list=> console.log(list))
-  [titleRender, editButton] = handleEditing(selectedValue, handleSaveEditing);
+
+
   async function handleNewElement() {
     let postResponse = await axios.post(`https://api.trello.com/1/cards?name=${inputState}&idList=${listData.id}&key=${credentialsData.key}&token=${credentialsData.token}`)
     setListCards([...listCards, postResponse.data]);
   }
-  
+
   async function handleSaveEditing() {
     if (newName === '') {
       setSelectedValue('');
     } else {
-     
-      let response = await axios.post(`https://api.trello.com/1/lists/${listData.id}&key=${credentialsData.key}&token=${credentialsData.token}`);
-      let listDataCopy = [...listData];
 
-      let currentListCopy = (listDataCopy.filter(list => list.id === idList));
-      currentListCopy[0].name = newName;
+      let updateResponse = await axios.put(`https://api.trello.com/1/lists/${listData.id}/?name=${newName}&key=${credentialsData.key}&token=${credentialsData.token}`);
+      // let listDataCopy = [...listData];
 
-      let newListData = listDataCopy.filter((list) => list.id !== idList);
-      newListData.push(currentListCopy[0]);
+      // let currentListCopy = (listDataCopy.filter(list => list.id === idList));
+      // currentListCopy[0].name = newName;
 
-      setListData(newListData)
+      // let newListData = listDataCopy.filter((list) => list.id !== idList);
+      // newListData.push(currentListCopy[0]);
+
+      setListData({ ...listData, name: newName });
       setSelectedValue('');
     }
   }
-  console.log(listData.id,"id list");
-  async function handleDelete() {    
+
+  async function handleDelete() {
     let response = await axios.delete(`https://api.trello.com/1/lists/${listData.id}&key=${credentialsData.key}&token=${credentialsData.token}`);
   }
   if (selectedValue === "delete") {
     handleDelete();
     return <></>;
   }
+
+  [titleRender, editButton] = handleEditing(selectedValue, handleSaveEditing);
+
   return (
 
     <List
@@ -80,24 +85,17 @@ export default function ActivityList(props) {
             {titleRender}
             {editButton}
             <ActionMenu
-            selectedValue={selectedValue}
-            open={open}
-            onClose={handleClose}
-          />
+              selectedValue={selectedValue}
+              open={open}
+              onClose={handleClose}
+            />
           </Typography>
         </ListSubheader>
       } className="list"
     >
       {listCards.map((card) => (
-        card.idList === listData.id ? <Link to={`/list/${listData.id}/card/${card.id}/${card.name}`}><ListItem key={card.id} className="listItem"> <ActivityCard data={card}  /> </ListItem> </Link> : <></>
+        card.idList === listData.id ? <Link to={`/list/${listData.id}/card/${card.id}/${card.name}`}><ListItem key={card.id} className="listItem"> <ActivityCard data={card} /> </ListItem> </Link> : <></>
       ))}
-      {/* {listCards.map(card => {
-        return (
-          <ListItem key={card.id}>
-            <ActivityCard data={card} />
-          </ListItem>
-        )
-      })} */}
 
       <ListItem className="listItem">
         {renderAdd("Accept", "+ Add Card", handleNewElement)}
