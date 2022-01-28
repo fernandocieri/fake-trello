@@ -71,9 +71,9 @@ export default function BoardPreview(props) {
     return (
 
         <>
-            <Card sx={{ maxWidth: 300, backgroundColor: propsData.prefs.backgroundBottomColor, color: '#292929', borderRadius: 2.5 }} className={props.className}
+            <Card sx={{ maxWidth: 300, backgroundColor: propsData.prefs.backgroundBottomColor, color: '#292929', borderRadius: 2.5}} className={props.className}
             >
-                <CardHeader sx={{ color: "white" }}
+                <CardHeader sx={{ color: "white"}}
                     title={propsData.name}
                 >
                 </CardHeader>

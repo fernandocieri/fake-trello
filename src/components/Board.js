@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState, useContext } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { boarListContext, credentialsContext, organizationsContext, boarDataContext } from "../App";
+import { boarListContext, credentialsContext, organizationsContext, boarDataContext, listCardsContext } from "../App";
 
 import ActivityList from "./ActivityList";
 import ActionMenu from "./Actions";
@@ -17,6 +17,10 @@ import {
   List
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { result } from "lodash";
+import { Source } from "@mui/icons-material";
+import {range} from "lodash";
 
 export default function Board() {
   const { credentialsData } = useContext(credentialsContext);
@@ -27,6 +31,7 @@ export default function Board() {
   const { renderAdd, inputState } = useAddButton();
   const { id } = useParams();
   const [currentBoard, setCurrentBoard] = useState(boardData.filter((board) => board.id === id))
+  const { listCards, setListCards } = useContext(listCardsContext);
 
   let { handleEditing, titleRender, newName, editButton } = useEditFeature(currentBoard[0].name, handleClickOpen, <MoreVertIcon />);
 
@@ -67,7 +72,49 @@ export default function Board() {
       setBoardData(newBoardData)
       setSelectedValue('');
     }
+
   }
+
+  const handleDrag = (result, draggableId) => {
+    const { destination, source } = result;
+    console.log(destination, source)
+
+    if (!destination || !source) {
+      return;
+    }
+
+    if (destination.droppableId === source.droppableId && destination.index === source.index) {
+      return;
+    }
+
+    const movementOfDrag = destination.index > source.index ? "greater" : "less";
+
+    const directionDrag = destination.droppableId != source.droppableId ? "new" : "same";
+
+    console.log(movementOfDrag, directionDrag)
+
+    let affectedRange;
+
+    if (movementOfDrag === "greater") {
+      affectedRange = range(source.index, destination.index + 1)
+    } else {
+      affectedRange = range(destination.index, source.index)
+    }
+
+
+    console.log("affected Range", affectedRange)
+
+
+
+    if (source.droppableId === destination.droppableId) {
+      const items = Array.from(listCards);
+      const [reorderItem] = items.splice(result.source.index, 1);
+      items.splice(destination.index, 0, reorderItem);
+      setListCards(items)
+      return;
+    }
+  }
+
   [titleRender, editButton] = handleEditing(selectedValue, handleSaveEditing);
   return (
     <Box>
@@ -78,35 +125,40 @@ export default function Board() {
           </div>
           {editButton}
           <ActionMenu
-            sx={{ fontSize: 32}}
+            sx={{ fontSize: 32 }}
             selectedValue={selectedValue}
             open={open}
             onClose={handleClose}
           />
         </section>
 
-        <section className="boardLists">
 
-          {boardLists.map((list, index) => (
-            list.idBoard === id ? <ActivityList data={list} key={`board${list.id}`} index={index} /> : <></>
-          ))}
+        <DragDropContext onDragEnd={handleDrag}>
+          <section className="boardLists">
 
-          <List
-            className="add-list"
-            sx={{
-              width: "50%",
-              height: "10%",
-              maxWidth: 360,
-              border: 2,
-              borderColor: "grey.500",
-              borderRadius: 2,
-            }}
-          >
-            <ListItem>
-              {renderAdd("Accept", "ADD List", handleNewElement)}
-            </ListItem>
-          </List>
-        </section>
+            {boardLists.map((list, index) => (
+              list.idBoard === id ? <ActivityList data={list} key={`board${list.id}`} index={index} /> : <></>
+            ))}
+          </section>
+        </DragDropContext>
+
+        <List
+          className="add-list"
+          sx={{
+            width: "50%",
+            height: "10%",
+            maxWidth: 360,
+            border: 2,
+            borderColor: "grey.500",
+            borderRadius: 2,
+          }}
+        >
+          <ListItem>
+            {renderAdd("Accept", "ADD List", handleNewElement)}
+          </ListItem>
+        </List>
+
+
       </Stack>
     </Box>
   );

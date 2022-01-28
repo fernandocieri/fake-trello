@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { blueGrey } from '@mui/material/colors';
+
 
 export default function ActivityCard(props) {
   const {credentialsData} = useContext(credentialsContext);
@@ -64,7 +64,7 @@ export default function ActivityCard(props) {
 
   return (
 
-    <Card sx={{ maxWidth: 300, maxHeight: 200 }}>
+    <Card sx={{ maxWidth: 300, maxHeight: 200, border: ' 2.5px solid #757A94', marginBottom:'10px', fontSize:'10px' }}>
       <div className="card-action-area">
         <CardHeader
           action={
@@ -90,7 +90,7 @@ export default function ActivityCard(props) {
         {listCards.map(card =>
                 card.id === cardData.id ? <Link to={`/list/${cardData.idBoard}/card/${card.id}/${card.name}`}>
                     <IconButton aria-label="settings"  className = "open-board">
-                        <OpenInNewIcon  sx={{ color: blueGrey[800], fontSize: 32}}  />
+                        <OpenInNewIcon  sx={{ fontSize: 32}}  />
                     </IconButton>
                 </Link> : <></>)}
           <Typography variant="body2" color="text.secondary">

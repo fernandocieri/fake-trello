@@ -18,6 +18,8 @@ import {
   Typography,
 } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
 
 export default function ActivityList(props) {
   const { credentialsData } = useContext(credentialsContext);
@@ -85,9 +87,24 @@ export default function ActivityList(props) {
         </ListSubheader>
       } className="list"
     >
-      {listCards.map((card) => (
-        card.idList === listData.id ? <ListItem key={card.id} className="listItem"> <ActivityCard data={card} /> </ListItem>: <></>
-      ))}
+      
+       <Droppable droppableId={`activityList${props.index}`}>
+          {(provided) => (
+          
+          
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {listCards.map((card, index) => card.idList === listData.id ? <><Draggable key={card.id} draggableId={card.id} index={index} >
+                  {(dprovided)=> (
+                    <div {...dprovided.draggableProps}
+                    ref={dprovided.innerRef} {...dprovided.dragHandleProps}><ActivityCard data={card} item={card.name} /></div>)}              
+                </Draggable></> : <></>
+                
+              )}
+              {provided.placeholder}
+            </div>
+        
+          )}
+        </Droppable>
 
       <ListItem className="listItem">
         {renderAdd("Accept", "+ Add Card", handleNewElement)}
