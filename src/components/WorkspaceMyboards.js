@@ -1,42 +1,28 @@
 import * as React from "react";
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import axios from "axios";
-import Board from './Board';
-import { credentialsContext, organizationsContext } from "./WorkspaceContainer";
+import { Link } from 'react-router-dom'
+import { credentialsContext, boarDataContext } from "../App";
+import useAddButton from "./hooks/useAddButton";
 import BoardPreview from './BoardPreview';
 
 export default function Myboards() {
-    const credentials = useContext(credentialsContext);
-    const organization = useContext(organizationsContext);
-    const [allBoards, setAllBoards] = useState([]);
-    const [currentBoard, setCurrentBoard] = useState(0);
+    const { credentialsData } = useContext(credentialsContext);
+    const { boardData, setBoardData } = useContext(boarDataContext);
+    const { renderAdd, inputState } = useAddButton();
 
-    useEffect(() => {
-        async function getInfo() {
-            if (organization !== undefined) {
-                let response = await axios.get(`https://api.trello.com/1/organizations/${organization.id}/boards?key=${credentials.key}&token=${credentials.token}`)
-                setAllBoards([...response.data]);
-            }
-        }
-        getInfo()
-    }, [organization]);
-
-    async function createBoard(newBoardName) {
-        const newBoard = await axios.post(`https://api.trello.com/1/boards/?name=${newBoardName}&key=${credentials.key}&token=${credentials.token}`);
-        console.log(newBoard.status);
-        console.log(newBoard);
-        //REVISAR es posible que sea necesario hacer push de newBoard al estado con setAllBoards;
+    async function handleNewElement() {
+        let postResponse = await axios.post(
+            `https://api.trello.com/1/boards/?name=${inputState}&key=${credentialsData.key}&token=${credentialsData.token}`
+        );
+        setBoardData([...boardData, postResponse.data]);
     }
 
-    function handleRender() {
-        if (allBoards.length !== 0) {
-            return <Board data={allBoards[currentBoard]} />
-        }
-    }
 
     return (
-        <div>
-            <h5>My Boards</h5>
+       
+        <section className="myboards-section">
+            <div className="myboards-title">My Boards</div>
             {/* This button element will have a openCreateBoard function*/}
             {/* <Button variant="contained"> + </Button> */}
             {/*  {Here  We are going to create a     tag for every board found on the database with the two respectives buttons 
@@ -49,8 +35,10 @@ export default function Myboards() {
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
  */}
-            {handleRender()}
-            {allBoards.map(board => <BoardPreview data={board} key={board.id} />)}
-        </div>
+            <div className="allboards">
+                {boardData.map((board) => <BoardPreview data={board} icons={true} className={'BoardPreview-MyBoards'}/>)}
+                {renderAdd("Accept", "+ Add Board", handleNewElement)}
+            </div>
+        </section>
     );
 } 

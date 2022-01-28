@@ -1,33 +1,63 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import * as React from "react";
 import axios from "axios";
 import ActivityCard from "./ActivityCard";
-import { credentialsContext, getApiData } from "./WorkspaceContainer";
-// import { colors = red[500] } from '@mui/material/colors';
+import { credentialsContext, listCardsContext } from "../App";
+import { Link } from 'react-router-dom'
+//import { useParams } from "react-router-dom";
+
+import ActionMenu from "./Actions";
+import useAddButton from './hooks/useAddButton';
+import useEditFeature from "./hooks/useEditFeature";
+import useActions from "./hooks/useActions";
+
 import {
   ListItem,
   List,
-  Button,
   ListSubheader,
   Typography,
 } from "@mui/material";
-import useAddButton from './hooks/useAddButton';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
 
 export default function ActivityList(props) {
-  const credentials = useContext(credentialsContext);
+  const { credentialsData } = useContext(credentialsContext);
   const [listData, setListData] = useState({ ...props.data });
-  const [listCards, setListCards] = useState([]);
-  const {renderAdd, inputState} = useAddButton();
+  const { listCards, setListCards } = useContext(listCardsContext);
+  const { renderAdd, inputState } = useAddButton();
+  const { open, selectedValue, handleClose, handleClickOpen, setSelectedValue, } = useActions();
 
-  useEffect(() => {
-    getApiData(setListCards, `https://api.trello.com/1/lists/${listData.id}/cards?key=${credentials.key}&token=${credentials.token}`)
-  }, [])
+  let { handleEditing, titleRender, newName, editButton } = useEditFeature(listData.name, handleClickOpen, <MoreVertIcon />);
 
-  
-  async function handleNewElement(){
-    let postResponse = await axios.post(`https://api.trello.com/1/cards?name=${inputState}&idList=${listData.id}&key=${credentials.key}&token=${credentials.token}`)
-      setListCards([...listCards, postResponse.data]);
+
+  async function handleNewElement() {
+    let postResponse = await axios.post(`https://api.trello.com/1/cards?name=${inputState}&idList=${listData.id}&key=${credentialsData.key}&token=${credentialsData.token}`)
+    setListCards([...listCards, postResponse.data]);
+  }
+
+  async function handleSaveEditing() {
+    if (newName === '') {
+      setSelectedValue('');
+    } else {
+      let updateResponse = await axios.put(`https://api.trello.com/1/lists/${listData.id}/?name=${newName}&key=${credentialsData.key}&token=${credentialsData.token}`);
+      setListData({ ...listData, name: newName });
+      setSelectedValue('');
     }
+  }
+
+  async function handleDelete() {
+    const deleteResponse = await axios.put(
+      `https://api.trello.com/1/lists/${listData.id}/closed?value=true&key=${credentialsData.key}&token=${credentialsData.token}`
+    );
+  }
+  if (selectedValue === "delete") {
+    handleDelete();
+    return <></>;
+  }
+
+  [titleRender, editButton] = handleEditing(selectedValue, handleSaveEditing);
+
   return (
 
     <List
@@ -37,6 +67,7 @@ export default function ActivityList(props) {
         border: 2,
         borderColor: "grey.500",
         borderRadius: 2,
+        margin: 1
       }}
       subheader={
         <ListSubheader
@@ -45,23 +76,40 @@ export default function ActivityList(props) {
           sx={{ borderColor: "grey.500", borderRadius: 2 }}
         >
           <Typography variant="h5" color="text.secondary">
-            {listData.name}
+            {titleRender}
+            {editButton}
+            <ActionMenu
+              selectedValue={selectedValue}
+              open={open}
+              onClose={handleClose}
+            />
           </Typography>
         </ListSubheader>
-      }
+      } className="list"
     >
-      {listCards.map(card => {
-        return (
-          <ListItem key={card.id}>
-            <ActivityCard data={card} />
-          </ListItem>
-        )
-      })}
+      
+       <Droppable droppableId={`activityList${props.index}`}>
+          {(provided) => (
+          
+          
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {listCards.map((card, index) => card.idList === listData.id ? <><Draggable key={card.id} draggableId={card.id} index={index} >
+                  {(dprovided)=> (
+                    <div {...dprovided.draggableProps}
+                    ref={dprovided.innerRef} {...dprovided.dragHandleProps}><ActivityCard data={card} item={card.name} /></div>)}              
+                </Draggable></> : <></>
+                
+              )}
+              {provided.placeholder}
+            </div>
+        
+          )}
+        </Droppable>
 
-      <ListItem >
-        {renderAdd("Accept","Add Card", handleNewElement)}
-      </ListItem>      
+      <ListItem className="listItem">
+        {renderAdd("Accept", "+ Add Card", handleNewElement)}
+      </ListItem>
     </List>
-    
+
   );
 }

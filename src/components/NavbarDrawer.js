@@ -1,26 +1,27 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import { useContext, useState } from "react";
+import { credentialsContext, boarDataContext } from "../App";
+import { useParams, Link } from "react-router-dom";
+
+import BoardPreview from "./BoardPreview";
+
+import { Box, Drawer, List, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import IconButton from "@mui/material/IconButton";
 
 export default function TemporaryDrawer() {
+  const { id } = useParams();
+  const credentials = useContext(credentialsContext);
+  const [organization, setOrganizations] = useState([]);
   const [state, setState] = React.useState({
     top: false,
     left: false,
     bottom: false,
     right: false,
   });
-
-  
+  const boardName = []
+  const { boardData, setBoardData } = useContext(boarDataContext)
+  const boardId = []
+  boardData.map(board => boardName.push(board.name) && boardId.push(board.id))
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -40,27 +41,13 @@ export default function TemporaryDrawer() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
+        {boardData.map((board, index) => (
+          <Link to={`board/${boardId[index]}`} key={board.id}>
+            <BoardPreview data={board} icons={false} className={"Drawer-MyBoards"} />
+          </Link>
         ))}
       </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+
     </Box>
   );
 
@@ -76,13 +63,14 @@ export default function TemporaryDrawer() {
             sx={{ mr: 2 }}
             onClick={toggleDrawer(anchor, true)}
           >
-            <MenuIcon  />
+            <MenuIcon />
           </IconButton>
           <Drawer
             anchor={anchor}
             open={state[anchor]}
             onClose={toggleDrawer(anchor, false)}
           >
+            <div className="myboards-title">My Boards</div>
             {list(anchor)}
           </Drawer>
         </React.Fragment>

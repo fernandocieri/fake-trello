@@ -15,3 +15,88 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.boardLists, .allboards {
+  display: flex;
+  flex-direction: row;
+}
+
+.list{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+}
+
+.listItem {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+}
+
+.myboards-title{
+  font-size: 25px;
+  font-weight: bold;
+  font-style: italic;
+  margin-bottom: 25px;
+}
+
+
+
+.allboards {
+  display: flex;
+  min-width: 500px;
+  flex-wrap: wrap;
+}
+
+.BoardPreview-MyBoards {
+  margin: 10px;
+  width: 270px;
+}
+
+.Drawer-MyBoards {
+  width: 230px;
+  margin: 8px 0px 15px 3px;
+}
+
+.org-title, .boardTitle {
+  font-size: 40px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.header-title-section {
+  display: flex;
+  flex-direction: row;
+  margin-top: 3px;
+  margin-bottom: 15px;
+}
+
+.boardHeader {
+  display: flex;
+  flex-direction: row;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  margin-left: 30px;
+}
+
+.open-board {
+  float: right
+}
+
+.activityspecs {
+  display: flex;
+  flex-direction: row;
+  margin-top: 100px;
+}
+
+.button-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.info {
+  display: flex;
+  flex-direction: row;
+}

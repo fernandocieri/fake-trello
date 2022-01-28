@@ -1,8 +1,9 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Input, IconButton } from "@mui/material";
 import useActions from './useActions'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
 
 
 export default function useEditFeature(oldName, handleClickOpen, customButton) {
@@ -15,6 +16,8 @@ export default function useEditFeature(oldName, handleClickOpen, customButton) {
     )
 
     let titleRender = oldName;
+
+   
 
     function handleEditing(selectedValue, handleSaveEditing) {
         if (selectedValue === 'change name') {
