@@ -28,24 +28,24 @@ export default function WorkSpaceHeader() {
         }
     }
     let currentRender = <></>;
-
+    
     if ((editableState.isBeingEdited === false) && (organizationsData[0] !== undefined)) {
         currentRender = (
-            <>
-                <h1>{editableState.currentValue}</h1>
+            <section className="header-title-section">
+                <div className="org-title">{editableState.currentValue}</div>
                 <IconButton aria-label="edit" onClick={() => { setEditableState({ ...editableState, isBeingEdited: true }) }}>
-                    <ModeEditOutlineOutlinedIcon fontSize='medium' sx={{ color: '#1A5F7A' }} />
+                    <ModeEditOutlineOutlinedIcon sx={{ color: '#1A5F7A', fontSize:33}} />
                 </IconButton>
-            </>
+            </section>
         );
     } else if ((editableState.isBeingEdited === true) && (organizationsData !== undefined)) {
         currentRender = (
-            <>
+            <section>
                 <Input onChange={event => setEditableState({ ...editableState, newValue: event.target.value })} defaultValue={editableState.currentValue} />
                 <IconButton aria-label="save" onClick={handleSaveEdition}>
                     <CheckCircleIcon fontSize='small' sx={{ color: '#1A5F7A' }} />
                 </IconButton>
-            </>
+            </section>
         );
     }
 

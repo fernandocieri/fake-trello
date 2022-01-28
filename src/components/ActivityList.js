@@ -20,7 +20,6 @@ import {
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 export default function ActivityList(props) {
-  //const { idList } = useParams();
   const { credentialsData } = useContext(credentialsContext);
   const [listData, setListData] = useState({ ...props.data });
   const { listCards, setListCards } = useContext(listCardsContext);
@@ -46,7 +45,9 @@ export default function ActivityList(props) {
   }
 
   async function handleDelete() {
-    let response = await axios.delete(`https://api.trello.com/1/lists/${listData.id}&key=${credentialsData.key}&token=${credentialsData.token}`);
+    const deleteResponse = await axios.put(
+      `https://api.trello.com/1/lists/${listData.id}/closed?value=true&key=${credentialsData.key}&token=${credentialsData.token}`
+    );
   }
   if (selectedValue === "delete") {
     handleDelete();
@@ -85,7 +86,7 @@ export default function ActivityList(props) {
       } className="list"
     >
       {listCards.map((card) => (
-        card.idList === listData.id ? <Link to={`/list/${listData.id}/card/${card.id}/${card.name}`}  ><ListItem key={card.id} className="listItem"> <ActivityCard data={card} /> </ListItem> </Link> : <></>
+        card.idList === listData.id ? <ListItem key={card.id} className="listItem"> <ActivityCard data={card} /> </ListItem>: <></>
       ))}
 
       <ListItem className="listItem">

@@ -1,23 +1,27 @@
 import * as React from "react";
 import { useState, useContext } from "react";
-import { credentialsContext, listCardsContext } from "../App";
+import { credentialsContext, listCardsContext, boarListContext } from "../App";
 import axios from "axios";
-
+import {Link} from 'react-router-dom';
 import ActionMenu from './Actions';
 import useActions from './hooks/useActions'
 import useEditFeature from "./hooks/useEditFeature";
 
 import {
+  IconButton,
   Typography,
   Card,
   CardHeader,
   CardContent
 } from "@mui/material";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { blueGrey } from '@mui/material/colors';
 
 export default function ActivityCard(props) {
-  const credentials = useContext(credentialsContext);
+  const {credentialsData} = useContext(credentialsContext);
   const [cardData, setCardData] = useState({ ...props.data });
+  const { boardLists, setBoardLists } = useContext(boarListContext)
   const { open, selectedValue, setSelectedValue, handleClose, handleClickOpen } = useActions();
   let { handleEditing, titleRender, newName, editButton } = useEditFeature(cardData.name, handleClickOpen, <SettingsIcon fontSize="small" />);
 
@@ -26,7 +30,7 @@ export default function ActivityCard(props) {
 
   async function handleDelete() {
     const deleteResponse = await axios.delete(
-      `https://api.trello.com/1/cards/${cardData.id}/?key=${credentials.key}&token=${credentials.token}`
+      `https://api.trello.com/1/cards/${cardData.id}/?key=${credentialsData.key}&token=${credentialsData.token}`
     );
   }
 
@@ -40,7 +44,7 @@ export default function ActivityCard(props) {
       setSelectedValue('');
     } else {
       const updateResponse = await axios.put(
-        `https://api.trello.com/1/cards/${cardData.id}/?name=${newName}&key=${credentials.key}&token=${credentials.token}`
+        `https://api.trello.com/1/cards/${cardData.id}/?name=${newName}&key=${credentialsData.key}&token=${credentialsData.token}`
       );
       let listCardsCopy = [...listCards];
 
@@ -66,11 +70,13 @@ export default function ActivityCard(props) {
           action={
             <>
               {editButton}
+              
               <ActionMenu
                 selectedValue={selectedValue}
                 open={open}
                 onClose={handleClose}
               />
+               
             </>
           }
 
@@ -81,6 +87,12 @@ export default function ActivityCard(props) {
         </CardHeader>
 
         <CardContent>
+        {listCards.map(card =>
+                card.id === cardData.id ? <Link to={`/list/${cardData.idBoard}/card/${card.id}/${card.name}`}>
+                    <IconButton aria-label="settings"  className = "open-board">
+                        <OpenInNewIcon  sx={{ color: blueGrey[800], fontSize: 32}}  />
+                    </IconButton>
+                </Link> : <></>)}
           <Typography variant="body2" color="text.secondary">
             {cardData.desc}
           </Typography>

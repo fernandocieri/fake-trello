@@ -20,15 +20,12 @@ export default function ButtonAppBar({ title = "Frello" }) {
           <Typography
             variant="h4"
             component="div"
-            sx={{ flexGrow: 1 }}
+            sx={{ flexGrow: 1, color: "white", fontFamily: 'Raleway, Arial', textDecoration: 'none' }}
             component={Link}
             to="/"
           >
             {title}
           </Typography>
-          <Button variant="contained" className="editButton">
-            Boton provisional
-          </Button>
         </Toolbar>
       </AppBar>
     </Box>

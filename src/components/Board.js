@@ -73,9 +73,12 @@ export default function Board() {
     <Box>
       <Stack>
         <section className="boardHeader">
-          <div className="boardTitle">{titleRender}</div>
+          <div className="boardTitle">
+            {titleRender}
+          </div>
           {editButton}
           <ActionMenu
+            sx={{ fontSize: 32}}
             selectedValue={selectedValue}
             open={open}
             onClose={handleClose}
@@ -85,7 +88,7 @@ export default function Board() {
         <section className="boardLists">
 
           {boardLists.map((list, index) => (
-            list.idBoard === id ? <ActivityList data={list} key={list.id} index={index} /> : <></>
+            list.idBoard === id ? <ActivityList data={list} key={`board${list.id}`} index={index} /> : <></>
           ))}
 
           <List

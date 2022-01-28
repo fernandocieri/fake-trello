@@ -20,8 +20,9 @@ export default function Myboards() {
 
 
     return (
-        <div>
-            <h5>My Boards</h5>
+       
+        <section className="myboards-section">
+            <div className="myboards-title">My Boards</div>
             {/* This button element will have a openCreateBoard function*/}
             {/* <Button variant="contained"> + </Button> */}
             {/*  {Here  We are going to create a     tag for every board found on the database with the two respectives buttons 
@@ -34,8 +35,10 @@ export default function Myboards() {
             <button onClick={(e) => {e.stopPropagation();prueba("prueba2")}}>Prueba2</button>
             </div>)}}
  */}
-            {boardData.map((board) => <Link to={`board/${board.id}`} key={board.id + 10}><BoardPreview data={board} icons={true} /> </Link>)}
-            {renderAdd("Accept", "+ Add Board", handleNewElement)}
-        </div>
+            <div className="allboards">
+                {boardData.map((board) => <BoardPreview data={board} icons={true} className={'BoardPreview-MyBoards'}/>)}
+                {renderAdd("Accept", "+ Add Board", handleNewElement)}
+            </div>
+        </section>
     );
 } 

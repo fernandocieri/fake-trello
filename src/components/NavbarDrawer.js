@@ -43,7 +43,7 @@ export default function TemporaryDrawer() {
       <List>
         {boardData.map((board, index) => (
           <Link to={`board/${boardId[index]}`} key={board.id}>
-            <BoardPreview data={board} icons={false} />
+            <BoardPreview data={board} icons={false} className={"Drawer-MyBoards"} />
           </Link>
         ))}
       </List>
@@ -70,6 +70,7 @@ export default function TemporaryDrawer() {
             open={state[anchor]}
             onClose={toggleDrawer(anchor, false)}
           >
+            <div className="myboards-title">My Boards</div>
             {list(anchor)}
           </Drawer>
         </React.Fragment>
