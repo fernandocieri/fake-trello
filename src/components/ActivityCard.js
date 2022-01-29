@@ -63,9 +63,15 @@ export default function ActivityCard(props) {
   [titleRender, editButton] = handleEditing(selectedValue, handleSaveEditing);
 
   return (
-
+    
     <Card sx={{ maxWidth: 300, maxHeight: 200, border: ' 2.5px solid #757A94', marginBottom:'10px', fontSize:'10px' }}>
       <div className="card-action-area">
+      {listCards.map(card =>
+              card.id === cardData.id ? <Link to={`/list/${cardData.idBoard}/card/${card.id}/${card.name}`}>
+                  <IconButton aria-label="settings"  className = "open-board">
+                      <OpenInNewIcon  sx={{ fontSize: 20, color:'#0065FF'}}  />
+                  </IconButton>
+              </Link> : <></>)}
         <CardHeader
           action={
             <>
@@ -87,12 +93,6 @@ export default function ActivityCard(props) {
         </CardHeader>
 
         <CardContent>
-        {listCards.map(card =>
-                card.id === cardData.id ? <Link to={`/list/${cardData.idBoard}/card/${card.id}/${card.name}`}>
-                    <IconButton aria-label="settings"  className = "open-board">
-                        <OpenInNewIcon  sx={{ fontSize: 32}}  />
-                    </IconButton>
-                </Link> : <></>)}
           <Typography variant="body2" color="text.secondary">
             {cardData.desc}
           </Typography>
