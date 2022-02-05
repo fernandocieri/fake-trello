@@ -53,7 +53,7 @@ export default function ActivityCard(props) {
 
       let newCardData = listCardsCopy.filter(card => card.id !== cardData.id);
       newCardData.push(currentCardCopy[0]);
-
+  
       setListCards(newCardData);
       setCardData({ ...cardData, name: newName });
       setSelectedValue('');
