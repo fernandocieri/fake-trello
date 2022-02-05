@@ -31,7 +31,7 @@ export default function Activityspecs() {
   let newCardData = listCardsCopy.filter(card => card.id !== currentCard[0].id);
 
   async function handleDelete() {
-    const deleteResponse = await axios.delete(`https://api.trello.com/1/cards/${currentCard[0].id}/?key=${credentialsData.key}&token=${credentialsData.token}`);
+    const deleteResponse = await axios.delete(`${process.env.REACT_APP_HTTPS}cards/${currentCard[0].id}/?key=${credentialsData.key}&token=${credentialsData.token}`);
     setListCards(newCardData);
     
     //HACER QUE VUELVA A ATRÁS;
@@ -42,7 +42,7 @@ export default function Activityspecs() {
       newCardData.push(currentCardCopy[0]);
       setListCards(newCardData);
       const updateResponse = await axios.put(
-        `https://api.trello.com/1/cards/${currentCard[0].id}/?name=${currentCardCopy[0].name}&desc=${currentCardCopy[0].name}&key=${credentialsData.key}&token=${credentialsData.token}`);
+        `${process.env.REACT_APP_HTTPS}cards/${currentCard[0].id}/?name=${currentCardCopy[0].name}&desc=${currentCardCopy[0].name}&key=${credentialsData.key}&token=${credentialsData.token}`);
     }
   }
   console.log(listCards);

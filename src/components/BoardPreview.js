@@ -30,7 +30,7 @@ export default function BoardPreview(props) {
 
     async function handleDelete() {
         const deleteResponse = await axios.delete(
-            `https://api.trello.com/1/boards/${propsData.id}/?key=${credentialsData.key}&token=${credentialsData.token}`
+            `${process.env.REACT_APP_HTTPS}boards/${propsData.id}/?key=${credentialsData.key}&token=${credentialsData.token}`
         );
         setBoardData(newBoardData)
     }
@@ -38,7 +38,7 @@ export default function BoardPreview(props) {
     async function handleColorChange(color) {
         const hexColor = color.hex;
         const newColor = Object.keys(hexToColorName).find(key => hexToColorName[key] === hexColor);
-        const updateResponse = await axios.put(`https://api.trello.com/1/boards/${propsData.id}/?prefs/background=${newColor}&key=${credentialsData.key}&token=${credentialsData.token}`);
+        const updateResponse = await axios.put(`${process.env.REACT_APP_HTTPS}boards/${propsData.id}/?prefs/background=${newColor}&key=${credentialsData.key}&token=${credentialsData.token}`);
         setPropsData({ ...propsData, prefs: { ...propsData.prefs, backgroundBottomColor: color.hex } });
         setIsColorBeingPicked(false);
     }

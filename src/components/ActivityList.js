@@ -32,7 +32,7 @@ export default function ActivityList(props) {
 
 
   async function handleNewElement() {
-    let postResponse = await axios.post(`https://api.trello.com/1/cards?name=${inputState}&idList=${listData.id}&key=${credentialsData.key}&token=${credentialsData.token}`)
+    let postResponse = await axios.post(`${process.env.REACT_APP_HTTPS}cards?name=${inputState}&idList=${listData.id}&key=${credentialsData.key}&token=${credentialsData.token}`)
     setListCards([...listCards, postResponse.data]);
   }
 
@@ -40,7 +40,7 @@ export default function ActivityList(props) {
     if (newName === '') {
       setSelectedValue('');
     } else {
-      let updateResponse = await axios.put(`https://api.trello.com/1/lists/${listData.id}/?name=${newName}&key=${credentialsData.key}&token=${credentialsData.token}`);
+      let updateResponse = await axios.put(`${process.env.REACT_APP_HTTPS}lists/${listData.id}/?name=${newName}&key=${credentialsData.key}&token=${credentialsData.token}`);
       setListData({ ...listData, name: newName });
       setSelectedValue('');
     }
@@ -48,7 +48,7 @@ export default function ActivityList(props) {
 
   async function handleDelete() {
     const deleteResponse = await axios.put(
-      `https://api.trello.com/1/lists/${listData.id}/closed?value=true&key=${credentialsData.key}&token=${credentialsData.token}`
+      `${process.env.REACT_APP_HTTPS}lists/${listData.id}/closed?value=true&key=${credentialsData.key}&token=${credentialsData.token}`
     );
   }
   if (selectedValue === "delete") {

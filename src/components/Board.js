@@ -37,14 +37,14 @@ export default function Board() {
 
   async function handleNewElement() {
     let postResponse = await axios.post(
-      `https://api.trello.com/1/lists?name=${inputState}&idBoard=${currentBoard[0].id}&key=${credentialsData.key}&token=${credentialsData.token}`
+      `${process.env.REACT_APP_HTTPS}lists?name=${inputState}&idBoard=${currentBoard[0].id}&key=${credentialsData.key}&token=${credentialsData.token}`
     );
     setBoardLists([...boardLists, postResponse.data]);
   }
 
   async function handleDelete() {
     const deleteResponse = await axios.delete(
-      `https://api.trello.com/1/boards/${currentBoard[0].id}/?key=${credentialsData.key}&token=${credentialsData.token}`
+      `${process.env.REACT_APP_HTTPS}boards/${currentBoard[0].id}/?key=${credentialsData.key}&token=${credentialsData.token}`
     );
   }
 
@@ -59,7 +59,7 @@ export default function Board() {
       setSelectedValue('');
     } else {
       const updateResponse = await axios.put(
-        `https://api.trello.com/1/boards/${currentBoard[0].id}/?name=${newName}&key=${credentialsData.key}&token=${credentialsData.token}`
+        `${process.env.REACT_APP_HTTPS}boards/${currentBoard[0].id}/?name=${newName}&key=${credentialsData.key}&token=${credentialsData.token}`
       );
       let boardDataCopy = [...boardData];
 

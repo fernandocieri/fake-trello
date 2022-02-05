@@ -30,7 +30,7 @@ export default function ActivityCard(props) {
 
   async function handleDelete() {
     const deleteResponse = await axios.delete(
-      `https://api.trello.com/1/cards/${cardData.id}/?key=${credentialsData.key}&token=${credentialsData.token}`
+      `${process.env.REACT_APP_HTTPS}cards/${cardData.id}/?key=${credentialsData.key}&token=${credentialsData.token}`
     );
   }
 
@@ -44,7 +44,7 @@ export default function ActivityCard(props) {
       setSelectedValue('');
     } else {
       const updateResponse = await axios.put(
-        `https://api.trello.com/1/cards/${cardData.id}/?name=${newName}&key=${credentialsData.key}&token=${credentialsData.token}`
+        `${process.env.REACT_APP_HTTPS}cards/${cardData.id}/?name=${newName}&key=${credentialsData.key}&token=${credentialsData.token}`
       );
       let listCardsCopy = [...listCards];
 

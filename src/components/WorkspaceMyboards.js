@@ -12,7 +12,7 @@ export default function Myboards() {
 
     async function handleNewElement() {
         let postResponse = await axios.post(
-            `https://api.trello.com/1/boards/?name=${inputState}&key=${credentialsData.key}&token=${credentialsData.token}`
+            `${process.env.REACT_APP_HTTPS}boards/?name=${inputState}&key=${credentialsData.key}&token=${credentialsData.token}`
         );
         setBoardData([...boardData, postResponse.data]);
     }

@@ -47,22 +47,23 @@ const listCardsContext = createContext({
 
 export { listCardsContext, boarListContext, boarDataContext, credentialsContext, getApiData, organizationsContext };
 export default function App() {
+    
     //IMPORTANT
-    //Routing is made here.    
+    //Routing is made here.  ]
     const [organizationsData, setOrganizationsData] = useState([]);
     const [boardData, setBoardData] = useState([])
-    const [credentialsData, setCredentialsData] = useState({ key: '278ed1bfd74ea3d23445703059a2fd01', token: '4fc08ef1719c90b1a2576c8e260cc3190641b849c048a773ce35f55a6b394a51' })
+    const [credentialsData, setCredentialsData] = useState({ key: process.env.REACT_APP_KEY , token: '4fc08ef1719c90b1a2576c8e260cc3190641b849c048a773ce35f55a6b394a51' })
     const [boardLists, setBoardLists] = useState({})
-    const [listCards, setListCards] = useState([])
+    const [listCards, setListCards] = useState([])  
     useEffect(() => {
-        getApiData(setOrganizationsData, `https://api.trello.com/1/members/me/organizations?key=${credentialsData.key}&token=${credentialsData.token}`)
+        getApiData(setOrganizationsData, `${process.env.REACT_APP_HTTPS}members/me/organizations?key=${credentialsData.key}&token=${credentialsData.token}`)
 
     }, [])
 
     useEffect(() => {
         async function getInfo() {
             if (organizationsData[0] !== undefined) {
-                let response = await axios.get(`https://api.trello.com/1/organizations/${organizationsData[0].id}/boards?key=${credentialsData.key}&token=${credentialsData.token}`)
+                let response = await axios.get(`${process.env.REACT_APP_HTTPS}organizations/${organizationsData[0].id}/boards?key=${credentialsData.key}&token=${credentialsData.token}`)
                 setBoardData([...response.data])
             }
         }

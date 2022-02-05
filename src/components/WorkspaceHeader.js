@@ -23,7 +23,7 @@ export default function WorkSpaceHeader() {
         if (editableState.newValue === '') {
             setEditableState({ ...editableState, isBeingEdited: false });
         } else {
-            const updateResponse = await axios.put(`https://api.trello.com/1/organizations/${organizationsData[0].id}/?displayName=${editableState.newValue}&key=${credentialsData.key}&token=${credentialsData.token}`);
+            const updateResponse = await axios.put(`${process.env.REACT_APP_HTTPS}organizations/${organizationsData[0].id}/?displayName=${editableState.newValue}&key=${credentialsData.key}&token=${credentialsData.token}`);
             setEditableState({ ...editableState, currentValue: editableState.newValue, isBeingEdited: false });
         }
     }
